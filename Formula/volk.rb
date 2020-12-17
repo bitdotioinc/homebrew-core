@@ -3,21 +3,22 @@ class Volk < Formula
 
   desc "Vector Optimized Library of Kernels"
   homepage "https://libvolk.org"
-  url "https://github.com/gnuradio/volk/releases/download/v2.3.0/volk-2.3.0.tar.xz"
-  sha256 "40645886d713ed23295d7fb3e69734b5173a22259886b1a4abdad229a44123b9"
+  url "https://github.com/gnuradio/volk.git",
+      tag:      "v2.4.0",
+      revision: "99404d8f73172285bb299301f3aa778868f59f83"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 "7b05c83dbd7c17a7cff668ca91e19f12ffe0815a0af792a1da61a4fc0ab5e624" => :catalina
-    sha256 "0f3183e0a4852bff180bf659ada1107006a09dea4e5e21c56cfc0cc4db382edb" => :mojave
-    sha256 "d8de98a69594e20f41e3ccb0dbd68d1eab7f7c4bcbe71208c7cd770f5b8d5ab8" => :high_sierra
+    sha256 "e554a50c7257d17453071ef6359819c5130079b59bafbded22888acb39057070" => :big_sur
+    sha256 "f34bc3e707bb18791f429d777ca2e4e8e4f0c6bd1b318778d2fde8492eaff4df" => :catalina
+    sha256 "7325e401a79b42a9146acd1e5c2c32346529530e579e1cafa8353d8bf6649ed0" => :mojave
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "orc"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "Mako" do
     url "https://files.pythonhosted.org/packages/72/89/402d2b4589e120ca76a6aed8fee906a0f5ae204b50e455edd36eda6e778d/Mako-1.1.3.tar.gz"

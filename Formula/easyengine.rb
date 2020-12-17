@@ -1,8 +1,8 @@
 class Easyengine < Formula
   desc "Command-line control panel to manage WordPress sites"
   homepage "https://easyengine.io/"
-  url "https://github.com/EasyEngine/easyengine/releases/download/v4.1.3/easyengine.phar"
-  sha256 "d6e6509ef61ee1a30b2856cf9d775a195dd5cc2670a9ebd85846ea29f6a36bf0"
+  url "https://github.com/EasyEngine/easyengine/releases/download/v4.1.5/easyengine.phar"
+  sha256 "d9abef0aef4f87a54a9c48abcc999c2565a8ba43d109b11d695fb4abd32261a3"
   license "MIT"
 
   bottle :unneeded
@@ -18,9 +18,6 @@ class Easyengine < Formula
     system bin/"ee config set locale hi_IN"
     output = shell_output("#{bin}/ee config get locale")
     assert_match "hi_IN", output
-
-    output = shell_output("#{bin}/ee cli version")
-    assert_match "EE #{version}", output
 
     output = shell_output("#{bin}/ee cli info")
     assert_match "Darwin", output

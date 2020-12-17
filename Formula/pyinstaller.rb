@@ -3,10 +3,9 @@ class Pyinstaller < Formula
 
   desc "Bundle a Python application and all its dependencies"
   homepage "https://www.pyinstaller.org"
-  url "https://files.pythonhosted.org/packages/82/96/21ba3619647bac2b34b4996b2dbbea8e74a703767ce24192899d9153c058/pyinstaller-4.0.tar.gz"
-  sha256 "970beb07115761d5e4ec317c1351b712fd90ae7f23994db914c633281f99bab0"
+  url "https://files.pythonhosted.org/packages/9e/ed/fbdad7f5d8f794c901076b814b8e9f5ce31d32c0bc3b63ddd27b61db9530/pyinstaller-4.1.tar.gz"
+  sha256 "954ae81de9a4bc096ff02433b3e245b9272fe53f27cac319e71fe7540952bd3d"
   license "GPL-2.0"
-
   head "https://github.com/pyinstaller/pyinstaller.git", branch: "develop"
 
   livecheck do
@@ -15,12 +14,12 @@ class Pyinstaller < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ab6c283c0c560a084c663c61b84b1bedc256096ccea394d6499be25b06cc4c4b" => :catalina
-    sha256 "8720fa7b49a46601752dd89d742a4351b41ebedabfb4db6debd0ba0d82338fc8" => :mojave
-    sha256 "be06967b424605aab0bc04193c0057f2fe16ebbb35b476718f7ce75f65b84a9f" => :high_sierra
+    sha256 "6518b7fb92db54abc227d3be74530c65d08ef75b79d7d8e5aa3655a31bfb8a31" => :big_sur
+    sha256 "4bccc73cc20b297d0ce9f8133c0fac8b7366323785fa83d3f7001cc136fd4918" => :catalina
+    sha256 "4fbfb39966796c5fd73366fa0799b7e9260b3fcc8863838695516b922c237c02" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "altgraph" do
     url "https://files.pythonhosted.org/packages/22/5a/ac50b52581bbf0d8f6fd50ad77d20faac19a2263b43c60e7f3af8d1ec880/altgraph-0.17.tar.gz"
@@ -33,8 +32,8 @@ class Pyinstaller < Formula
   end
 
   resource "pyinstaller-hooks-contrib" do
-    url "https://files.pythonhosted.org/packages/43/75/0b6c3736535f2aa36d86aff693a85fb72af48a93253ee464b4c975f5b6de/pyinstaller-hooks-contrib-2020.7.tar.gz"
-    sha256 "74936d044f319cd7a9dca322b46a818fcb6e2af1c67af62e8a6a3121eb2863d2"
+    url "https://files.pythonhosted.org/packages/a3/a9/ea55eba430824703625d37a01ff8a219643f3174a4afea1a4073ce5a0db0/pyinstaller-hooks-contrib-2020.10.tar.gz"
+    sha256 "bf4543a16c9c6e9dd2d70ea3fee78b81d3357a68f706df471d990213892259d9"
   end
 
   def install
@@ -42,7 +41,7 @@ class Pyinstaller < Formula
   end
 
   test do
-    xy = Language::Python.major_minor_version "python3.8"
+    xy = Language::Python.major_minor_version "python3.9"
     system bin/"pyinstaller", "-F", "--distpath=#{testpath}/dist", "--workpath=#{testpath}/build",
                               libexec/"lib/python#{xy}/site-packages/easy_install.py"
     assert_predicate testpath/"dist/easy_install", :exist?

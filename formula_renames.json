@@ -24,6 +24,7 @@
   "confluent-oss": "confluent-platform",
   "cppformat": "fmt",
   "crystal-lang": "crystal",
+  "curl-openssl": "curl",
   "cv": "progress",
   "cyassl": "wolfssl",
   "d-bus": "dbus",
@@ -49,6 +50,7 @@
   "google-app-engine": "app-engine-python",
   "google-perftools": "gperftools",
   "grunt": "grunt-cli",
+  "gst-validate": "gst-devtools",
   "gtef": "tepl",
   "gtksourceview@4": "gtksourceview4",
   "gutenberg": "zola",
@@ -73,7 +75,6 @@
   "libcppa": "caf",
   "libmongoclient": "mongo-cxx-driver",
   "lua51": "lua@5.1",
-  "lua@5.3": "lua",
   "mat": "mat2",
   "maven32": "maven@3.2",
   "mkl-dnn": "onednn",
@@ -84,6 +85,7 @@
   "mysql56": "mysql@5.6",
   "newsbeuter": "newsboat",
   "nimrod": "nim",
+  "now-cli": "vercel-cli",
   "objective-caml": "ocaml",
   "offline-imap": "offlineimap",
   "open-cobol": "gnu-cobol",
@@ -96,7 +98,6 @@
   "postgresql95": "postgresql@9.5",
   "presto": "prestodb",
   "pyqt5": "pyqt",
-  "python3": "python",
   "qt5": "qt",
   "racket": "minimal-racket",
   "rebar@3": "rebar3",
@@ -123,5 +124,6 @@
   "usbmuxd": "libusbmuxd",
   "v8-315": "v8@3.15",
   "wires": "geckodriver",
-  "wpcli-completion": "wp-cli-completion"
+  "wpcli-completion": "wp-cli-completion",
+  "xu4": "scummvm"
 }

@@ -1,9 +1,10 @@
 class GstPluginsUgly < Formula
   desc "Library for constructing graphs of media-handling components"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.16.2.tar.xz"
-  sha256 "5500415b865e8b62775d4742cbb9f37146a50caecfc0e7a6fc0160d3c560fbca"
-  revision 2
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.18.2.tar.xz"
+  sha256 "a337a022ed472209b38cab5918dc2f4e7a6adc1f4afacd226a6345e5cb668bdb"
+  license "LGPL-2.0-or-later"
+  head "https://gitlab.freedesktop.org/gstreamer/gst-plugins-ugly.git"
 
   livecheck do
     url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/"
@@ -11,19 +12,13 @@ class GstPluginsUgly < Formula
   end
 
   bottle do
-    sha256 "7134966013d0e1fdbe6f431d1148749b3de1abe933f7ed9144523a21bb1488aa" => :catalina
-    sha256 "accfd660d9f84e37c3b12b7b5a1c9b43d405877162e8c156cf743d97d4460dbb" => :mojave
-    sha256 "c46ee6e2d960accfde8ccb82908ca6e8c48c3eda883222cc1998eabee16eb470" => :high_sierra
+    sha256 "cb86e77291ae8fddf9970104dd35692dd203700bb7478435eac7b7b69a1d9142" => :big_sur
+    sha256 "95a7a76aecfe472051a07be32cb7b76f8d340ae12f3d8f56fa1546d81bab2348" => :catalina
+    sha256 "a00090d74613bbe4bb3f22c9f2941364f97530ed0160c4888efc868af458969c" => :mojave
   end
 
-  head do
-    url "https://anongit.freedesktop.org/git/gstreamer/gst-plugins-ugly.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "flac"
   depends_on "gettext"
@@ -37,28 +32,23 @@ class GstPluginsUgly < Formula
   depends_on "x264"
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --mandir=#{man}
-      --disable-debug
-      --disable-dependency-tracking
-      --disable-amrnb
-      --disable-amrwb
+    args = std_meson_args + %w[
+      -Damrnb=disabled
+      -Damwrbdec=disabled
     ]
 
-    if build.head?
-      ENV["NOCONFIGURE"] = "yes"
-      system "./autogen.sh"
+    mkdir "build" do
+      system "meson", *args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
     end
-
-    system "./configure", *args
-    system "make"
-    system "make", "install"
   end
 
   test do
     gst = Formula["gstreamer"].opt_bin/"gst-inspect-1.0"
     output = shell_output("#{gst} --plugin dvdsub")
+    assert_match version.to_s, output
+    output = shell_output("#{gst} --plugin x264")
     assert_match version.to_s, output
   end
 end

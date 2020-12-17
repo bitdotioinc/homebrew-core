@@ -1,38 +1,31 @@
 class Hugo < Formula
   desc "Configurable static site generator"
   homepage "https://gohugo.io/"
-  url "https://github.com/gohugoio/hugo/archive/v0.74.3.tar.gz"
-  sha256 "9b296fa0396c20956fa6a1f7afadaa78739af62c277b6c0cfae79a91b0fe823f"
+  url "https://github.com/gohugoio/hugo/archive/v0.79.0.tar.gz"
+  sha256 "83e9b7e4bd3b321d140d1f35c75eafa6a70d3b814f2cac8e2f78b11feb23f1b2"
   license "Apache-2.0"
   head "https://github.com/gohugoio/hugo.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fc5d75aa5e6a660a21630f5d9cfd2a57f4e34de7e2511de32ab8026e4a186f18" => :catalina
-    sha256 "85eb7c91a8d69308610a0538e051abcb3eb8c2eb3ea9b50b746b9c9073917510" => :mojave
-    sha256 "fdfe31a63aff00c2d866b045796871c214c297b2276b75afffa8812f37a6a4c4" => :high_sierra
+    sha256 "7c9400c8e814ef48203a3018792febd67d195c0bb2780f72f14b971908730efc" => :big_sur
+    sha256 "548fa07dec9697e5a4b782bb430881bcb07d88665a31d3208a4c543c9b3d9779" => :catalina
+    sha256 "02ab626815e84a1a51fa21d00b0167cdfc9cc859880bb60275cd6116944c95a4" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = HOMEBREW_CACHE/"go_cache"
-    (buildpath/"src/github.com/gohugoio/hugo").install buildpath.children
+    system "go", "build", *std_go_args, "-tags", "extended"
 
-    cd "src/github.com/gohugoio/hugo" do
-      system "go", "build", "-o", bin/"hugo", "-tags", "extended", "main.go"
+    # Build bash completion
+    system bin/"hugo", "gen", "autocomplete", "--completionfile=hugo.sh"
+    bash_completion.install "hugo.sh"
 
-      # Build bash completion
-      system bin/"hugo", "gen", "autocomplete", "--completionfile=hugo.sh"
-      bash_completion.install "hugo.sh"
-
-      # Build man pages; target dir man/ is hardcoded :(
-      (Pathname.pwd/"man").mkpath
-      system bin/"hugo", "gen", "man"
-      man1.install Dir["man/*.1"]
-
-      prefix.install_metafiles
-    end
+    # Build man pages; target dir man/ is hardcoded :(
+    (Pathname.pwd/"man").mkpath
+    system bin/"hugo", "gen", "man"
+    man1.install Dir["man/*.1"]
   end
 
   test do

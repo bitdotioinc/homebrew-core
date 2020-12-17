@@ -1,9 +1,10 @@
 class GstLibav < Formula
   desc "GStreamer plugins for Libav (a fork of FFmpeg)"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.16.2.tar.xz"
-  sha256 "c724f612700c15a933c7356fbeabb0bb9571fb5538f8b1b54d4d2d94188deef2"
-  license "GPL-2.0"
+  url "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.18.2.tar.xz"
+  sha256 "36969ad44c5f0756a8a90215410710d6c39713d58f6cee13d663be9774557f49"
+  license "LGPL-2.1-or-later"
+  head "https://gitlab.freedesktop.org/gstreamer/gst-libav.git"
 
   livecheck do
     url "https://gstreamer.freedesktop.org/src/gst-libav/"
@@ -12,34 +13,25 @@ class GstLibav < Formula
 
   bottle do
     cellar :any
-    sha256 "dce5e4261059fa2fc2e14eb4db2f43cfdf749eee11140539b3f1c3c74af25198" => :catalina
-    sha256 "999e32d952de88b5578a3906fe922b135827738ac9b16afcd542bc9ba01d2d21" => :mojave
-    sha256 "281dc5fd5d4a0f558b653d7054303fbd30308feb73d2c4e37811d8389d28b6ad" => :high_sierra
+    sha256 "728f62a6289e42984082577a8d2df7e393e5c738ead2854a17008d4c8be99f7d" => :big_sur
+    sha256 "7de44d954d26c3654cc12744276f07ae52783ec7b9627413acaecbeeb44492fe" => :catalina
+    sha256 "4ebb724abec6a694169dea36213a5d0401d25382c985e4cde7ef3f38073c0dc0" => :mojave
   end
 
-  head do
-    url "https://anongit.freedesktop.org/git/gstreamer/gst-libav.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-    depends_on "gettext"
-  end
-
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "yasm" => :build
+  depends_on "ffmpeg"
   depends_on "gst-plugins-base"
   depends_on "xz" # For LZMA
 
   def install
-    if build.head?
-      ENV["NOCONFIGURE"] = "yes"
-      system "./autogen.sh"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
     end
-
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make"
-    system "make", "install"
   end
 
   test do

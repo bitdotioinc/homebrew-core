@@ -1,16 +1,18 @@
 class Gmt < Formula
   desc "Tools for manipulating and plotting geographic and Cartesian data"
   homepage "https://www.generic-mapping-tools.org/"
-  url "https://github.com/GenericMappingTools/gmt/releases/download/6.1.0/gmt-6.1.0-src.tar.xz"
-  mirror "https://mirrors.ustc.edu.cn/gmt/gmt-6.1.0-src.tar.xz"
-  sha256 "ad02780153c53a1116ae0cc7945b6f533f066af44c30d7f95ff138cfede1867c"
-  license "LGPL-3.0"
+  url "https://github.com/GenericMappingTools/gmt/releases/download/6.1.1/gmt-6.1.1-src.tar.xz"
+  mirror "https://mirrors.ustc.edu.cn/gmt/gmt-6.1.1-src.tar.xz"
+  sha256 "d476cba999340648146ef53ab4a3f64858cbd2f5511cdec9f7f06f3fb7896625"
+  license "LGPL-3.0-or-later"
+  revision 1
   head "https://github.com/GenericMappingTools/gmt.git"
 
   bottle do
-    sha256 "cd6f1812723ff16468641ab3574c929b555e1ecb6b6e328be9952711d53d3823" => :catalina
-    sha256 "6ba6b23540ca9730012d24ab1d910b4308a2092d9e28d088febbd0a1fd0e4fe5" => :mojave
-    sha256 "dbd89446b661b2cd72fa90fa57316aa38f2d6a8c18cc1ab430713c2da44d862e" => :high_sierra
+    sha256 "d8b00b197be7a17976a0806c3b5b4dd58db69b5cb0217ae86fd476f9a208cf77" => :big_sur
+    sha256 "35f512400b600bc88bb33e7dc896d5182991a4128eb1b3f56a88888a5574928b" => :catalina
+    sha256 "13cd50b18127d2d63b304c68161df55f489c598172ad14a0b6606e477bb178a9" => :mojave
+    sha256 "17480f128fd7bf9525a4f4cd81ad2ea389f0c21789acddd6d1821ea332c43865" => :high_sierra
   end
 
   depends_on "cmake" => :build

@@ -6,17 +6,17 @@ class LiterateGit < Formula
   url "https://github.com/bennorth/literate-git/archive/v0.3.1.tar.gz"
   sha256 "f1dec77584236a5ab2bcee9169e16b5d976e83cd53d279512136bdc90b04940a"
   license "GPL-3.0-or-later"
-  revision 3
+  revision 5
 
   bottle do
     cellar :any
-    sha256 "b704c927f102c0ce4fac2a02d6e0e3a93569179af257a0922b7b14b326d0bbe1" => :catalina
-    sha256 "6f82567697db68d8ff88fd5c493717cbba18869904252319daa4cfe26cc80b42" => :mojave
-    sha256 "237597cd7d2517d3b34144ba0eacd21a9d50d32e6bbe0ce496eaf8d1b9c9dab7" => :high_sierra
+    sha256 "7d0a903d891863d8ce77ac5b9508102273526dea2efc86d57b168d46d05025cd" => :big_sur
+    sha256 "1f672f78ba93ff8ce5185bd9db20b651f45cfceccde64f7c047493bf5b4e929d" => :catalina
+    sha256 "c0abc49f503c8c2ff5d58ec8af19309823b254e451a20f33db6ddaf696c01117" => :mojave
   end
 
   depends_on "libgit2"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   uses_from_macos "libffi"
 
@@ -60,8 +60,8 @@ class LiterateGit < Formula
   end
 
   resource "pygit2" do
-    url "https://files.pythonhosted.org/packages/1d/c4/e0ba65178512a724a86b39565d7f9286c16d7f8e45e2f665973065c4a495/pygit2-1.1.1.tar.gz"
-    sha256 "9255d507d5d87bf22dfd57997a78908010331fc21f9a83eca121a53f657beb3c"
+    url "https://files.pythonhosted.org/packages/3a/42/f69de8c7a1e33f365a91fa39093f4e7a64609c2bd127203536edc813cbf7/pygit2-1.4.0.tar.gz"
+    sha256 "cbeb38ab1df9b5d8896548a11e63aae8a064763ab5f1eabe4475e6b8a78ee1c8"
   end
 
   resource "Pygments" do

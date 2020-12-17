@@ -3,6 +3,7 @@ class Vcs < Formula
   homepage "https://p.outlyer.net/vcs/"
   url "https://p.outlyer.net/files/vcs/vcs-1.13.4.tar.gz"
   sha256 "dc1d6145e10eeed61d16c3591cfe3496a6ac392c9c2f7c2393cbdb0cf248544b"
+  revision 2
 
   livecheck do
     url "https://p.outlyer.net/files/vcs/?C=M&O=D"
@@ -11,9 +12,10 @@ class Vcs < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d93ff1a5972e0f9e961bf66ee8bbd99e6037505de83d73f22e69f8683d0ad1b6" => :catalina
-    sha256 "d93ff1a5972e0f9e961bf66ee8bbd99e6037505de83d73f22e69f8683d0ad1b6" => :mojave
-    sha256 "0873f5c80cc698e7b2ce6d653a43bb51ef363c5e0325997565b30d540e87cb86" => :high_sierra
+    sha256 "2c969fddac4c38cdc33a0d34677b13cd63d78d2b16ba972830b875f34bbc5645" => :big_sur
+    sha256 "bc404841c013cf935691020cc3bac998161d800a2a98f72fb1e5821e6c07ea28" => :catalina
+    sha256 "df66eb7ddab36140a72c6be470d5629cb4ed31f74c168cc70ddb622877b47920" => :mojave
+    sha256 "adefb8791367c30169a8fae3aee792521d4082adb33e7dfd7626db88901e84ed" => :high_sierra
   end
 
   depends_on "ffmpeg"

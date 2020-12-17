@@ -1,15 +1,16 @@
 class Libolm < Formula
   desc "Implementation of the Double Ratchet cryptographic ratchet"
   homepage "https://gitlab.matrix.org/matrix-org/olm"
-  url "https://gitlab.matrix.org/matrix-org/olm/-/archive/3.1.5/olm-3.1.5.tar.gz"
-  sha256 "92ac1eccacbff620a1bc1a168ba204893d83bcb72646e456990ebe2480638696"
+  url "https://gitlab.matrix.org/matrix-org/olm/-/archive/3.2.1/olm-3.2.1.tar.gz"
+  sha256 "d947d9570345e68696668cb855f1a6a7141b7b89cbcc15a08b1fae18535c4c45"
   license "Apache-2.0"
 
   bottle do
     cellar :any
-    sha256 "bbe4e24d1c0a1e584d2feb1b4cdcf2b3b6f995e8e01b48367d2b60d5b25ab2c6" => :catalina
-    sha256 "0bcc49962732ee4eb211fc59abbc803444dab90486539f76605b233bdb765705" => :mojave
-    sha256 "7c5a282fba56d8968e138cd7c36949757397f8cc2ba8446c683cf3b24f5ff6aa" => :high_sierra
+    sha256 "0634af436ccc158ea8ba3e15a53df9b3677b88db950691aaf1174189a925c8a5" => :big_sur
+    sha256 "850ca4e75b42221ea5ec4ed0ffb845b9f9d032f711b6ceb600d85813e81d50a3" => :catalina
+    sha256 "09cad39ec7953a8f3d0c9848673490624153107f1fce18db4a489147fa1170bf" => :mojave
+    sha256 "efe5613af63cc93f582b0e6f6dbe81ec9863d49dc347bf354e202ed8c9ed3ed6" => :high_sierra
   end
 
   depends_on "cmake" => :build

@@ -1,8 +1,10 @@
 class Varnish < Formula
   desc "High-performance HTTP accelerator"
   homepage "https://www.varnish-cache.org/"
-  url "https://varnish-cache.org/_downloads/varnish-6.4.0.tgz"
-  sha256 "f636ba2d881b146f480fb52efefae468b36c2c3e6620d07460f9ccbe364a76c2"
+  url "https://varnish-cache.org/_downloads/varnish-6.5.1.tgz"
+  sha256 "11964c688f9852237c99c1e327d54dc487549ddb5f0f5aa7996e521333d7cdb5"
+  license "BSD-2-Clause"
+  revision 1
 
   livecheck do
     url "https://varnish-cache.org/releases/"
@@ -10,21 +12,21 @@ class Varnish < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 "e603ccb2533b3580adad44c1e6899c8f057ee66ba27cee4d6d854b12e91f1dd8" => :catalina
-    sha256 "0c4a75a0195843add41833c4e74446f40e7caa3cd7a9f04f5f42c5000ab37ef2" => :mojave
-    sha256 "94bc1fde6d14d0b4966f81775b46f12b87c28f88f9324b9d5ae2ef679619a34d" => :high_sierra
+    sha256 "272ffac77b37af6c977de1e0d47e5188f345ada3b74c6694bb5f70d6d84cd77e" => :big_sur
+    sha256 "ccb2255702590d79a54f01da8cf908817e429038b0beaf9aea540b2377f89f2c" => :catalina
+    sha256 "eee4d8ac5ca6f6f5abf86730301f5001806b4696a4576fb039379e53886f466d" => :mojave
+    sha256 "0f9d912916432054e482785fc1bc3b475e8446250dc86638180d537287a00d9e" => :high_sierra
   end
 
   depends_on "docutils" => :build
   depends_on "graphviz" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "sphinx-doc" => :build
   depends_on "pcre"
 
   def install
-    ENV["PYTHON"] = Formula["python@3.8"].opt_bin/"python3"
+    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

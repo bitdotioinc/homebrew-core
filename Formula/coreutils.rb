@@ -4,16 +4,18 @@ class Coreutils < Formula
   url "https://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz"
   mirror "https://ftpmirror.gnu.org/coreutils/coreutils-8.32.tar.xz"
   sha256 "4458d8de7849df44ccab15e16b1548b285224dbba5f08fac070c1c0e0bcc4cfa"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
 
   livecheck do
     url :stable
   end
 
   bottle do
-    sha256 "67a4452d75a1882bd7fb977b384204edfa2758276d66290e595487922368e093" => :catalina
-    sha256 "5da6cb9dbc0a8144480dde2fb78eb0a5a1710490afc3697174f7e261ec69763f" => :mojave
-    sha256 "caa8cd8965727d0e805eccdc3e306cd0599720cdd0d5417cfcca03bead670663" => :high_sierra
+    rebuild 1
+    sha256 "ce8e32b05a59a6a7f2bd58544ff96902164780edc2a4804a1d97e11f28bc6cb6" => :big_sur
+    sha256 "f40ba727ec1bb54300c7c79804f410a62341b63f3fba41d78ef34e5d369fe9fc" => :catalina
+    sha256 "91cd269ea5eff54a3074e0c3cd0995911c5989a4eb87a3c27b17a765c48f494e" => :mojave
+    sha256 "25c71d9d9a156cc8dfaa52b35dad1f9d49df55e97748fb5ab9522f65aeed4dca" => :high_sierra
   end
 
   head do
@@ -45,9 +47,6 @@ class Coreutils < Formula
       --program-prefix=g
       --without-gmp
     ]
-
-    # Work around a gnulib issue with macOS Catalina
-    args << "gl_cv_func_ftello_works=yes"
 
     system "./configure", *args
     system "make", "install"

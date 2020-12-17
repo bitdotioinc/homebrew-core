@@ -3,21 +3,23 @@ class LibtensorflowAT1 < Formula
 
   desc "C interface for Google's OS library for Machine Intelligence"
   homepage "https://www.tensorflow.org/"
-  url "https://github.com/tensorflow/tensorflow/archive/v1.15.3.tar.gz"
-  sha256 "9ab1d92e58eb813922b040acc7622b32d73c2d8d971fe6491a06f9df4c778151"
+  url "https://github.com/tensorflow/tensorflow/archive/v1.15.4.tar.gz"
+  sha256 "e18c55e771ad136f9bf3a70ea8f0e2d36662b2ba7c890f9eaf7950554557c7fa"
   license "Apache-2.0"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "88440057fc88398f8b9affc4b60f4d8ac897a72403cad5a5a67d8c659ab79bfa" => :catalina
-    sha256 "15fdb97131bdba58139f40ef7730e75aeba13a2440d2d9e3a67d36a51300c42a" => :mojave
-    sha256 "bcf7c915fd8d97ffef810d5df53e16136de7e7c784a9b97a0474831c6d923ae5" => :high_sierra
+    sha256 "30aa7f3e8e2a98bbc16bfcf75595fa9cf11cead941c2cf81dd630a913100710b" => :big_sur
+    sha256 "9763732a2181ccbd646821c7bdf4e59dbefa67e9d70616b11492d3860d59710d" => :catalina
+    sha256 "0d60e4fdc3565e394a87824af4ad5612d059a38c9a48babfe3dee85d372d3cc6" => :mojave
+    sha256 "958c949341285f4cb069a1a8ff3477dae75aea70f5d6f86cf4c9af42c29ee2ab" => :high_sierra
   end
 
   keg_only :versioned_formula
 
   depends_on "bazel" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
 
   def install
     venv_root = "#{buildpath}/venv"

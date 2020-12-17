@@ -1,20 +1,21 @@
 class Libde265 < Formula
   desc "Open h.265 video codec implementation"
   homepage "https://github.com/strukturag/libde265"
-  url "https://github.com/strukturag/libde265/releases/download/v1.0.6/libde265-1.0.6.tar.gz"
-  sha256 "e2a34ca3934a826d0893e966ee93bc2d207f505253be94ad38fb40ca98cceb5f"
+  url "https://github.com/strukturag/libde265/releases/download/v1.0.8/libde265-1.0.8.tar.gz"
+  sha256 "24c791dd334fa521762320ff54f0febfd3c09fc978880a8c5fbc40a88f21d905"
   license "LGPL-3.0-or-later"
 
   bottle do
     cellar :any
-    sha256 "119771a3c4b3da418886e2142d27d93191e37ecdebb46d07060f8f7b85fbb1c4" => :catalina
-    sha256 "97450df80726024f5e1f099a4df07555caeead0a89b225ccf895aca0f033d98f" => :mojave
-    sha256 "b1961f6dc7dbba259edafcee3b57741177ba9c6c6b1ccf43337167ec4d0cb246" => :high_sierra
+    sha256 "6c809d037d6fe6c99a4c1492882c1e4ba720c9ead911b587da26dcb352fc5524" => :big_sur
+    sha256 "774fe5c9c849784aa10648fe3fae971c7d702a47807b6954c8a8763368bce9fc" => :catalina
+    sha256 "344e3a6eab4addecd812a51ef0d6e0db5e894c26a455603a6b4f4972757a5994" => :mojave
+    sha256 "bcb11c6ab6f03a76ae39a1972ed5a8779e785fdc6a62591823bdf8e2ac102890" => :high_sierra
   end
 
   def install
     extra_args = []
-    extra_args << "--build=aarch64-apple-darwin#{`uname -r`.chomp}" if Hardware::CPU.arm?
+    extra_args << "--build=aarch64-apple-darwin#{OS.kernel_version}" if Hardware::CPU.arm?
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",

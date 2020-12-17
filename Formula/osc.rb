@@ -1,23 +1,24 @@
 class Osc < Formula
   include Language::Python::Virtualenv
 
-  desc "The command-line interface to work with an Open Build Service"
+  desc "Command-line interface to work with an Open Build Service"
   homepage "https://github.com/openSUSE/osc"
-  url "https://github.com/openSUSE/osc/archive/0.170.0.tar.gz"
-  sha256 "137d199fd2dad149eda2263155a800459f8553a5162fd7aaa947175e399272df"
+  url "https://github.com/openSUSE/osc/archive/0.171.0.tar.gz"
+  sha256 "e824480c1c5811b05ea18236cd13164a15f7bcf17df929b43ed0617cfcb60f80"
   license "GPL-2.0"
   head "https://github.com/openSUSE/osc.git"
 
   bottle do
     cellar :any
-    sha256 "6f7b7924a56578ae1a1b414da03835554903cd10737f5c4c21c932880254cfca" => :catalina
-    sha256 "5cb73eaa794a8bc687a42d5d19c768d59e9fdfb28e44c05d30425cc4867555aa" => :mojave
-    sha256 "7b413c1f238bd4f33df5a80e6b63de2005024e1e854fd07ff158d8a8644ec1f2" => :high_sierra
+    sha256 "ce00021e980c530d2b3fccb16698f2869462bb59fd7b054b92a95024565ec840" => :big_sur
+    sha256 "bf7953f981826e73bd4be7ef9b1e8d4127afebd95febe9659a1b0f10a389e9a6" => :catalina
+    sha256 "6b55d18a07e128e2811a8c3c8d8bceed67201a4761977903b68780e8fc405225" => :mojave
+    sha256 "b5438d36082a8d13b22de3c7a4f67399ff8899707658e9146af73e8c572bda6c" => :high_sierra
   end
 
   depends_on "swig" => :build
   depends_on "openssl@1.1"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   uses_from_macos "curl"
 
@@ -27,8 +28,8 @@ class Osc < Formula
   end
 
   resource "M2Crypto" do
-    url "https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz"
-    sha256 "4c6ad45ffb88670c590233683074f2440d96aaccb05b831371869fc387cbd127"
+    url "https://files.pythonhosted.org/packages/ff/df/84609ed874b5e6fcd3061a517bf4b6e4d0301f553baf9fa37bef2b509797/M2Crypto-0.36.0.tar.gz"
+    sha256 "1542c18e3ee5c01db5031d0b594677536963e3f54ecdf5315aeecb3a595b4dc1"
   end
 
   def install

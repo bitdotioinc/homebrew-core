@@ -4,7 +4,7 @@ class Minidlna < Formula
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.2.1/minidlna-1.2.1.tar.gz"
   sha256 "67388ba23ab0c7033557a32084804f796aa2a796db7bb2b770fb76ac2a742eec"
   license "GPL-2.0-only"
-  revision 3
+  revision 5
 
   livecheck do
     url :stable
@@ -12,10 +12,9 @@ class Minidlna < Formula
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "9c63cdc32709d5a6d837a58114a9f856395f1587cce6635a0d159587ccd3d474" => :catalina
-    sha256 "9e63dd6d1d5dc2725c63e3b0496ca8ce24c9499513d981ff8ee4542948eab6ce" => :mojave
-    sha256 "01b76bd1171aa3d056296186cf4ff88989c75033e379b88a8e3487fbbb299137" => :high_sierra
+    sha256 "0f008dfaac0220cdd26995d5f5fa00560328a6a30dd6d2ab8b78e23efd559337" => :catalina
+    sha256 "befb568924df8d3b17095d864b84c11733b40e4860a7aecd65f1f4d19f9c343b" => :mojave
+    sha256 "cfaad3159ef845f063cbe32262a59d98d0e0415f15d0ce41321993c2767972cf" => :high_sierra
   end
 
   head do

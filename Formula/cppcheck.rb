@@ -1,18 +1,18 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
   homepage "https://sourceforge.net/projects/cppcheck/"
-  url "https://github.com/danmar/cppcheck/archive/2.1.tar.gz"
-  sha256 "447d44bbaa555fa78b89dd2cb0203fd4c6f18269db8a78638b968ba7c72cb02e"
-  license "GPL-3.0"
+  url "https://github.com/danmar/cppcheck/archive/2.3.tar.gz"
+  sha256 "3c622628ebf46f68909c7a96743b07b6207894a0772fbe802603732152ab1035"
+  license "GPL-3.0-or-later"
   head "https://github.com/danmar/cppcheck.git"
 
   bottle do
-    sha256 "ddc02ed55b089565973fc8936be8a0ae23829827d0bb8730f2dad2582ad68450" => :catalina
-    sha256 "416cb05e0dbd7f6b4a8c63a8dfe3a6c1d6d24c7c5d121842a4fab38bc70177f8" => :mojave
-    sha256 "4ea4c94f96f842874d9b07e5fd267df48d638c186ea26ee17715c1b130a0248b" => :high_sierra
+    sha256 "d43b72a935d69d6a170289be18dc91677021ce79e3a9b3098d185e74f86a76ef" => :big_sur
+    sha256 "e5e9dcaa609ee6d13d4a49597bde145f7264cf9ea18b9bd4f8b3bd6733c6f56f" => :catalina
+    sha256 "fc7ad924b5ab15d44cd6496d8fad5a5e1df639541bc04a67c9f68cd0ab909409" => :mojave
   end
 
-  depends_on "python@3.8" => :test
+  depends_on "python@3.9" => :test
   depends_on "pcre"
 
   def install
@@ -80,7 +80,7 @@ class Cppcheck < Formula
 
     sample_addon_file = testpath/"sampleaddon.py"
     sample_addon_file.write <<~EOS
-      #!/usr/bin/env #{Formula["python@3.8"].opt_bin}/python3
+      #!/usr/bin/env #{Formula["python@3.9"].opt_bin}/python3
       """A simple test addon for #{name}, prints function names and token count"""
       import sys
       from importlib import machinery, util
@@ -105,7 +105,7 @@ class Cppcheck < Formula
     system "#{bin}/cppcheck", "--dump", test_cpp_file
     test_cpp_file_dump = "#{test_cpp_file}.dump"
     assert_predicate testpath/test_cpp_file_dump, :exist?
-    output = shell_output(Formula["python@3.8"].opt_bin/"python3 #{sample_addon_file} #{test_cpp_file_dump}")
+    output = shell_output(Formula["python@3.9"].opt_bin/"python3 #{sample_addon_file} #{test_cpp_file_dump}")
     assert_match "#{expect_function_names}\n#{expect_token_count}", output
   end
 end

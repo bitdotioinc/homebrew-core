@@ -1,14 +1,14 @@
 class QalculateGtk < Formula
   desc "Multi-purpose desktop calculator"
   homepage "https://qalculate.github.io/"
-  url "https://github.com/Qalculate/qalculate-gtk/releases/download/v3.12.1/qalculate-gtk-3.12.1.tar.gz"
-  sha256 "1be087dace97c96c94cd0a032be103d8506001919a0ecc1cdd222445f5708596"
-  license "GPL-2.0"
+  url "https://github.com/Qalculate/qalculate-gtk/releases/download/v3.15.0/qalculate-gtk-3.15.0.tar.gz"
+  sha256 "3ecf5fc0a465e651ceb47aeea4ebb9f166771f9676c6ff78e9bccdb9d8494c6a"
+  license "GPL-2.0-or-later"
 
   bottle do
-    sha256 "f59d3a509ea6a810c6e3c597ec795605cfb0044739f9b56b9e4ab4481fb8c160" => :catalina
-    sha256 "d6794890c548b3242404c13e6aee2cf5b3617ec71217f8c09683d485f476e03f" => :mojave
-    sha256 "bf2dcb1ea0f504d564df1cd9469bd6964d690a58bff5466840ba9f9cb32eef62" => :high_sierra
+    sha256 "52ad7189e1a9e1b24cc072c807796f0b6f31eff42dbb7cb2202dbff4a65e358f" => :big_sur
+    sha256 "d159b4287212ebf82c9f699dd886fcf94712454c3079e57c7c6bd34c99d28895" => :catalina
+    sha256 "2de05c4349f359fbba723e26a13a9f8268ce9e8da907418a977b3c7fd08bcb77" => :mojave
   end
 
   depends_on "intltool" => :build

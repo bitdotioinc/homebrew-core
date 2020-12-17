@@ -1,12 +1,23 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.3.1.tar.xz"
-  sha256 "ad009240d46e307b4e03a213a0f49c11b650e445b1f8be0dda2a9212b34d2ffb"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
+  revision 4
   head "https://github.com/FFmpeg/FFmpeg.git"
+
+  stable do
+    url "https://ffmpeg.org/releases/ffmpeg-4.3.1.tar.xz"
+    sha256 "ad009240d46e307b4e03a213a0f49c11b650e445b1f8be0dda2a9212b34d2ffb"
+
+    # https://trac.ffmpeg.org/ticket/8760
+    # Remove in next release
+    patch do
+      url "https://github.com/FFmpeg/FFmpeg/commit/7c59e1b0f285cd7c7b35fcd71f49c5fd52cf9315.patch?full_index=1"
+      sha256 "1cbe1b68d70eadd49080a6e512a35f3e230de26b6e1b1c859d9119906417737f"
+    end
+  end
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -14,10 +25,10 @@ class Ffmpeg < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 "a5adcb7dcd68341a08fbc501804153110ca3563c552860aa10da6c663eba068d" => :catalina
-    sha256 "2df3b8cc7cfad89d7cef5f7e65ac1dad97fb02962c22795a9b29b1eb95a31a6c" => :mojave
-    sha256 "3f7b11cfc5bd217431a8296bd1b505851b6230376c21b933140edc4247fc9b95" => :high_sierra
+    sha256 "32d496fe08e4bd5e8b5589d92cc7c6b9e6abb29a3d05f092760eabba81e98a45" => :big_sur
+    sha256 "fa20f49d1650469cc4ea6fe6ef6c8d949106235cec8de9a386dec5839c2bb047" => :catalina
+    sha256 "7bf14f3a7ffee5a74dd75f2693bd42c35e2cd479dfa59cdc5db976618494814f" => :mojave
+    sha256 "5faa06d8ac2008a03d9ed826e1db8b39f14f5c585b9af20250e798db16247dae" => :high_sierra
   end
 
   depends_on "nasm" => :build

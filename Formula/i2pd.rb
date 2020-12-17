@@ -1,15 +1,15 @@
 class I2pd < Formula
   desc "Full-featured C++ implementation of I2P client"
   homepage "https://i2pd.website/"
-  url "https://github.com/PurpleI2P/i2pd/archive/2.33.0.tar.gz"
-  sha256 "6a30eb410263d2da23d238758ad156e36983bff1ed347fe57789763ae986d0f4"
+  url "https://github.com/PurpleI2P/i2pd/archive/2.35.0.tar.gz"
+  sha256 "d041fd4e7a88ac168e76f66fdab40174ad093cdc13451cdbd0dd1216e5581f8a"
   license "BSD-3-Clause"
 
   bottle do
     cellar :any
-    sha256 "f091f0923c6316eaedaceb23341a74991ca1d6cfc9ed1dd15def0924f2b44c6a" => :catalina
-    sha256 "be66f39ebe5bf3af18580e46b7fc10eef56934c3748242a671b213e8675646e5" => :mojave
-    sha256 "9bcd3b180c11c9940f8d2f7887cf1cc2b0c57143d7fe3fc70dc7f3efd31437b4" => :high_sierra
+    sha256 "594fb10257da6c4089abbd04d7396a511f62b70711828da48383cffc1f4b36d0" => :big_sur
+    sha256 "cb989d3c709354447c0dfb4eee5e9b876010f9f3fc72e066c00d8b74e3560328" => :catalina
+    sha256 "208b7ef6f46bcbaaa3789c9fa5c5205154bd9d7e1069f20120604c5a3dfa70ef" => :mojave
   end
 
   depends_on "boost"

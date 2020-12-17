@@ -12,6 +12,7 @@ class GnuSed < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "3846b361699dd0260a616085b2a1678c874a2fcce8ce70e704a018dce3b4a882" => :big_sur
     sha256 "726be75d6d7155820b408a10e5c1a5ba1406374a7fc167af62524a4f4bbbc099" => :catalina
     sha256 "093f16752e7dfb115c055f20aed090108b94edd47c40f5e50878d961359251b2" => :mojave
     sha256 "865abe618c67037a4a419a05e0df2c6814fb3abdd6f631ea546aeba0aaf8eb78" => :high_sierra
@@ -23,17 +24,21 @@ class GnuSed < Formula
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
-      --program-prefix=g
     ]
 
-    # Work around a gnulib issue with macOS Catalina
-    args << "gl_cv_func_ftello_works=yes"
-
+    on_macos do
+      args << "--program-prefix=g"
+    end
+    on_linux do
+      args << "--without-selinux"
+    end
     system "./configure", *args
     system "make", "install"
 
-    (libexec/"gnubin").install_symlink bin/"gsed" =>"sed"
-    (libexec/"gnuman/man1").install_symlink man1/"gsed.1" => "sed.1"
+    on_macos do
+      (libexec/"gnubin").install_symlink bin/"gsed" =>"sed"
+      (libexec/"gnuman/man1").install_symlink man1/"gsed.1" => "sed.1"
+    end
 
     libexec.install_symlink "gnuman" => "man"
   end
@@ -50,10 +55,16 @@ class GnuSed < Formula
 
   test do
     (testpath/"test.txt").write "Hello world!"
-    system "#{bin}/gsed", "-i", "s/world/World/g", "test.txt"
-    assert_match /Hello World!/, File.read("test.txt")
+    on_macos do
+      system "#{bin}/gsed", "-i", "s/world/World/g", "test.txt"
+      assert_match /Hello World!/, File.read("test.txt")
 
-    system "#{opt_libexec}/gnubin/sed", "-i", "s/world/World/g", "test.txt"
-    assert_match /Hello World!/, File.read("test.txt")
+      system "#{opt_libexec}/gnubin/sed", "-i", "s/world/World/g", "test.txt"
+      assert_match /Hello World!/, File.read("test.txt")
+    end
+    on_linux do
+      system "#{bin}/sed", "-i", "s/world/World/g", "test.txt"
+      assert_match /Hello World!/, File.read("test.txt")
+    end
   end
 end

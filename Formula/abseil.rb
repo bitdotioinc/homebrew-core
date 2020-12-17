@@ -1,22 +1,26 @@
 class Abseil < Formula
   desc "C++ Common Libraries"
   homepage "https://abseil.io"
-  url "https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz"
-  sha256 "f41868f7a938605c92936230081175d1eae87f6ea2c248f41077c8f88316f111"
+  url "https://github.com/abseil/abseil-cpp/archive/20200923.2.tar.gz"
+  sha256 "bf3f13b13a0095d926b25640e060f7e13881bd8a792705dd9e161f3c2b9aa976"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "43368dc236c3e6371d904edda75e5a8dae8127ded5b2f9ff9a0a15b4ddf103d0" => :catalina
-    sha256 "68ed0a482bd727a10fc0cf2e2e76c0307dc2d5eba8c9e4a2c0990a1dc68825b9" => :mojave
-    sha256 "bed9e2b638d6c044d31fe88bd04b225eb33548650890084ebb0657a574f7fcee" => :high_sierra
+    cellar :any
+    sha256 "cdc118ef74853d48c17c41e64da5c03b016249aaad0c1288bcd57685c3be3fea" => :big_sur
+    sha256 "0571787ca3fd57f3b271c5944dafdf550f05a3dd5cc6e4f4ce820f9dff27b160" => :catalina
+    sha256 "115c52f0799b9be98996b302c3906d230da318b0286694ef83bb90d603b1e432" => :mojave
   end
 
   depends_on "cmake" => :build
 
   def install
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..",
+                      *std_cmake_args,
+                      "-DCMAKE_CXX_STANDARD=17",
+                      "-DBUILD_SHARED_LIBS=ON"
       system "make"
       system "make", "install"
     end
@@ -36,7 +40,7 @@ class Abseil < Formula
         std::cout << "Joined string: " << s << "\\n";
       }
     EOS
-    system ENV.cxx, "-std=c++11", "-I#{include}", "-L#{lib}", "-labsl_strings",
+    system ENV.cxx, "-std=c++17", "-I#{include}", "-L#{lib}", "-labsl_strings",
                     "test.cc", "-o", "test"
     assert_equal "Joined string: foo-bar-baz\n", shell_output("#{testpath}/test")
   end

@@ -6,18 +6,20 @@ class Gnuradio < Formula
   url "https://github.com/gnuradio/gnuradio/releases/download/v3.8.2.0/gnuradio-3.8.2.0.tar.gz"
   sha256 "3e293541a9ac8d78660762bae8b80c0f6195b3494e1c50c01a9fd79cc60bb624"
   license "GPL-3.0-or-later"
+  revision 6
   head "https://github.com/gnuradio/gnuradio.git"
 
   bottle do
-    sha256 "98259eec9c9f48ad0ab56f4a7df7846e317e14c59b265602323a0d40537d7c2d" => :catalina
-    sha256 "42981d961cd48b0b4895bcf7d413117eaba87a26af936ada2f080ef39abfb496" => :mojave
-    sha256 "01562ab671d875971f0e18b77a4610e5e11edb5d9004331fb466c7aba86e2248" => :high_sierra
+    sha256 "836caaec970bbbcfcba33209fa8a9414e210fdf977b2ef838567ff6ac373309b" => :big_sur
+    sha256 "52a8e132fcc8cc862069051af8e0827875bccfe513c11c10ee07b6fd725509e5" => :catalina
+    sha256 "391db623588498ab3adab1e195b2f2cbb45bcd25973fe036935e679f714d61be" => :mojave
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "pkg-config" => :build
   depends_on "swig" => :build
+  depends_on "adwaita-icon-theme"
   depends_on "boost"
   depends_on "fftw"
   depends_on "gmp"
@@ -28,7 +30,7 @@ class Gnuradio < Formula
   depends_on "portaudio"
   depends_on "pygobject3"
   depends_on "pyqt"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "qt"
   depends_on "qwt"
   depends_on "uhd"
@@ -138,9 +140,27 @@ class Gnuradio < Formula
     mv Dir[lib/"python#{xy}/dist-packages/*"], lib/"python#{xy}/site-packages/"
     rm_rf lib/"python#{xy}/dist-packages"
 
+    # Create a directory for Homebrew to put .pth files pointing to GNU Radio
+    # plugins installed by other packages. An automatically-loaded module adds
+    # this directory to the package search path.
+    plugin_pth_dir = etc/"gnuradio/plugins.d"
+    mkdir plugin_pth_dir
+
     site_packages = lib/"python#{xy}/site-packages"
-    pth_contents = "import site; site.addsitedir('#{site_packages}')\n"
-    (venv_root/"lib/python#{xy}/site-packages/homebrew-gnuradio.pth").write pth_contents
+    venv_site_packages = venv_root/"lib/python#{xy}/site-packages"
+
+    (venv_site_packages/"homebrew_gr_plugins.py").write <<~EOS
+      import site
+      site.addsitedir("#{plugin_pth_dir}")
+    EOS
+
+    pth_contents = "#{site_packages}\nimport homebrew_gr_plugins\n"
+    (venv_site_packages/"homebrew-gnuradio.pth").write pth_contents
+
+    # Patch the grc config to change the search directory for blocks
+    inreplace etc/"gnuradio/conf.d/grc.conf" do |s|
+      s.gsub! share.to_s, "#{HOMEBREW_PREFIX}/share"
+    end
 
     rm bin.children.reject(&:executable?)
   end
@@ -208,6 +228,6 @@ class Gnuradio < Formula
 
       main()
     EOS
-    system "python3", testpath/"test.py"
+    system Formula["python@3.9"].opt_bin/"python3", testpath/"test.py"
   end
 end

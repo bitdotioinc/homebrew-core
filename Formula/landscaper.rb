@@ -10,10 +10,14 @@ class Landscaper < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "bad7cf082826c5d92dd8c09a79b682e1582fcfc3f4e471dde4112393ec7095ce" => :big_sur
     sha256 "74decffaf180e0e0dd9bfa2312877da01443a3418afe0f485c1b655c4af1da41" => :catalina
     sha256 "ff82cdb7be6329f9a4a5ce34bcbb04bc9356ab46fa3ecd30b830cf35df268529" => :mojave
     sha256 "68302c1748fe4eb063855df24420a8681a54b8ce484f2e030616bd4c4a812d52" => :high_sierra
   end
+
+  # also depends on helm@2 (which failed to build)
+  deprecate! date: "2020-07-26", because: :repo_archived
 
   depends_on "dep" => :build
   depends_on "go" => :build

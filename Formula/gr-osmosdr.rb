@@ -3,15 +3,15 @@ class GrOsmosdr < Formula
 
   desc "Osmocom GNU Radio Blocks"
   homepage "https://osmocom.org/projects/sdr/wiki/GrOsmoSDR"
-  url "https://github.com/osmocom/gr-osmosdr/archive/v0.2.0.tar.gz"
-  sha256 "9812429d97bc54f0a8917b880ca9e7e2421c66aeaac8ce5608161a8ae7007122"
+  url "https://github.com/osmocom/gr-osmosdr/archive/v0.2.2.tar.gz"
+  sha256 "5a7ce7afee38a56191b5d16cb4a91c92476729ff16ed09cbba5a3851ac619713"
   license "GPL-3.0-or-later"
-  revision 1
+  revision 3
 
   bottle do
-    sha256 "bc0e94a1514d228e6eb6868abc8aeaa56c1bb8c65c3e3afe68cdc2055381e65f" => :catalina
-    sha256 "da85067073251ba9bcb88d0047cc77b898e31762f9b3d423cbc2686e9bb5f9d7" => :mojave
-    sha256 "f973fe7465ea4931cb31096a1b26fdef355403b38dd01dfd236aa2eb4e18b182" => :high_sierra
+    sha256 "615d2cc006b9128bedb04beebfcf597fd538a6c0d995aa559ea8782835d4e055" => :big_sur
+    sha256 "0c00cae94bb4716f1eabce5c0cda827ef3cecf86cc5696c52b4d9a75a4a08819" => :catalina
+    sha256 "9907e3f120999006e63e6309597ed3ded713b14633689fc42e94875e03417d84" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -38,13 +38,6 @@ class GrOsmosdr < Formula
     sha256 "30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"
   end
 
-  # Fix for Boost 1.73.0
-  # https://github.com/osmocom/gr-osmosdr/pull/19
-  patch do
-    url "https://github.com/osmocom/gr-osmosdr/commit/5646d55f4f8b47b4602dad60d24385e393a47f61.patch?full_index=1"
-    sha256 "2cc914dc1aea0e2258e2642c1173c6d11173bf64b1221af7cab9ceebd5f3f517"
-  end
-
   def install
     venv_root = libexec/"venv"
     xy = Language::Python.major_minor_version "python3"
@@ -55,6 +48,10 @@ class GrOsmosdr < Formula
 
     system "cmake", ".", *std_cmake_args, "-DPYTHON_EXECUTABLE=#{venv_root}/bin/python"
     system "make", "install"
+
+    # Leave a pointer to our Python module directory where GNU Radio can find it
+    site_packages = lib/"python#{xy}/site-packages"
+    (etc/"gnuradio/plugins.d/gr-osmosdr.pth").write "#{site_packages}\n"
   end
 
   test do
@@ -67,5 +64,9 @@ class GrOsmosdr < Formula
     EOS
     system ENV.cxx, "test.cpp", "-L#{lib}", "-lgnuradio-osmosdr", "-o", "test"
     system "./test"
+
+    # Make sure GNU Radio's Python can find our module
+    (testpath/"testimport.py").write "import osmosdr\n"
+    system Formula["gnuradio"].libexec/"venv/bin/python", testpath/"testimport.py"
   end
 end

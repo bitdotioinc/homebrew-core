@@ -1,19 +1,23 @@
 class Hledger < Formula
   desc "Easy plain text accounting with command-line, terminal and web UIs"
   homepage "https://hledger.org/"
-  url "https://hackage.haskell.org/package/hledger-1.18.1/hledger-1.18.1.tar.gz"
-  sha256 "0c88c9a1896a6c431854c76229f0fe8d9bc59b6560829a4af1b8fcbad85486fa"
+  url "https://hackage.haskell.org/package/hledger-1.19.1/hledger-1.19.1.tar.gz"
+  sha256 "d5c1eb6d8de5cf2d82771db1796b57a304095fa940773a6405c9cd8085f3da71"
   license "GPL-3.0-or-later"
 
+  # A new version is sometimes present on Hackage before it's officially
+  # released on the upstream homepage, so we check the first-party download
+  # page instead.
   livecheck do
-    url :stable
+    url "https://hledger.org/download.html"
+    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d3a0849f59d9db817166c2d029d5ea25d9a95d62f8a9b4f9db2bda443d4d2aaa" => :catalina
-    sha256 "64cda6dc29ef5bc5fe65f6c3669a1738076849798a030bc8819166001b13ec62" => :mojave
-    sha256 "702f4abb102cb59528c4f33a6d6a6aa48c7a12cf0db0008e493cef429e62060a" => :high_sierra
+    sha256 "ea0f380189028b5e6f1c41743de1692553d7752a001ea0f7e3ba715ba5d31d8e" => :catalina
+    sha256 "db03cb4f2d644d7fd090898d039bb4ca5509ced2f116ecd1f2950bd077864098" => :mojave
+    sha256 "31d4beba55f2acbe521b255b40e9751cba33065193be8be102381cfffcc98f62" => :high_sierra
   end
 
   depends_on "ghc@8.8" => :build
@@ -23,16 +27,16 @@ class Hledger < Formula
   uses_from_macos "zlib"
 
   resource "hledger-lib" do
-    url "https://hackage.haskell.org/package/hledger-lib-1.18.1/hledger-lib-1.18.1.tar.gz"
-    sha256 "44c265b655a8ad37111821d58486bdbe7e8f0e285d3ecb94b46d132b0219cd99"
+    url "https://hackage.haskell.org/package/hledger-lib-1.19.1/hledger-lib-1.19.1.tar.gz"
+    sha256 "cabf263fe8a3c38822c9146b54a519fe56d369456c72be6db5a88c1c0208c15f"
   end
   resource "hledger-ui" do
-    url "https://hackage.haskell.org/package/hledger-ui-1.18.1/hledger-ui-1.18.1.tar.gz"
-    sha256 "c4f487ea97ac83ac5f2efd772f24e70b47339ba6ebdb3fbfb4f693e046faee3d"
+    url "https://hackage.haskell.org/package/hledger-ui-1.19.1/hledger-ui-1.19.1.tar.gz"
+    sha256 "d4154c33712b003dc15d795c92da59158d2ca5e02660234f731d2794a5403f9e"
   end
   resource "hledger-web" do
-    url "https://hackage.haskell.org/package/hledger-web-1.18.1/hledger-web-1.18.1.tar.gz"
-    sha256 "3e2ca18e5a5d0c76c19208ede84b3931844254382c9f9a48a2fd1c8da3ef20e8"
+    url "https://hackage.haskell.org/package/hledger-web-1.19.1/hledger-web-1.19.1.tar.gz"
+    sha256 "6085cb69bdc3808f929cc6ee621c0d3ffc773debe42bc1aaf0c7c1fe1a988a0f"
   end
 
   def install
@@ -41,10 +45,10 @@ class Hledger < Formula
     (buildpath/"../hledger-web").install resource("hledger-web")
     cd ".." do
       system "stack", "update"
-      system "stack", "init", "--resolver=lts-15.16"
+      system "stack", "init", "--resolver=lts-16.12"
       system "stack", "install", "--system-ghc", "--no-install-ghc", "--local-bin-path=#{bin}"
 
-      man1.install "hledger-1.18.1/hledger.1"
+      man1.install "hledger-1.19.1/hledger.1"
       man1.install "hledger-ui/hledger-ui.1"
       man1.install "hledger-web/hledger-web.1"
       man5.install "hledger-lib/hledger_csv.5"
@@ -52,7 +56,7 @@ class Hledger < Formula
       man5.install "hledger-lib/hledger_timeclock.5"
       man5.install "hledger-lib/hledger_timedot.5"
 
-      info.install "hledger-1.18.1/hledger.info"
+      info.install "hledger-1.19.1/hledger.info"
       info.install "hledger-lib/hledger_csv.info"
       info.install "hledger-lib/hledger_journal.info"
       info.install "hledger-lib/hledger_timeclock.info"

@@ -1,9 +1,9 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "https://www.boost.org/"
-  url "https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.tar.bz2"
-  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_73_0.tar.bz2"
-  sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+  url "https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.bz2"
+  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_74_0.tar.bz2"
+  sha256 "83bfc1507731a0906e387fc28b7ef5417d591429e51e788417fe9ff025e116b1"
   license "BSL-1.0"
   head "https://github.com/boostorg/boost.git"
 
@@ -14,9 +14,11 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha256 "d2cbb9cee2af7c3f62513979030413e9fdb3a6b4cae69241fc36f33e36d3781d" => :catalina
-    sha256 "ff9e2f3587b878611b26b7bfb064b7c200e74c38d6553a0617510b6161361512" => :mojave
-    sha256 "ddbb7dcb02070127d9b7d897e8a3b66a51bf2a70fa4232c8bcf0f4001ae27eb1" => :high_sierra
+    sha256 "d6729754a88e32696dbe7755557ea4ccf754b6ab770caef94620d33d2db19368" => :big_sur
+    sha256 "e05c635fba2052d7b0d4e5d50e48b093e586810f0586ced31857e4b4af06b2de" => :arm64_big_sur
+    sha256 "0c3609787aac666de8db539259e2f604bda631bcc4fde5f5427ea83f4692dec1" => :catalina
+    sha256 "5e2e4d620e783c93a9f445a58b4814aab081ebea584b662b3f21a03155585ad9" => :mojave
+    sha256 "9237b5a9f73ff1783da15b6768cef723d4e8ffb4a129a2a00d0eb52d3ed4a7d4" => :high_sierra
   end
 
   depends_on "icu4c"
@@ -24,10 +26,10 @@ class Boost < Formula
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
-  # Fix build on Xcode 11.4
+  # Fix build on 64-bit arm
   patch do
-    url "https://github.com/boostorg/build/commit/b3a59d265929a213f02a451bb63cea75d668a4d9.patch?full_index=1"
-    sha256 "04a4df38ed9c5a4346fbb50ae4ccc948a1440328beac03cb3586c8e2e241be08"
+    url "https://github.com/boostorg/build/commit/456be0b7ecca065fbccf380c2f51e0985e608ba0.patch?full_index=1"
+    sha256 "e7a78145452fc145ea5d6e5f61e72df7dcab3a6eebb2cade6b4cfae815687f3a"
     directory "tools/build"
   end
 

@@ -1,21 +1,21 @@
 class Arangodb < Formula
-  desc "The Multi-Model NoSQL Database"
+  desc "Multi-Model NoSQL Database"
   homepage "https://www.arangodb.com/"
-  url "https://download.arangodb.com/Source/ArangoDB-3.7.2.tar.gz"
-  sha256 "241800d5641da962806cdd0248f508bbf5cb6bcf97dfa51d0a2e7848879b9ddb"
+  url "https://download.arangodb.com/Source/ArangoDB-3.7.5.tar.gz"
+  sha256 "104dbc3676dac0684aa11c5c580a0231ce0ed5e53e544fb8f31f2b5a52bb6ddd"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/arangodb/arangodb.git", branch: "devel"
 
   bottle do
-    sha256 "6b9299f984eb8a25709c7178d52d3c1e19f39adf5d71f6406a2aed283b8ce406" => :catalina
-    sha256 "1eabd6b8b72d6375f00ce0570ccb0d76f383c285a8019e3426d0273876b0bd9c" => :mojave
+    sha256 "82de995f5190653363448b2af49c2b35bb8720382ca48482738871617a400897" => :big_sur
+    sha256 "00fd570b6bf25f6dd15b0c155c900a4b2cc8cd8b8baebe29f9c1d98c5a7c7885" => :catalina
+    sha256 "4dfbf3933b90efb73d0042e7782468428ffb3cf8e5e911c304b670159581e4f7" => :mojave
   end
 
   depends_on "ccache" => :build
   depends_on "cmake" => :build
   depends_on "go@1.13" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on macos: :mojave
   depends_on "openssl@1.1"
 
@@ -24,12 +24,14 @@ class Arangodb < Formula
   # with a unified CLI
   resource "starter" do
     url "https://github.com/arangodb-helper/arangodb.git",
-      tag:      "0.14.15",
-      revision: "e32307e9ae5a0046214cb066355a8577e6fc4148"
+        tag:      "0.14.15-1",
+        revision: "fe064e0136f009f65ea767dec6203a0d5bc5117e"
   end
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+    on_macos do
+      ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+    end
 
     resource("starter").stage do
       ENV["GO111MODULE"] = "on"
@@ -126,7 +128,7 @@ class Arangodb < Formula
       end
     ensure
       Process.kill "SIGINT", pid
-      ohai "shuting down #{pid}"
+      ohai "shutting down #{pid}"
     end
   end
 end

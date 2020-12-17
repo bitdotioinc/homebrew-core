@@ -1,19 +1,20 @@
 class Ghostscript < Formula
   desc "Interpreter for PostScript and PDF"
   homepage "https://www.ghostscript.com/"
-  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs952/ghostpdl-9.52.tar.gz"
-  sha256 "8f6e48325c106ae033bbae3e55e6c0b9ee5c6b57e54f7cd24fb80a716a93b06a"
-  license "AGPL-3.0"
+  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9533/ghostpdl-9.53.3.tar.gz"
+  sha256 "96d04e4e464bddb062c1774ea895c4f1c1c94e6c4b62f5d32218ebd44dd65ba1"
+  license "AGPL-3.0-or-later"
 
   livecheck do
     url :head
-    regex(/^ghostscript[._-]v?(\d+(?:\.\d+)+)$/i)
+    regex(/^ghostpdl[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 "8cd0efa1e5525f849be3ee1e50e1635b99667cb4d1eb6c3002a45378346882f4" => :catalina
-    sha256 "8906a4dbf2513963a4710f351e3426622c259bd888c760e4c08a9436860b4014" => :mojave
-    sha256 "cd5e55d0429d7e88ba2d580e79934c157d5bd2981d71a7f40db4573abe79af67" => :high_sierra
+    sha256 "e4257c3d71ed8777dca98f732ac83e9a3477e93bbdb3b3e25d4ffbb5dfa823ee" => :big_sur
+    sha256 "d6c05b6c190b6e908d09546977eb2dc111b475ced5db2719cba16ce89ce0b0ed" => :catalina
+    sha256 "b5e6adcbf8f65731d1f3347e81e7ee494a77f35dae6a03aab4d735e714e07b05" => :mojave
+    sha256 "c582c8db6f927273af8e33521aaa33111f216ba05ef36a6d4a2befe8da5d3062" => :high_sierra
   end
 
   head do
@@ -39,6 +40,13 @@ class Ghostscript < Formula
     sha256 "0eb6f356119f2e49b2563210852e17f57f9dcc5755f350a69a46a0d641a0c401"
   end
 
+  # Fix build on ARM Big Sur, updating config.{guess,sub}
+  # https://bugs.ghostscript.com/show_bug.cgi?id=703095
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/98c39e09/ghostscript/config.patch"
+    sha256 "155cf2ee5a498d441c3194ba3d75cb7812beaa3f507a72017174a884bf742862"
+  end
+
   patch :DATA # Uncomment macOS-specific make vars
 
   def install
@@ -49,7 +57,6 @@ class Ghostscript < Formula
       --disable-gtk
       --disable-fontconfig
       --without-libidn
-      --with-system-libtiff
       --without-x
     ]
 

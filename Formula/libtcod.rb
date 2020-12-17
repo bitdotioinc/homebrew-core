@@ -4,21 +4,21 @@ class Libtcod < Formula
   url "https://github.com/libtcod/libtcod/archive/1.15.1.tar.gz"
   sha256 "2713d8719be53db7a529cbf53064e5bc9f3adf009db339d3a81b50d471bc306f"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "f6cbbe0ba4037f31da72f30fb97138c9f24b03a1f9293336971f771f3df40489" => :catalina
-    sha256 "1e61a2db504b8999e3796ada0dcd1de3d42e07f00a6fd7f84b2b767d8883a047" => :mojave
-    sha256 "3fec806904f3aad780ba54cb4deec9f34422fafc096ef18b7762989c90b2ae8e" => :high_sierra
+    rebuild 1
+    sha256 "464855bc6a479110433503a085c22f0bd8c2389875334595f9e525528982c1c3" => :big_sur
+    sha256 "0ac1dde6fa975c1504880848ba2ec66dd0d044c5cfeccb92d3afe4f6ebb8231a" => :catalina
+    sha256 "e076b9fe253e60fc065493cab467d30c4db178d9364e410a3c7cf71293df7cf0" => :mojave
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.8" => :build
-  depends_on :macos # Due to Python 2
+  depends_on "python@3.9" => :build
   depends_on "sdl2"
 
   def install

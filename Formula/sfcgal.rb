@@ -1,14 +1,16 @@
 class Sfcgal < Formula
   desc "C++ wrapper library around CGAL"
   homepage "http://sfcgal.org/"
-  url "https://github.com/Oslandia/SFCGAL/archive/v1.3.8.tar.gz"
-  sha256 "5154bfc67a5e99d95cb653d70d2b9d9293d3deb3c8f18b938a33d68fec488a6d"
+  url "https://gitlab.com/Oslandia/SFCGAL/-/archive/v1.3.9/SFCGAL-v1.3.9.tar.gz"
+  sha256 "2451cb6df24853c7e59173eec0068e3263ab625fcf61add4624f8bf8366ae4e3"
   license "LGPL-2.0+"
+  revision 1
 
   bottle do
-    sha256 "f78f5ccb5b6feb0e7530770d3411149e4335ead8a2bcd08e275cbe7748b3c396" => :catalina
-    sha256 "39a00ba2c7681850a601053adcfd8f920e2037aee5ebe9abf0f9a1b89ac674a1" => :mojave
-    sha256 "86c543cb703b1d7885045354917e7da1a1fa3e52ca6749359f64ea736af74aa0" => :high_sierra
+    sha256 "b2b7114676362a3731b59b55675c0f9cfed971596033933ebc55193ea8526716" => :big_sur
+    sha256 "0293346eb037821d5ccc0b25b2f614d87b618ca337a8533a146add94968cb2c9" => :catalina
+    sha256 "5b9747bc8fc4695cdf59252fde7d22dd00ba53bc2fee8092e4869326f643dce2" => :mojave
+    sha256 "f8dd9ae70ab130d39d5526ad0c4df3803999dbf97cae044657d73fe9cbc320dd" => :high_sierra
   end
 
   depends_on "cmake" => :build

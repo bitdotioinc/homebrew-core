@@ -1,34 +1,30 @@
 class Caddy < Formula
   desc "Powerful, enterprise-ready, open source web server with automatic HTTPS"
   homepage "https://caddyserver.com/"
-  url "https://github.com/caddyserver/caddy/archive/v2.1.1.tar.gz"
-  sha256 "77beb13b39b670bfe9e0cc1c71b720d5b037cca60e1426a9a485bbfae34ba8d2"
+  url "https://github.com/caddyserver/caddy/archive/v2.2.3.tar.gz"
+  sha256 "7994a9e61d4204cf10816aa9f3ebab4b9ae4a2d64a6f1ec1fe8a38b376e19494"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/caddyserver/caddy.git"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "847028dd3f176fb48afa9006530d98df57f355ff6bdb5a985d274b7ff45882f5" => :catalina
-    sha256 "002970585ed938b177d25c97828246f85ca2a591381c13d0f4c41a7f0fdb6bad" => :mojave
-    sha256 "db60499319ccada5f3a2a0c16b8ea86c00369b876a7491ba62c7b011db54e526" => :high_sierra
+    sha256 "d3222f9fe082539e2786ff91c5cb5ac6cc2963adf34a061dd2fa9c381fa7c79f" => :big_sur
+    sha256 "b35f2e90f232dcdb5503293dbc3e50edc597c74439489c426ea0392472466f72" => :catalina
+    sha256 "b4455e76592e03211cca4a0331aa722021bad6d4ab2c69d0e4f70a9dca5ab317" => :mojave
   end
 
-  depends_on "go@1.14" => :build
+  depends_on "go" => :build
 
   resource "xcaddy" do
-    url "https://github.com/caddyserver/xcaddy/archive/v0.1.3.tar.gz"
-    sha256 "160244a67fca5a9ba448b98f4a94c6023e9ac64e3456a76ceea444d7a1f00767"
+    url "https://github.com/caddyserver/xcaddy/archive/v0.1.6.tar.gz"
+    sha256 "240eba5f525ab93264a75a78e576082c894d93e10622686c545710a90f9dcd94"
   end
 
   def install
     revision = build.head? ? version.commit : "v#{version}"
 
     resource("xcaddy").stage do
-      system "go", "run", "cmd/xcaddy/main.go", "build", revision,
-                                                "--with", "github.com/caddyserver/caddy/v2=#{buildpath}",
-                                                "--output", bin/"caddy"
+      system "go", "run", "cmd/xcaddy/main.go", "build", revision, "--output", bin/"caddy"
     end
   end
 
@@ -84,5 +80,7 @@ class Caddy < Formula
     assert_match "\":#{port2}\"",
       shell_output("curl -s http://127.0.0.1:#{port1}/config/apps/http/servers/srv0/listen/0")
     assert_match "Hello, Caddy!", shell_output("curl -s http://127.0.0.1:#{port2}")
+
+    assert_match version.to_s, shell_output("#{bin}/caddy version")
   end
 end

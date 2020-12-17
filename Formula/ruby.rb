@@ -1,10 +1,9 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.1.tar.xz"
-  sha256 "b224f9844646cc92765df8288a46838511c1cec5b550d8874bd4686a904fcee7"
+  url "https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.2.tar.xz"
+  sha256 "1b95ab193cc8f5b5e59d2686cb3d5dcf1ddf2a86cb6950e0b4bdaae5040ec0d6"
   license "Ruby"
-  revision 2
 
   livecheck do
     url "https://www.ruby-lang.org/en/downloads/"
@@ -12,9 +11,11 @@ class Ruby < Formula
   end
 
   bottle do
-    sha256 "c9ee36823a8dfe2686c6d7a3faf5061a032ed0b8e08d484f3ff2cda72d210a08" => :catalina
-    sha256 "d597bee751f9419ea7b40d8125e4f58b2c1eb675b929fe85d8463a6e008b2250" => :mojave
-    sha256 "345677b922e40e7324bbab0d68593a2bbef7aa3e8f636fd850295f3414758ed7" => :high_sierra
+    sha256 "39e7896f6b1c365dcff147f41ca2072d901b4edadb16e6d9e8cd7a6084be9e04" => :big_sur
+    sha256 "bb33bb8eadf710528572a76e8c55be99eba99875798c646c9df641ccfc92201b" => :arm64_big_sur
+    sha256 "c5c8fef5a6068f0657558662aaf83abd21d4d456f2bf5f5152d932dae09ab3fd" => :catalina
+    sha256 "0c46013234250f1bea09127fa33899a51bbae47109dc9eb3ac6f883ab394e43f" => :mojave
+    sha256 "ea7555713b598bb8c21a1af1554658c65ca8e9368f663a44540343122008afc3" => :high_sierra
   end
 
   head do
@@ -35,8 +36,8 @@ class Ruby < Formula
   # The exception is Rubygem security fixes, which mandate updating this
   # formula & the versioned equivalents and bumping the revisions.
   resource "rubygems" do
-    url "https://rubygems.org/rubygems/rubygems-3.1.2.tgz"
-    sha256 "edd1a6bca6e780a3f65019bbcb0bbfe36c65a9809c0d43e7b52f23792591f140"
+    url "https://rubygems.org/rubygems/rubygems-3.1.4.tgz"
+    sha256 "d8030019d86d60469d3f4f48b7cfcd724b184157ac2881a5bec4394d9cd93f7d"
   end
 
   def api_version
@@ -63,10 +64,17 @@ class Ruby < Formula
       --with-opt-dir=#{paths.join(":")}
       --without-gmp
     ]
-    args << "--disable-dtrace" unless MacOS::CLT.installed?
+    on_macos do
+      args << "--disable-dtrace" unless MacOS::CLT.installed?
+    end
 
     # Correct MJIT_CC to not use superenv shim
-    args << "MJIT_CC=/usr/bin/clang"
+    on_macos do
+      args << "MJIT_CC=/usr/bin/clang"
+    end
+    on_linux do
+      args << "MJIT_CC=/usr/bin/gcc"
+    end
 
     system "./configure", *args
 

@@ -1,30 +1,35 @@
 class Glade < Formula
   desc "RAD tool for the GTK+ and GNOME environment"
   homepage "https://glade.gnome.org/"
-  url "https://download.gnome.org/sources/glade/3.36/glade-3.36.0.tar.xz"
-  sha256 "19b546b527cc46213ccfc8022d49ec57e618fe2caa9aa51db2d2862233ea6f08"
-  revision 1
+  url "https://download.gnome.org/sources/glade/3.38/glade-3.38.2.tar.xz"
+  sha256 "98fc87647d88505c97dd2f30f2db2d3e9527515b3af11694787d62a8d28fbab7"
+  license "LGPL-2.1-or-later"
 
   livecheck do
     url :stable
   end
 
   bottle do
-    sha256 "9131bb138ba8e7b7b2f3d593342846fdabebd28b33c755ae0feaba4f52a39ab9" => :catalina
-    sha256 "2c95e5cb5f386fbacf1fb4ca17b2dc9ad6c6b2d83b9d0891460905f87cb608c4" => :mojave
-    sha256 "89b48942bd5c136dae47bf534e6f99d425aebd9165432c07411ce341d210cda9" => :high_sierra
+    sha256 "0fb77b21e6176c6690410a76d843f4582c1ef833e54ce5efa620bfce514e7af7" => :big_sur
+    sha256 "e5c239c3d05350ff8a8710ce6beecf7fd22461336e77d55febb338b6a1456a61" => :catalina
+    sha256 "0b641d56f385a798fafe8fe424191de83207dea5b0edcf9d06c8b8b03ad0c68f" => :mojave
   end
 
   depends_on "docbook-xsl" => :build
   depends_on "gobject-introspection" => :build
   depends_on "itstool" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "adwaita-icon-theme"
   depends_on "gettext"
   depends_on "gtk+3"
-  depends_on "gtk-mac-integration"
   depends_on "hicolor-icon-theme"
   depends_on "libxml2"
+
+  on_macos do
+    depends_on "gtk-mac-integration"
+  end
 
   def install
     # Find our docbook catalog
@@ -33,14 +38,11 @@ class Glade < Formula
     # Disable icon-cache update
     ENV["DESTDIR"] = "/"
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-gladeui",
-                          "--enable-introspection"
-
-    system "make" # separate steps required
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, "-Dintrospection=true", "-Dgladeui=true", ".."
+      system "ninja"
+      system "ninja", "install"
+    end
   end
 
   def post_install
@@ -112,11 +114,13 @@ class Glade < Formula
       -lglib-2.0
       -lgobject-2.0
       -lgtk-3
-      -lintl
       -lpango-1.0
       -lpangocairo-1.0
       -lxml2
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

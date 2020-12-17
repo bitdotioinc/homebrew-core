@@ -1,14 +1,16 @@
 class Orientdb < Formula
   desc "Graph database"
-  homepage "https://orientdb.com/"
-  url "https://s3.us-east-2.amazonaws.com/orientdb3/releases/3.1.1/orientdb-3.1.1.zip"
-  sha256 "1538bfcc5d1a83e8a686be37950a69a2466d19eb824f754367a7b254c56b748f"
+  homepage "https://orientdb.org/"
+  url "https://s3.us-east-2.amazonaws.com/orientdb3/releases/3.1.2/orientdb-3.1.2.zip"
+  sha256 "14fdd2e2ca596f0336175590851fa3a10130a7265f4df5ef8c0c1faf8253f8df"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4dd8ac529ac0d88ebe0924e4c67ab6ec12e516286a503997061586e1c4a19164" => :catalina
-    sha256 "4dd8ac529ac0d88ebe0924e4c67ab6ec12e516286a503997061586e1c4a19164" => :mojave
-    sha256 "4dd8ac529ac0d88ebe0924e4c67ab6ec12e516286a503997061586e1c4a19164" => :high_sierra
+    sha256 "2934fd90d1f43ea1fe29367ffef0680872abe1e6cd5ae102d29f0f4da0ca08f2" => :big_sur
+    sha256 "ef2465b839a30dd67f22aa7a3289d828521643e2c33d05246dd6b44fbb45bae7" => :catalina
+    sha256 "a28ce4d0f02308ba641d1cf897a188b8883c555da30a119651b7aa05c73eca32" => :mojave
+    sha256 "dd002904aa68d93e9c76e55662df768b90cce7cbbf2c2734f0a1fb4a08ed9a67" => :high_sierra
   end
 
   depends_on "maven" => :build
@@ -57,7 +59,7 @@ class Orientdb < Formula
   def caveats
     <<~EOS
       The OrientDB root password was set to 'orientdb'. To reset it:
-        https://orientdb.com/docs/last/security/Server-Security.html#restoring-the-servers-user-root
+        https://orientdb.org/docs/3.1.x/security/Server-Security.html#restoring-the-servers-user-root
     EOS
   end
 
@@ -101,8 +103,6 @@ class Orientdb < Formula
     inreplace "#{testpath}/orientdb-server-config.xml", "</properties>",
       "  <entry name=\"server.database.path\" value=\"#{testpath}\" />\n    </properties>"
 
-    begin
-      assert_match "OrientDB console v.#{version}", pipe_output("#{bin}/orientdb-console \"exit;\"")
-    end
+    assert_match "OrientDB console v.#{version}", pipe_output("#{bin}/orientdb-console \"exit;\"")
   end
 end

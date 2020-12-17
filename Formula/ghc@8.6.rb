@@ -1,25 +1,21 @@
-require "language/haskell"
-
 class GhcAT86 < Formula
-  include Language::Haskell::Cabal
-
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
   url "https://downloads.haskell.org/~ghc/8.6.5/ghc-8.6.5-src.tar.xz"
   sha256 "4d4aa1e96f4001b934ac6193ab09af5d6172f41f5a5d39d8e43393b9aafee361"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
 
   bottle do
-    rebuild 1
-    sha256 "3c2e2f8d8e4661dd7e53ad5af08489e926bec111e0d16a12397bb22a73b12997" => :catalina
-    sha256 "831a6537953f467724c4c3c45b16cc3e5ff944aa02f1e9b3b77e9bdbfcdfb9d2" => :mojave
-    sha256 "945069d9d94b4fb657e6d9c3a2d516ec551aea7535824b029c8c0632329f40cf" => :high_sierra
+    sha256 "d8cc7eb020495417a2674bb0b4129720fef30fd9c5688713501dd5ca6c1dea0f" => :big_sur
+    sha256 "af21e24b89361083a6cd5a27268e0470cdbf2e8616d1d95355df603f58f4e30d" => :catalina
+    sha256 "ccbe2725d127cc1ddd2142294fd62981d6cd7ab110f56b1faa2560c28276b822" => :mojave
+    sha256 "67a54e9d669e51b8018d064b771d31079421b777b03077dc7f02949ecdf8b0c0" => :high_sierra
   end
 
   keg_only :versioned_formula
 
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "sphinx-doc" => :build
 
   resource "gmp" do
@@ -49,7 +45,7 @@ class GhcAT86 < Formula
   def install
     ENV["CC"] = ENV.cc
     ENV["LD"] = "ld"
-    ENV["PYTHON"] = Formula["python@3.8"].opt_bin/"python3"
+    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
 
     # Build a static gmp rather than in-tree gmp, otherwise all ghc-compiled
     # executables link to Homebrew's GMP.
@@ -59,28 +55,13 @@ class GhcAT86 < Formula
     # is mandatory or else you'll get "illegal text relocs" errors.
     resource("gmp").stage do
       system "./configure", "--prefix=#{gmp}", "--with-pic", "--disable-shared",
-                            "--build=#{Hardware.oldest_cpu}-apple-darwin#{`uname -r`.to_i}"
+                            "--build=#{Hardware.oldest_cpu}-apple-darwin#{OS.kernel_version.major}"
       system "make"
       system "make", "install"
     end
 
     args = ["--with-gmp-includes=#{gmp}/include",
             "--with-gmp-libraries=#{gmp}/lib"]
-
-    # As of Xcode 7.3 (and the corresponding CLT) `nm` is a symlink to `llvm-nm`
-    # and the old `nm` is renamed `nm-classic`. Building with the new `nm`, a
-    # segfault occurs with the following error:
-    #   make[1]: * [compiler/stage2/dll-split.stamp] Segmentation fault: 11
-    # Upstream is aware of the issue and is recommending the use of nm-classic
-    # until Apple restores POSIX compliance:
-    # https://ghc.haskell.org/trac/ghc/ticket/11744
-    # https://ghc.haskell.org/trac/ghc/ticket/11823
-    # https://mail.haskell.org/pipermail/ghc-devs/2016-April/011862.html
-    # LLVM itself has already fixed the bug: llvm-mirror/llvm@ae7cf585
-    # rdar://25311883 and rdar://25299678
-    if DevelopmentTools.clang_build_version >= 703 && DevelopmentTools.clang_build_version < 800
-      args << "--with-nm=#{`xcrun --find nm-classic`.chomp}"
-    end
 
     resource("binary").stage do
       binary = buildpath/"binary"
@@ -89,22 +70,6 @@ class GhcAT86 < Formula
       ENV.deparallelize { system "make", "install" }
 
       ENV.prepend_path "PATH", binary/"bin"
-    end
-
-    if build.head?
-      resource("cabal").stage do
-        system "sh", "bootstrap.sh", "--sandbox"
-        (buildpath/"bootstrap-tools/bin").install ".cabal-sandbox/bin/cabal"
-      end
-
-      ENV.prepend_path "PATH", buildpath/"bootstrap-tools/bin"
-
-      cabal_sandbox do
-        cabal_install "--only-dependencies", "happy", "alex"
-        cabal_install "--prefix=#{buildpath}/bootstrap-tools", "happy", "alex"
-      end
-
-      system "./boot"
     end
 
     system "./configure", "--prefix=#{prefix}", *args

@@ -1,8 +1,9 @@
 class NodeAT10 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v10.22.0/node-v10.22.0.tar.xz"
-  sha256 "e07575455cbb6670e3f30d2f846d3078ef2c181255ff0932089182529443e1db"
+  url "https://nodejs.org/dist/v10.23.0/node-v10.23.0.tar.xz"
+  sha256 "fd356039d5c223f020db514b64e4619b285e669f8f5f0b6232458d4440c6741f"
+  license "MIT"
 
   livecheck do
     url "https://nodejs.org/dist/"
@@ -11,9 +12,10 @@ class NodeAT10 < Formula
 
   bottle do
     cellar :any
-    sha256 "c404f9b76f4bdaeb2bb9c43867d3c49be3fa80544046fa69b2749f1dfc673deb" => :catalina
-    sha256 "4e05e675bcd5c60a809eccbcb85d6b1f4907bffb219b3d60fe556f9b2e81e4a3" => :mojave
-    sha256 "7e86e74f335c0c33c82a7191eb67d6e82feb4fbab9838554ff24e89a2bd604af" => :high_sierra
+    sha256 "b2780736458b36291d8a406447da9e14da2c58b7fd8f596e4fea6e26a1f96428" => :big_sur
+    sha256 "a989ef58b07b8cac0b75bda295995406116ec2a775a5f1e8c88ff1c865f20c3b" => :catalina
+    sha256 "b1154a6516e6041caf3847eb011ec157010d7ec5c4d15b739ac1264205611011" => :mojave
+    sha256 "daba3ab331fb6b4033ff45f96e36d13424a150d779ae2820f55e4f4cff74340b" => :high_sierra
   end
 
   keg_only :versioned_formula

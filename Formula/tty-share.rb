@@ -1,15 +1,16 @@
 class TtyShare < Formula
   desc "Terminal sharing over the Internet"
   homepage "https://tty-share.com/"
-  url "https://github.com/elisescu/tty-share/archive/v0.6.2.tar.gz"
-  sha256 "4ea8cdc96fa889da414885e8cdbd8fca71569a9146ca4d3caa7cf2411ac141aa"
+  url "https://github.com/elisescu/tty-share/archive/v2.1.0.tar.gz"
+  sha256 "7f8904583cf4093651e213d63f99dbc30fe8d7d3c1805f74a2602d635b4564f9"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "adfa3de302df681f3e236d28f69dcb7cd63143582d26b698a034adc5337fe18a" => :catalina
-    sha256 "b9b97a2733c85508451799419dfbc36326c8d9bfe30c26800bc22ddf2bd7b30f" => :mojave
-    sha256 "6820c38434e99f26e0cc247ae89831376c914a6eb1ee0d4b20056a2ca2e7c0e3" => :high_sierra
+    sha256 "77e717111ae6438a0fe5f114160e783693d5585829f8d00f382ad6b686e0b76d" => :big_sur
+    sha256 "1f6e41a6aac4b7086f97febb4455b22441a6b9d85c6a9f03582353522155fbe9" => :catalina
+    sha256 "faf04e53800eff483fd8d42b4f96b027d4142c089a7c8ce3dcde3083ecf12cb1" => :mojave
+    sha256 "3c6e8bfc66a1801d3d8e7bb9e6d49fe594518c1389352b96f5677d4f0b6b326d" => :high_sierra
   end
 
   depends_on "go" => :build

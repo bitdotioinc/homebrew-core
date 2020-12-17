@@ -4,15 +4,16 @@ class Instead < Formula
   url "https://github.com/instead-hub/instead/archive/3.3.2.tar.gz"
   sha256 "bdb827f36e693dc7b443e69d4678d24f1ccc20dc093c22f58b8d78192da15f2e"
   license "MIT"
+  revision 2
 
   bottle do
-    sha256 "e447bee8716c692d07e6d58b337639a64334dfa921326810c5ae0d64b14fe72e" => :catalina
-    sha256 "128a389655c4361f48dd8ee81344682a3d4433485cf91569a71961bed0885e06" => :mojave
-    sha256 "e9029b89e6133d0f233a679a684e64d0195b283aabb6c55640f8a95ed1297f50" => :high_sierra
+    sha256 "bd0463eca5582cfb5e6a5db1befaa55a0fa7be8580296fc32b690873fb134e1e" => :big_sur
+    sha256 "cd2c8eaae8f35bcd76dabe29ffbba977913c31b23df407dfcc1959b9946dacc2" => :catalina
+    sha256 "8052e44079c28c8d997e005be8d43844803e8be1d340016608cf28833fc6edb2" => :mojave
   end
 
   depends_on "cmake" => :build
-  depends_on "lua"
+  depends_on "luajit"
   depends_on "sdl2"
   depends_on "sdl2_image"
   depends_on "sdl2_mixer"
@@ -21,8 +22,7 @@ class Instead < Formula
   def install
     mkdir "build" do
       system "cmake", "..", "-DWITH_GTK2=OFF",
-                            "-DLUA_INCLUDE_DIR=#{Formula["lua"].opt_include}/lua",
-                            "-DLUA_LIBRARY=#{Formula["lua"].opt_lib}/liblua.dylib",
+                            "-DWITH_LUAJIT=ON",
                             *std_cmake_args
       system "make", "install"
     end

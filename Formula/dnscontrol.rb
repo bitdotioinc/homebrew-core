@@ -1,8 +1,8 @@
 class Dnscontrol < Formula
   desc "It is system for maintaining DNS zones"
   homepage "https://github.com/StackExchange/dnscontrol"
-  url "https://github.com/StackExchange/dnscontrol/archive/v3.2.0.tar.gz"
-  sha256 "911a31e4a3131f3ecc9c44bc6f1a30aa1259028de504116265bbf516510cd931"
+  url "https://github.com/StackExchange/dnscontrol/archive/v3.5.0.tar.gz"
+  sha256 "d90d5a54e5ea4c2e6bd296f950b3f9059dd1a5801e306b475421d6344489d917"
   license "MIT"
 
   livecheck do
@@ -12,9 +12,9 @@ class Dnscontrol < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "11902a795449df78e2ce8174379731bdb4de50cc33db13572f4fb2b69d26bc60" => :catalina
-    sha256 "824126b2be00c26cab160969986e4087e009770a21f137c30a5a21fec6abfab5" => :mojave
-    sha256 "79ba6c6fc6bca016d55960d7746a8b6fd29477eeec4b37d88ae2630d2989f2f2" => :high_sierra
+    sha256 "c85dbea7452b24e36c4932a3845ddc69d08a2eaa05f7dc5ddad97558d8c70c48" => :big_sur
+    sha256 "bb7d836b564b044cb52dfc8251ef55eb103ae5233465ff6c7336a42b057b73cd" => :catalina
+    sha256 "f0f938120734f158cccbdb635e017dc3226acb911ca417973abd7bc9e272b505" => :mojave
   end
 
   depends_on "go" => :build

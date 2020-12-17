@@ -3,7 +3,8 @@ class Libglademm < Formula
   homepage "https://gnome.org"
   url "https://download.gnome.org/sources/libglademm/2.6/libglademm-2.6.7.tar.bz2"
   sha256 "38543c15acf727434341cc08c2b003d24f36abc22380937707fc2c5c687a2bc3"
-  revision 6
+  license "LGPL-2.1-or-later"
+  revision 8
 
   livecheck do
     url :stable
@@ -11,10 +12,9 @@ class Libglademm < Formula
 
   bottle do
     cellar :any
-    sha256 "d123ccbbf9e8e599a6b889e3b02214b7556b9b205d1835cabb4259bf1520738d" => :catalina
-    sha256 "7198c6996d64bbe6a06380c23d010f0c9a949e3220c8a3dcb785fba0ceb22c33" => :mojave
-    sha256 "4daab6726178c96ac56452716422004dd4fcdfbaef22b85d99f9ddc317c88ea1" => :high_sierra
-    sha256 "6f7c8cbd127f333df690910aa8aa3561989679719bebbfb9d1d4c41a9821d57c" => :sierra
+    sha256 "a365dd28fd7579c31f7795dab854f78a26c834a975c702cc0ee167509b5691a6" => :big_sur
+    sha256 "a94c7ef493683fba1cc6510faaa5772c3f73adc19398d379d5a94f55d2b535fd" => :catalina
+    sha256 "dbba0fcc341dc1585aa803b631334311e0b46f647a2a346e7c48204e50317615" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -45,7 +45,7 @@ class Libglademm < Formula
     atk = Formula["atk"]
     atkmm = Formula["atkmm"]
     cairo = Formula["cairo"]
-    cairomm = Formula["cairomm"]
+    cairomm = Formula["cairomm@1.14"]
     fontconfig = Formula["fontconfig"]
     freetype = Formula["freetype"]
     gdk_pixbuf = Formula["gdk-pixbuf"]
@@ -64,6 +64,7 @@ class Libglademm < Formula
     flags = %W[
       -I#{atk.opt_include}/atk-1.0
       -I#{atkmm.opt_include}/atkmm-1.6
+      -I#{atkmm.opt_lib}/atkmm-1.6/include
       -I#{cairo.opt_include}/cairo
       -I#{cairomm.opt_include}/cairomm-1.0
       -I#{cairomm.opt_lib}/cairomm-1.0/include

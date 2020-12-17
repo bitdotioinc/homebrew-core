@@ -2,9 +2,9 @@ class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "https://www.libressl.org/"
   # Please ensure when updating version the release is from stable branch.
-  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.1.4.tar.gz"
-  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.1.4.tar.gz"
-  sha256 "414c149c9963983f805a081db5bd3aec146b5f82d529bb63875ac941b25dcbb6"
+  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.2.3.tar.gz"
+  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.2.3.tar.gz"
+  sha256 "412dc2baa739228c7779e93eb07cd645d5c964d2f2d837a9fd56db7498463d73"
   license "OpenSSL"
 
   livecheck do
@@ -13,9 +13,9 @@ class Libressl < Formula
   end
 
   bottle do
-    sha256 "77d556189abc30c257d3a138ad0d119ce16eab9da05c3950976dee7a7018ffe3" => :catalina
-    sha256 "77bfe70048abc4c22558790066f77173258325aff1e8ec53798d10b83154abf2" => :mojave
-    sha256 "a6eae44494b1914dfb9ea8a1011c038b99f138b98b1cc3825e20446330ce74a4" => :high_sierra
+    sha256 "c5060969c420fd7d097a372aeb1c083cb65f26ce4a3a7d760a3e770f56faef0c" => :big_sur
+    sha256 "4a11c712731e131c223b4b73f25507b1c1c826821257b538b1b5f5f05c0f0736" => :catalina
+    sha256 "a84aa0482ece558c5afe0f2bae8ea6175f61e912778a5e9effa1c959b68a56b6" => :mojave
   end
 
   head do

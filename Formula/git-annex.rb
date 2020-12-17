@@ -1,8 +1,10 @@
 class GitAnnex < Formula
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-8.20200810/git-annex-8.20200810.tar.gz"
-  sha256 "e631c9d52e440f80e9d305c95a078dcae71f200125bca91e49d5b8e2d864c6f3"
+  url "https://hackage.haskell.org/package/git-annex-8.20201103/git-annex-8.20201103.tar.gz"
+  sha256 "f4a6ade8a86d9640b5b2d81e45fc4c93c8e35bd90a1fc49d47c4aff1f59d31fd"
+  license all_of: ["AGPL-3.0-or-later", "BSD-2-Clause", "BSD-3-Clause",
+                   "GPL-2.0-only", "GPL-3.0-or-later", "MIT"]
   head "git://git-annex.branchable.com/"
 
   livecheck do
@@ -11,9 +13,9 @@ class GitAnnex < Formula
 
   bottle do
     cellar :any
-    sha256 "b2da7a293056e721b82cd6cfbc706203611321677ae78f084d24531df3423b04" => :catalina
-    sha256 "cb3c028e6f987813c02dd7d1e3382721896ddfce92924776d3715e1912323766" => :mojave
-    sha256 "969571512b9bbf02b5e1492a0b36501b8d3050e1c243c322accfc18eeba4dbe2" => :high_sierra
+    sha256 "3f8f894d3b23689d01b36bdf0ea1e00dd420e032e9743eb1055bc7d99702ad29" => :catalina
+    sha256 "c4ff88e616211ce2b24ebd7c892496df39b8cab7daea28461df2e53ace936afa" => :mojave
+    sha256 "e44b30c9af8692dc08f0f6ff315268d7fb02bf9568d0d38dcf97152a9f81bcbd" => :high_sierra
   end
 
   depends_on "cabal-install" => :build
@@ -25,7 +27,8 @@ class GitAnnex < Formula
 
   def install
     system "cabal", "v2-update"
-    system "cabal", "v2-install", *std_cabal_v2_args
+    system "cabal", "v2-install", *std_cabal_v2_args,
+                    "--flags=+S3"
     bin.install_symlink "git-annex" => "git-annex-shell"
   end
 
@@ -67,6 +70,11 @@ class GitAnnex < Formula
     assert_match /^add Hello.txt.*ok.*\(recording state in git\.\.\.\)/m, shell_output("git annex add .")
     system "git", "commit", "-a", "-m", "Initial Commit"
     assert File.symlink?("Hello.txt")
+
+    # make sure the various remotes were built
+    assert_match shell_output("git annex version | grep 'remote types:'").chomp,
+                 "remote types: git gcrypt p2p S3 bup directory rsync web bittorrent " \
+                 "webdav adb tahoe glacier ddar git-lfs httpalso hook external"
 
     # The steps below are necessary to ensure the directory cleanly deletes.
     # git-annex guards files in a way that isn't entirely friendly of automatically

@@ -1,16 +1,16 @@
 class MongoCDriver < Formula
   desc "C driver for MongoDB"
   homepage "https://github.com/mongodb/mongo-c-driver"
-  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.17.0/mongo-c-driver-1.17.0.tar.gz"
-  sha256 "90aa23a3f92be0a076fe0b903b68276a7973d4e472929943069f503d5ab50cb9"
+  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.17.3/mongo-c-driver-1.17.3.tar.gz"
+  sha256 "6594cbae17389005bcac5a8d4091af3be4894d5314a519504d4b4509effcc0df"
   license "Apache-2.0"
   head "https://github.com/mongodb/mongo-c-driver.git"
 
   bottle do
     cellar :any
-    sha256 "40c31d0c81eb61f7313621d9506b615b4bdfe6ab4e483f366eab071b9dbe33de" => :catalina
-    sha256 "acea2c45a81abdd38c1e2773962e2ab98a5e6ddcf8e0ca1acd734d4ae9e46245" => :mojave
-    sha256 "8fe0c67b8679c125a8c247c7490a41e2a2f9be07e1438c5512a7ebab2b7a7d68" => :high_sierra
+    sha256 "751a5b119a3c10c8097d5513e35443cef7bf2c357afe2ffdc6eb9520bead30e2" => :big_sur
+    sha256 "0566ce2bcda45b6510e73ccf102ec11b135a8f583a7f048c5e19f71a91c36844" => :catalina
+    sha256 "ed29637f353662121c0a82b849090bc230db918ae443132650fd88044b7e92a1" => :mojave
   end
 
   depends_on "cmake" => :build

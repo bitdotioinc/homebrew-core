@@ -1,17 +1,17 @@
 class Eksctl < Formula
-  desc "The official CLI for Amazon EKS"
+  desc "Simple command-line tool for creating clusters on Amazon EKS"
   homepage "https://eksctl.io"
   url "https://github.com/weaveworks/eksctl.git",
-      tag:      "0.26.0",
-      revision: "d421724d30b9a045aee025d10b99e40e5f738924"
+      tag:      "0.32.0",
+      revision: "41d40c256b68823f42a8c71cce7a2eb4d6236ce7"
   license "Apache-2.0"
   head "https://github.com/weaveworks/eksctl.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2dc3a1053f3f0ebe026c9b2bd9dca98113a359d460dc6eb200efa6a5ae725f04" => :catalina
-    sha256 "ac899a5df75c392d0a5b6daf3984fcd00da9753e844b794c80ccba47cf2575f5" => :mojave
-    sha256 "264e49ac81b1cc149404451ffef13e1df293e185ddcf6b3aedc7e63a6434d516" => :high_sierra
+    sha256 "7a8ab91ea8a6e3925c0fa6c3faa9f3eb742600a3b7710ab2da2d7a2915abf859" => :big_sur
+    sha256 "d9d82c69ba12a5a4a814bcf6c5c0689e22da71d3dc13c03495d92a0d50824819" => :catalina
+    sha256 "0262d856dd6219204730bd3fa3bac93866e6f0cefd7e0c9b5ab637424d5a42f7" => :mojave
   end
 
   depends_on "go" => :build
@@ -36,7 +36,7 @@ class Eksctl < Formula
     assert_match "The official CLI for Amazon EKS",
       shell_output("#{bin}/eksctl --help")
 
-    assert_match "Error: --cluster must be set",
+    assert_match "Error: couldn't create node group filter from command line options: --cluster must be set",
       shell_output("#{bin}/eksctl create nodegroup 2>&1", 1)
   end
 end

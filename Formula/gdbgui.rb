@@ -3,9 +3,10 @@ class Gdbgui < Formula
 
   desc "Modern, browser-based frontend to gdb (gnu debugger)"
   homepage "https://www.gdbgui.com/"
-  url "https://files.pythonhosted.org/packages/8a/2e/312578e89423a483303d9e24cfee47ece0454a508f7090dcf5ead57e230e/gdbgui-0.14.0.0.tar.gz"
-  sha256 "a14a59828a36016928d9bdf8423e6902266daa2ccab3df0142c6388afe3fe7bc"
+  url "https://files.pythonhosted.org/packages/06/af/2953018117f73a9bcfd0939c7e801b36cff03590f1b52dd7451d8102a021/gdbgui-0.14.0.1.tar.gz"
+  sha256 "4f1482b3bafb04d1d1d0b0ac140bb89befdf5456482ed1533734cd5ab1ca0656"
   license "GPL-3.0-only"
+  revision 1
 
   livecheck do
     url :stable
@@ -13,17 +14,18 @@ class Gdbgui < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2eb005f159e9ca80ae77045bfa4b6239a60465d1f285d216ef97a22cbf231065" => :catalina
-    sha256 "f2b8c46cff1b3a4024d50aaea965e945c70b633b3ee758b7d19ffddc9b3c88ff" => :mojave
-    sha256 "53c8876e691ab6a0298a3fcd7f32b3e0d9d49bb4141c97b201c8ef4342653ec5" => :high_sierra
+    sha256 "e32feb826945bf7c04b3991f8541a769b5554995bdb115347727ac158066ff7c" => :big_sur
+    sha256 "c5694285a5e01534c2ddd9f38794ee56bf900763d432eeb8459f79dd5b116a56" => :catalina
+    sha256 "a82a2f379f9354730b72f5cea442f2627d8c3fd76c0d11ea9dd977a6bdfff6b9" => :mojave
+    sha256 "56fcf6ea4eec7533a22aa1a957d05046fa7a4df4c923b7c6bbeea7706fa13f04" => :high_sierra
   end
 
   depends_on "gdb"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "Brotli" do
-    url "https://files.pythonhosted.org/packages/cd/9c/7955895f5672ecc85270244582c6b53ff95bb4c24bf77bd9271d42351635/Brotli-1.0.7.zip"
-    sha256 "0538dc1744fd17c314d2adc409ea7d1b779783b89fd95bcfb0c2acc93a6ea5a7"
+    url "https://files.pythonhosted.org/packages/2a/18/70c32fe9357f3eea18598b23aa9ed29b1711c3001835f7cf99a9818985d0/Brotli-1.0.9.zip"
+    sha256 "4d1b810aa0ed773f81dceda2cc7b403d01057458730e309856356d4ef4188438"
   end
 
   resource "click" do
@@ -92,13 +94,13 @@ class Gdbgui < Formula
   end
 
   resource "pygdbmi" do
-    url "https://files.pythonhosted.org/packages/5d/3e/ccd97d572f9b80851742a3d30551bc8b11be203b43545418afffbcf2cd59/pygdbmi-0.10.0.0b0.tar.gz"
-    sha256 "8a02cec223e4ed8bead9c4a5859017df822eb2fa80e90d59a463749336139bff"
+    url "https://files.pythonhosted.org/packages/30/01/9523d5ed7bccf7f94927b3dc7a616c9b4a8dfe57df89e67571d32d87717a/pygdbmi-0.10.0.0.tar.gz"
+    sha256 "0706b81404a77f78f8b51db43205e94a7ac8fd7ce87b6eac2681baadeff85826"
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/6e/4d/4d2fe93a35dfba417311a4ff627489a947b01dc0cc377a3673c00cf7e4b2/Pygments-2.6.1.tar.gz"
-    sha256 "647344a061c249a3b74e230c739f434d7ea4d8b1d5f3721bc0f3558049b38f44"
+    url "https://files.pythonhosted.org/packages/e2/07/25bd93c9c0175adfa5fb1513a20b25e7dd6c9a67c155e19b11b5f3662104/Pygments-2.7.1.tar.gz"
+    sha256 "926c3f319eda178d1bd90851e4317e6d8cdb5e292a3386aac9bd75eca29cf9c7"
   end
 
   resource "python-engineio" do
@@ -130,6 +132,9 @@ class Gdbgui < Formula
     port = free_port
 
     fork do
+      # Work around a gevent/greenlet bug
+      # https://github.com/cs01/gdbgui/issues/359
+      ENV["PURE_PYTHON"] = "1"
       exec bin/"gdbgui", "-n", "-p", port.to_s
     end
     sleep 3

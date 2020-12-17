@@ -1,24 +1,20 @@
 class Ugrep < Formula
   desc "Ultra fast grep with query UI, fuzzy search, archive search, and more"
   homepage "https://github.com/Genivia/ugrep"
-  url "https://github.com/Genivia/ugrep/archive/v2.5.3.tar.gz"
-  sha256 "83f2017ba05f7ce7ded74097832df071d2be89d41b357f45c4dce801c2a0cae6"
+  url "https://github.com/Genivia/ugrep/archive/v3.0.6.tar.gz"
+  sha256 "2042e7109a139849dc70e00393707c46755567349d4983d8b0f828a81ab24999"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 "ef04ef69c80977b3dd2edd4a678187ea744ece6e59a9e84385d5ca51fe35b255" => :catalina
-    sha256 "09b09381fce5c7cd4f1c758831f7991bd6cf1998e2017da27a6ee15a46f6dc75" => :mojave
-    sha256 "2708c0837b93a398dbf9b6f177a784c768729b213a8ca55261990007f3aaa618" => :high_sierra
+    sha256 "d514b48d676fa44cd590bddc51a3f4612003a954c941acc4613696599d6e3c57" => :big_sur
+    sha256 "145b7c6f9aa0b9bcaff6da8f69b197aa1a6e7da3c2ddbcc6dcf491e1cadd4260" => :catalina
+    sha256 "ec0a76cdbdaf425ec748f7b0ab22e2f77646dd7759ba8a80f8fb27259a87a9c9" => :mojave
   end
 
   depends_on "pcre2"
   depends_on "xz"
 
   def install
-    ENV.O2
-    ENV.deparallelize
-    ENV.delete("CFLAGS")
-    ENV.delete("CXXFLAGS")
     system "./configure", "--enable-color",
                           "--disable-debug",
                           "--disable-dependency-tracking",

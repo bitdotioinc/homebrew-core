@@ -1,8 +1,9 @@
 class Petsc < Formula
   desc "Portable, Extensible Toolkit for Scientific Computation (real)"
   homepage "https://www.mcs.anl.gov/petsc/"
-  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.13.4.tar.gz"
-  sha256 "8d470cba1ceb9638694550134a2f23aac85ed7249cb74992581210597d978b94"
+  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.14.2.tar.gz"
+  sha256 "87a04fd05cac20a2ec47094b7d18b96e0651257d8c768ced2ef7db270ecfb9cb"
+  license "BSD-2-Clause"
 
   livecheck do
     url "https://www.mcs.anl.gov/petsc/download/index.html"
@@ -10,9 +11,9 @@ class Petsc < Formula
   end
 
   bottle do
-    sha256 "3f760c40cf293bf0ecbbcc8175599715d2640ed970d22ecca1abfd04c438bd57" => :catalina
-    sha256 "1a167ce60cc801b9486f78ed3d223602394247cda9ab676806209c0571f57c72" => :mojave
-    sha256 "83696c400022cc88c5f0a79cf902c16ebcf4f7586bc7ac5c510993f28fe817dd" => :high_sierra
+    sha256 "a44cc2867d3a39ea75cdd7483cb17b89deaefb639b506fd5c92e3f3390dc53b3" => :big_sur
+    sha256 "5f920a35a55180bd4cfa581ce2aacfb78d9fe070d2efd8b6b4e4e4e5f6297f5d" => :catalina
+    sha256 "5cac29ac6daae9e3b1bb368493db86697e41eced8ef4392bc6eca7d82ff8259a" => :mojave
   end
 
   depends_on "hdf5"

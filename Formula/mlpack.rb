@@ -3,14 +3,13 @@ class Mlpack < Formula
   homepage "https://www.mlpack.org"
   url "https://mlpack.org/files/mlpack-3.3.2.tar.gz"
   sha256 "11904a39a7e34ee66028292fd054afb460eacd07ec5e6c63789aba117e4d854c"
-  revision 1
+  revision 3
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "3b98834eb65f185a1b8d6c2d505995e51ee77443dad98da8c1f16b5ad5e665ee" => :catalina
-    sha256 "bee3717f1ce59530b51fed4f454fc0f56d459e15cf04cd262d9896ab98c3f0ac" => :mojave
-    sha256 "42fba9f2653c3deab2acec2de9276dd9787b09ce902ea5857d4bef9f10593ab1" => :high_sierra
+    sha256 "2823af4a2e9e934bf43e68e5f6f7aef27d651aeb261d6f1b8e9585011c67c3b1" => :big_sur
+    sha256 "4f4989363537f5202d017eb55a2747dc8e9cc2af5b84064c07d864abd516708c" => :catalina
+    sha256 "e4a27e2f9a573d7ff942a0cfa9bc24f6f95b63ac17618e8c26258416bfc3af01" => :mojave
   end
 
   depends_on "cmake" => :build

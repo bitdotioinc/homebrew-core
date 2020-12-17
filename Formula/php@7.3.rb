@@ -2,15 +2,16 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.21.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.21.tar.xz"
-  sha256 "4c8b065746ef776d84b7ae47908c21a79e3d4704b86b60d816716b8697c58ce9"
+  url "https://www.php.net/distributions/php-7.3.25.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.25.tar.xz"
+  sha256 "c71c00ad03079efb78d1a6b8623ca4f725be697dbd9a46debacbcc9a2475f329"
   license "PHP-3.01"
+  revision 1
 
   bottle do
-    sha256 "f01790fd07586e4f2c70c645d26a3a7b57c94169556eb45a1baf77bbf2a28cfb" => :catalina
-    sha256 "1b4b707f41f7fbad0d6c99b922b169a4955badb48fe2609ddbc6a4c556d69cbc" => :mojave
-    sha256 "3de94dfefc838ab5ef60984d81f5341b66a1dfba16bfd5391ae334f5a81867c6" => :high_sierra
+    sha256 "d6932d8056632a0bd2d4638d95923bdd8491ab685d3fa993dc8ed441b145970b" => :big_sur
+    sha256 "c47a7a4fcea943550fe253aa855575e73db4b615110c424130fa1bfa61bfd8bd" => :catalina
+    sha256 "f27d2430209caf5b7355ad79a3b2e25b5f120f234e27ef0fb8b9685e839f3b6e" => :mojave
   end
 
   keg_only :versioned_formula
@@ -25,7 +26,7 @@ class PhpAT73 < Formula
   depends_on "argon2"
   depends_on "aspell"
   depends_on "autoconf"
-  depends_on "curl-openssl"
+  depends_on "curl"
   depends_on "freetds"
   depends_on "freetype"
   depends_on "gettext"
@@ -94,7 +95,7 @@ class PhpAT73 < Formula
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
-    # Prevent homebrew from harcoding path to sed shim in phpize script
+    # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
     # Each extension that is built on Mojave needs a direct reference to the
@@ -134,7 +135,7 @@ class PhpAT73 < Formula
       --enable-zip
       --with-apxs2=#{Formula["httpd"].opt_bin}/apxs
       --with-bz2#{headers_path}
-      --with-curl=#{Formula["curl-openssl"].opt_prefix}
+      --with-curl=#{Formula["curl"].opt_prefix}
       --with-fpm-user=_www
       --with-fpm-group=_www
       --with-freetype-dir=#{Formula["freetype"].opt_prefix}

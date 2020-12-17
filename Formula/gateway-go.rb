@@ -2,23 +2,53 @@ class GatewayGo < Formula
   desc "GateWay Client for OpenIoTHub"
   homepage "https://github.com/OpenIoTHub"
   url "https://github.com/OpenIoTHub/gateway-go.git",
-      tag:      "v0.1.86",
-      revision: "41021108b389f47646a74379439853ee4447797c"
+      tag:      "v0.1.92",
+      revision: "8c635b52b883d01563e715b48fed1231227c178d"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4b352aca114d535e64227a6b860e228a44c811e3d5fc9cc91d684d9d2e46680f" => :catalina
-    sha256 "1586ce54282f3cd2861ca1509b8313cb3b927a30dedecead6963f2653f1f6e1a" => :mojave
-    sha256 "7aed612144587fa557e1918529cbf152dd6710c505fa00be596cc53458833477" => :high_sierra
+    sha256 "930cf80740aef58a36aa4de90931f07195128dbaa90f158b0734e0fa6de14658" => :big_sur
+    sha256 "a7f46eb4d8257be3f24c84f971fa6d95582172abda87aeb1e3f6ffb1d85752e6" => :catalina
+    sha256 "083175571da3825c9c159c03a7028b01aa065baca9aeda5f0f6ef9916e2c8f74" => :mojave
+    sha256 "6c6e994988b6f09dc0ff80d51a45b14153834f573746f726c3d00585b1869e8d" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
+    (etc/"gateway-go").mkpath
     system "go", "build", "-mod=vendor", "-ldflags",
              "-s -w -X main.version=#{version} -X main.commit=#{stable.specs[:revision]} -X main.builtBy=homebrew",
              *std_go_args
+    etc.install "gateway-go.yaml" => "gateway-go/gateway-go.yaml"
+  end
+
+  plist_options manual: "gateway-go -c #{HOMEBREW_PREFIX}/etc/gateway-go/gateway-go.yaml"
+
+  def plist
+    <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>KeepAlive</key>
+          <true/>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/gateway-go</string>
+            <string>-c</string>
+            <string>#{etc}/gateway-go/gateway-go.yaml</string>
+          </array>
+          <key>StandardErrorPath</key>
+          <string>#{var}/log/gateway-go.log</string>
+          <key>StandardOutPath</key>
+          <string>#{var}/log/gateway-go.log</string>
+        </dict>
+      </plist>
+    EOS
   end
 
   test do

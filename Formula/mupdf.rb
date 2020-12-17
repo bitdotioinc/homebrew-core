@@ -1,9 +1,10 @@
 class Mupdf < Formula
   desc "Lightweight PDF and XPS viewer"
   homepage "https://mupdf.com/"
-  url "https://mupdf.com/downloads/archive/mupdf-1.17.0-source.tar.xz"
-  sha256 "c935fb2593d9a28d9b56b59dad6e3b0716a6790f8a257a68fa7dcb4430bc6086"
-  license "AGPL-3.0"
+  url "https://mupdf.com/downloads/archive/mupdf-1.18.0-source.tar.xz"
+  sha256 "592d4f6c0fba41bb954eb1a41616661b62b134d5b383e33bd45a081af5d4a59a"
+  license "AGPL-3.0-or-later"
+  revision 1
   head "https://git.ghostscript.com/mupdf.git"
 
   livecheck do
@@ -12,25 +13,29 @@ class Mupdf < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "473cb909d61450baa808fab50f18342811665f4e9e31f26a21e03f6bc5e70363" => :catalina
-    sha256 "abe79a517f7debadd94a67d3c7130c017ec8b985f381f0af7c9d08c75df13501" => :mojave
-    sha256 "e12021a10707afc92cea6d8a7633ee2a8d0f89359bb2f166c6e53d89e411f0f3" => :high_sierra
+    cellar :any
+    sha256 "aaa1bc3c7a6e77bca62d9b4f6d1b7225cea461d8d28471df79b9ee11e81d9ecc" => :big_sur
+    sha256 "b656ec4a7c2cbb3b55b52678e5129bbeb27215c793cd6e3876d40a51d293bd84" => :catalina
+    sha256 "5b06c1203b68608f64d082b83db659a46d98a849d79530bfa83f28adb970e17e" => :mojave
+    sha256 "32dc7277f5dce0762c695ecf15f3ec745ec7767afec09f6acefc4aea86386873" => :high_sierra
   end
 
-  depends_on :x11
+  depends_on "pkg-config" => :build
+  depends_on "freeglut"
+  depends_on "mesa"
 
   conflicts_with "mupdf-tools",
     because: "mupdf and mupdf-tools install the same binaries"
 
   def install
-    # Work around Xcode 11 clang bug
-    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
-
+    glut_cflags = `pkg-config --cflags glut gl`.chomp
+    glut_libs = `pkg-config --libs glut gl`.chomp
     system "make", "install",
            "build=release",
            "verbose=yes",
            "CC=#{ENV.cc}",
+           "SYS_GLUT_CFLAGS=#{glut_cflags}",
+           "SYS_GLUT_LIBS=#{glut_libs}",
            "prefix=#{prefix}"
 
     # Symlink `mutool` as `mudraw` (a popular shortcut for `mutool draw`).

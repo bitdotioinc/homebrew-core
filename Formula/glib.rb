@@ -3,8 +3,8 @@ class Glib < Formula
 
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "https://download.gnome.org/sources/glib/2.64/glib-2.64.5.tar.xz"
-  sha256 "9cbd5bd2715ead1c28d53c46f7b7b6ff6166f5887b772c1a9e3bf2910cfecc11"
+  url "https://download.gnome.org/sources/glib/2.66/glib-2.66.3.tar.xz"
+  sha256 "79f31365a99cb1cc9db028625635d1438890702acde9e2802eae0acebcf7b5b1"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -12,9 +12,9 @@ class Glib < Formula
   end
 
   bottle do
-    sha256 "6d8c705b5feee37976530563cac6c959bd3a028e8b94fb7417c44f59eebe360f" => :catalina
-    sha256 "f20d990dd43d5732761adb780b9cf5a421a93337f81ddabdc9fc4a03f2f5537f" => :mojave
-    sha256 "e478a3f8bede892aa299589d722546dc0a94072f1f4b3d042a0a7f3400a5cade" => :high_sierra
+    sha256 "73f1a9e418347126cfe43f42a4735da078c1d9abd6825064dd5cf25f2daf197c" => :big_sur
+    sha256 "765956dc4f0852ca3827cc16bb4a30f0065fe705f136ed52c7996cea976fb67e" => :catalina
+    sha256 "6fab3d72bc8e8f88b2c5fdb353d799fc8cb25196942e68e48f64ec07deb07b9e" => :mojave
   end
 
   depends_on "meson" => :build
@@ -23,7 +23,7 @@ class Glib < Formula
   depends_on "gettext"
   depends_on "libffi"
   depends_on "pcre"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   on_linux do
     depends_on "util-linux"
@@ -35,22 +35,6 @@ class Glib < Formula
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/6164294a75541c278f3863b111791376caa3ad26/glib/hardcoded-paths.diff"
     sha256 "a57fec9e85758896ff5ec1ad483050651b59b7b77e0217459ea650704b7d422b"
-  end
-
-  # Fixes a runtime error on ARM and PowerPC Macs.
-  # Can be removed in the next release.
-  # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1566
-  patch do
-    url "https://gitlab.gnome.org/GNOME/glib/-/commit/c60d6599c9182ce44fdfaa8dde2955f55fc0d628.patch"
-    sha256 "9e3de41571edaa4bce03959abf885aad4edd069a622a5b642bf40294d748792e"
-  end
-
-  # Enables G_GNUC_FALLTHROUGH on clang.
-  # Necessary for pango to build on recent versions of clang.
-  # Will be in the next release.
-  patch do
-    url "https://gitlab.gnome.org/GNOME/glib/-/commit/5f38ae5ffca3213addc5b279a46d537792d031db.patch"
-    sha256 "12128966a693dd45d2e20286437aea13b1fe554aed0907cbc33131d3b76be890"
   end
 
   def install

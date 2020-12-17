@@ -1,8 +1,10 @@
 class Gstreamer < Formula
   desc "Development framework for multimedia applications"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.16.2.tar.xz"
-  sha256 "e3f044246783fd685439647373fa13ba14f7ab0b346eadd06437092f8419e94e"
+  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.18.2.tar.xz"
+  sha256 "66cdeb4f970c2e55932a2f427177d438fe2c55c0b6d29e80fda80263f2ae5446"
+  license "LGPL-2.0-or-later"
+  head "https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
 
   livecheck do
     url "https://gstreamer.freedesktop.org/src/gstreamer/"
@@ -10,21 +12,15 @@ class Gstreamer < Formula
   end
 
   bottle do
-    sha256 "3473eef6aadd51a378f722c08a399922c4b401f38d8d5bffe7e2cb0ba845f919" => :catalina
-    sha256 "6427cd64ac1c541d35fc57f869dd1290e57aab8a2a9f5589b79f6e078e4432d5" => :mojave
-    sha256 "b1a6cbfbac2bb152ce023fbe283ef38ec371ceccff48ae1545cdeac1a36933ba" => :high_sierra
-  end
-
-  head do
-    url "https://anongit.freedesktop.org/git/gstreamer/gstreamer.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+    sha256 "0fa613bf8670831bf70b916aa09f5f0e600f13ae83259d2f12541c39c23898fc" => :big_sur
+    sha256 "ba0329667c9347b25ab0623b239af2b43f27a2d2bdc666b5800602b6c2420e02" => :catalina
+    sha256 "0e6609fc738289ee0d22383fa2d06b4eb931ecf0d86c8468e2307045bb2468fb" => :mojave
   end
 
   depends_on "bison" => :build
   depends_on "gobject-introspection" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "glib"
@@ -32,33 +28,26 @@ class Gstreamer < Formula
   uses_from_macos "flex" => :build
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --disable-debug
-      --disable-dependency-tracking
-      --disable-gtk-doc
-      --enable-introspection=yes
+    # Ban trying to chown to root.
+    # https://bugzilla.gnome.org/show_bug.cgi?id=750367
+    args = std_meson_args + %w[
+      -Dintrospection=enabled
+      -Dptp-helper-permissions=none
     ]
-
-    if build.head?
-      ENV["NOCONFIGURE"] = "yes"
-      system "./autogen.sh"
-
-      # Ban trying to chown to root.
-      # https://bugzilla.gnome.org/show_bug.cgi?id=750367
-      args << "--with-ptp-helper-permissions=none"
-    end
 
     # Look for plugins in HOMEBREW_PREFIX/lib/gstreamer-1.0 instead of
     # HOMEBREW_PREFIX/Cellar/gstreamer/1.0/lib/gstreamer-1.0, so we'll find
     # plugins installed by other packages without setting GST_PLUGIN_PATH in
     # the environment.
-    inreplace "configure", 'PLUGINDIR="$full_var"',
-      "PLUGINDIR=\"#{HOMEBREW_PREFIX}/lib/gstreamer-1.0\""
+    inreplace "meson.build",
+      "cdata.set_quoted('PLUGINDIR', join_paths(get_option('prefix'), get_option('libdir'), 'gstreamer-1.0'))",
+      "cdata.set_quoted('PLUGINDIR', '#{HOMEBREW_PREFIX}/lib/gstreamer-1.0')"
 
-    system "./configure", *args
-    system "make"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
+    end
   end
 
   def caveats

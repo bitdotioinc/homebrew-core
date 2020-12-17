@@ -1,16 +1,17 @@
 class Sleef < Formula
   desc "SIMD library for evaluating elementary functions"
   homepage "https://sleef.org"
-  url "https://downloads.sourceforge.net/project/sleef/sleef-3.4.1.tar.gz"
-  sha256 "25babe83b9358817ac05bbec09b7557439e4e96b907b86717906e6d980ff2036"
+  url "https://github.com/shibatch/sleef/archive/3.5.1.tar.gz"
+  sha256 "415ee9b1bcc5816989d3d4d92afd0cd3f9ee89cbd5a33eb008e69751e40438ab"
   license "BSL-1.0"
   head "https://github.com/shibatch/sleef.git"
 
   bottle do
     cellar :any
-    sha256 "d8ae909caeaf4b8341254b458931ac8b4264d9acbfc7232ffa4dcd2bfaa93248" => :catalina
-    sha256 "0b16c2e2daa5b3521e195d183daa70ea8f7cc4a5dd4924610c82945846ba0c81" => :mojave
-    sha256 "fd59d2dc9fc8c757054a16f2dfb19d8b0a2eebb48e34de8ce67f585bb8b7e586" => :high_sierra
+    sha256 "1277b28f0a610af52bf3f646b4d893a08dd0d0d18004e04b439d47293b93b15d" => :big_sur
+    sha256 "87ddfa37e9405dfc66c35295295e5f09e497fb1bc8c07c9e0f38560aeb46398f" => :catalina
+    sha256 "f9e95775f5e41924f42eae7c4ae1f567229a49989e1f8a380d55355e37680d9c" => :mojave
+    sha256 "353ca63589a038009ad9b39dadcf3ef4c46153f738fcfb07d58a25dfc37e945a" => :high_sierra
   end
 
   depends_on "cmake" => :build

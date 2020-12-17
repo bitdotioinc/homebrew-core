@@ -1,17 +1,17 @@
 class BaculaFd < Formula
   desc "Network backup solution"
   homepage "https://www.bacula.org/"
-  url "https://downloads.sourceforge.net/project/bacula/bacula/9.6.5/bacula-9.6.5.tar.gz"
-  sha256 "510f35b86138472abe6c559caded7bc773bf5eb1b9ee10905ee8f4f827c7c77a"
+  url "https://downloads.sourceforge.net/project/bacula/bacula/11.0.0/bacula-11.0.0.tar.gz"
+  sha256 "3be1125ae957f553aaa2898bb346e4db2102f69247b34e6efe9852734818ed1a"
 
   livecheck do
     url :stable
   end
 
   bottle do
-    sha256 "9f60d58bc6f3709d3ed3fabb03a82d9197a76a4f8bea6f0b4d5cef24bec5e5ea" => :catalina
-    sha256 "af55545e264e8fb2b7b0ce417194d7d27ddb17d41d28e9664c8e9371164958d0" => :mojave
-    sha256 "a615488f494959d4d19cee5d863c4c306a2180ceab548742c93cef68fe8b688c" => :high_sierra
+    sha256 "a19497e01b65fc02630188d010f7a9dfa97185d411680e32bd1401aa7fe467d4" => :big_sur
+    sha256 "b9fcdda2e13a2f2367ad06d9142bff096c3241afc39a77f2d3b46c2716b0e8e5" => :catalina
+    sha256 "5adb4a080fb4d25c8c62d215d7dc0a5e6e62fae59ffc982607ad39529bd96db3" => :mojave
   end
 
   depends_on "openssl@1.1"
@@ -44,8 +44,14 @@ class BaculaFd < Formula
     system "make", "install"
 
     # Avoid references to the Homebrew shims directory
-    inreplace Dir[prefix/"etc/bacula_config"],
-              HOMEBREW_SHIMS_PATH/"mac/super/", ""
+    on_macos do
+      inreplace Dir[prefix/"etc/bacula_config"],
+                HOMEBREW_SHIMS_PATH/"mac/super/", ""
+    end
+    on_linux do
+      inreplace Dir[prefix/"etc/bacula_config"],
+                HOMEBREW_SHIMS_PATH/"linux/super/", ""
+    end
 
     (var/"lib/bacula").mkpath
   end

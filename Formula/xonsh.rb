@@ -1,33 +1,34 @@
 class Xonsh < Formula
   include Language::Python::Virtualenv
 
-  desc "Python-ish, BASHwards-compatible shell language and command prompt"
+  desc "Python-powered, cross-platform, Unix-gazing shell language and command prompt"
   homepage "https://xon.sh/"
-  url "https://github.com/xonsh/xonsh/archive/0.9.20.tar.gz"
-  sha256 "f4f37e4162dc640868ad88155ad7a236079ec2a194e806415d32654bf882b99b"
+  url "https://files.pythonhosted.org/packages/bb/07/a742d64b89fed015540b5561bfbefad8a0237b2a2879b5b1f261e5c43c2a/xonsh-0.9.24.tar.gz"
+  sha256 "f5402197db2ce5c3cd93f6ae8386bc376ed84af4605140ead11923aa9f5adc02"
   license "BSD-2-Clause-Views"
   head "https://github.com/xonsh/xonsh.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6390739e04b77c641278828df323ce410905f3979d102948d48bf2080c691f83" => :catalina
-    sha256 "fab51b9112369b8cade8b27ad9345c206bf79bae1f48eee41f2ee098986f1641" => :mojave
-    sha256 "e5c714e48f7a27fbbc9b7a43ea5b453dfab8d20ca600fc749567deb17b11e886" => :high_sierra
+    rebuild 1
+    sha256 "848521c9f7fd0e0085274891dcb6d6dc20b100a1785a627864b16b9cd9b77ef8" => :big_sur
+    sha256 "da3755d9ed3dc8d00d1f680903131fade342f16ad02466b237a32bf53a932820" => :catalina
+    sha256 "0d7681a10d327caae8efa6866778ba04a3709a799ceda850fc34054332e6b0bd" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   # Resources based on `pip3 install xonsh[ptk,pygments,proctitle]`
   # See https://xon.sh/osx.html#dependencies
 
-  resource "prompt_toolkit" do
-    url "https://files.pythonhosted.org/packages/c4/c6/03da4efaf73f0cb5a34957fdac12046eb8d8e81618bad6f60464215b829a/prompt_toolkit-3.0.6.tar.gz"
-    sha256 "7630ab85a23302839a0f26b31cc24f518e6155dea1ed395ea61b42c45941b6a6"
+  resource "prompt-toolkit" do
+    url "https://files.pythonhosted.org/packages/d4/12/7fe77b49d67845a378cfadb484b64218ed09d0e8bf420c663b4fe28f0631/prompt_toolkit-3.0.8.tar.gz"
+    sha256 "25c95d2ac813909f813c93fde734b6e44406d1477a9faef7c915ff37d39c0a8c"
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/6e/4d/4d2fe93a35dfba417311a4ff627489a947b01dc0cc377a3673c00cf7e4b2/Pygments-2.6.1.tar.gz"
-    sha256 "647344a061c249a3b74e230c739f434d7ea4d8b1d5f3721bc0f3558049b38f44"
+    url "https://files.pythonhosted.org/packages/5d/0e/ff13c055b014d634ed17e9e9345a312c28ec6a06448ba6d6ccfa77c3b5e8/Pygments-2.7.2.tar.gz"
+    sha256 "381985fcc551eb9d37c52088a32914e00517e57f4a21609f48141ba08e193fa0"
   end
 
   resource "setproctitle" do

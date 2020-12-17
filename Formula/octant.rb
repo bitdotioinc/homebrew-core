@@ -2,16 +2,21 @@ class Octant < Formula
   desc "Kubernetes introspection tool for developers"
   homepage "https://octant.dev"
   url "https://github.com/vmware-tanzu/octant.git",
-      tag:      "v0.15.0",
-      revision: "97a507c2b071764933bb479007822672d5fa19f5"
+      tag:      "v0.16.3",
+      revision: "656c7404e529262861eacb13e88d33dccd6035bf"
   license "Apache-2.0"
   head "https://github.com/vmware-tanzu/octant.git"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
     cellar :any_skip_relocation
-    sha256 "045c41be854cf5f2ec83304604cfd15999c6388acf1dcd75aac9ae1e853fe49b" => :catalina
-    sha256 "296b65276242af120db56456c2ace8e2055d14bef0a098a87d4ff1bdd4d182f0" => :mojave
-    sha256 "9451ccb5b446694ac3d1c0f7053e01fade89337ee9aad425e3b1de64d645febe" => :high_sierra
+    sha256 "af07a62007bf7754898735f4b1f1696afe2db439ea152eb8bfbb48a1ccecec08" => :big_sur
+    sha256 "bbdfdf1126ec8472748d949aefc383911d221fdfe44342b4ec73451b3ea12461" => :catalina
+    sha256 "2b94f3e031d6def218b024f74d1a55c3be096beac207e434dc425d43d1cb99f9" => :mojave
   end
 
   depends_on "go" => :build

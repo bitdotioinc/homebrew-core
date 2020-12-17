@@ -2,18 +2,18 @@ class SqliteUtils < Formula
   include Language::Python::Virtualenv
   desc "CLI utility for manipulating SQLite databases"
   homepage "https://sqlite-utils.readthedocs.io/"
-  url "https://files.pythonhosted.org/packages/93/9a/5a175c8987955760b115c5fa17de2ce45dd5533f9caabff237ed8ec534e9/sqlite-utils-2.16.1.tar.gz"
-  sha256 "2c45175890d5f66ceaa1b37a56db7ef8d44f5d35bd2349814d2e46427e4519f7"
+  url "https://files.pythonhosted.org/packages/16/d3/a40f7d2dac4ea6a3c35826c82b8dfed915ee169d3a110c1626c0bea9cf22/sqlite-utils-3.1.tar.gz"
+  sha256 "53950eb89f77066d6caf553c52ec01701a8bebbaffa9e0a627df3f229ca8720f"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e490a52af5f1d240e0fcc6aac9f9b47ba8b298c65064adc294d193f940f9fc6e" => :catalina
-    sha256 "dc0c7f8e6aa845c348a170f803c2db4e1b6f9998e5af691cf22ce41359d3eae0" => :mojave
-    sha256 "76bc8e334307ebd983fc032eaa53c7239bc904d83db83a825443ee2171f027d8" => :high_sierra
+    sha256 "a7fdd09cb66940853088e9f5a43e410df663aff6d8653350136d32153fbcd7a0" => :big_sur
+    sha256 "64b8043059787d98d4b508c7cb7cfd62a51edba5299337cc96424c123dffc03b" => :catalina
+    sha256 "eed7a379658a2ba88c7468541e7bd8d3b2a6efdfbd18f143cb411f415f8ed43a" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "click" do
     url "https://files.pythonhosted.org/packages/27/6f/be940c8b1f1d69daceeb0032fee6c34d7bd70e3e649ccac0951500b4720e/click-7.1.2.tar.gz"
@@ -23,6 +23,11 @@ class SqliteUtils < Formula
   resource "click-default-group" do
     url "https://files.pythonhosted.org/packages/22/3a/e9feb3435bd4b002d183fcb9ee08fb369a7e570831ab1407bc73f079948f/click-default-group-1.2.2.tar.gz"
     sha256 "d9560e8e8dfa44b3562fbc9425042a0fd6d21956fcc2db0077f63f34253ab904"
+  end
+
+  resource "sqlite-fts4" do
+    url "https://files.pythonhosted.org/packages/62/30/63e64b7b8fa69aabf97b14cbc204cb9525eb2132545f82231c04a6d40d5c/sqlite-fts4-1.0.1.tar.gz"
+    sha256 "b2d4f536a28181dc4ced293b602282dd982cc04f506cf3fc491d18b824c2f613"
   end
 
   resource "tabulate" do

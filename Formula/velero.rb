@@ -1,15 +1,16 @@
 class Velero < Formula
   desc "Disaster recovery for Kubernetes resources and persistent volumes"
   homepage "https://github.com/vmware-tanzu/velero"
-  url "https://github.com/vmware-tanzu/velero/archive/v1.5.0.tar.gz"
-  sha256 "b45a7ee894706a941ab27698293bbca6922de927694cd5c135fd78fe0b133a1c"
+  url "https://github.com/vmware-tanzu/velero/archive/v1.5.2.tar.gz"
+  sha256 "a0c872567a5476a4483dc227ede6491e6d15fcf8da2ffd89c3e42a66550dbf91"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "dd5801fb7890ea9486c9ce5c6c1bdb1b84fd2a77302727e85f6564071de7e076" => :catalina
-    sha256 "ee3ebd2a57bf6c857f3cf503ada044575aa255ca4b545c2eb23433994f9d3f65" => :mojave
-    sha256 "4e626cf800b85e124a402ce35ce67042587dcf420a318c6b470811289286a795" => :high_sierra
+    sha256 "af97699b725bd62647cce8bac841880a7548f336ebd4a07dd197a4a82cadf772" => :big_sur
+    sha256 "5b70ff784f0edba2dda2f699135e604a76cbd67af114f78c23c86c1890bfaf4b" => :catalina
+    sha256 "89e30e8c8a90e649177b1914948c1df42bccdacb8197a1e0de563487cc4c0fcb" => :mojave
+    sha256 "ab4a5c4b5ee8d4d4f968f8af9a2e86d5ba42109dbefd3d019dc1c4b31520effa" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -38,7 +39,7 @@ class Velero < Formula
   end
 
   test do
-    output = shell_output("#{bin}/velero 2>&1")
+    output = shell_output("#{bin}/velero 2>&1", 1)
     assert_match "Velero is a tool for managing disaster recovery", output
     assert_match "Version: v#{version}", shell_output("#{bin}/velero version --client-only 2>&1")
     system bin/"velero", "client", "config", "set", "TEST=value"

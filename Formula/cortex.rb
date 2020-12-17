@@ -1,15 +1,21 @@
 class Cortex < Formula
   desc "Long term storage for Prometheus"
   homepage "https://cortexmetrics.io/"
-  url "https://github.com/cortexproject/cortex/archive/v1.3.0.tar.gz"
-  sha256 "5354cbed3670e566b8f01609fc8e160640a66d034ccad144c77b8e315feadea8"
+  url "https://github.com/cortexproject/cortex/archive/v1.5.0.tar.gz"
+  sha256 "7e6f62841e40aa664d2b6ec98ed3a5bd92a40f79a2e4233b0d69148eb8c57572"
   license "Apache-2.0"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2682468002977085500804931b9d8867e6ba8bc6c4c717f957d7bb6f4e62a899" => :catalina
-    sha256 "03515e6d66aab6e1ba7cf364d9e4ef20fad156dbed855abc40a17b4686e26c3a" => :mojave
-    sha256 "157de4fbc1e9941cf47753d204b2cd48636e1654e15dff1f3a3709f58e53fd86" => :high_sierra
+    sha256 "337c92f3ba0fc8bb6401ba03fcd6d185ab14fe6042ff3f06081d87af5989b585" => :big_sur
+    sha256 "7b048addb9cae0bcc4d4624c22d45ea94447317407836a11198e46d078351513" => :catalina
+    sha256 "8791d3c130d3ca1c6fd088ea07f585716b8d33b1f4024e3bdd247f00aa5a2f5d" => :mojave
+    sha256 "91b1dae9d8a3d08e5d0a31315a4a37f24d2bd4178546d7ceddfe22810b6b8253" => :high_sierra
   end
 
   depends_on "go" => :build

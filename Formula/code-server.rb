@@ -1,8 +1,8 @@
 class CodeServer < Formula
   desc "Access VS Code through the browser"
   homepage "https://github.com/cdr/code-server"
-  url "https://registry.npmjs.org/code-server/-/code-server-3.5.0.tgz"
-  sha256 "070c59c9fd955f68441e12ac7adf39e4a96e7a287ab2c092ed39f864abc795d5"
+  url "https://registry.npmjs.org/code-server/-/code-server-3.7.4.tgz"
+  sha256 "6ac859268c5d3f7bebe5624c60fb8ecf2acabfd32b14cc4bd604c11f60a2e2c7"
   license "MIT"
 
   livecheck do
@@ -11,18 +11,20 @@ class CodeServer < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "79ec8cadf71c1b23a92b552888a971b8cc6055a6bd25b34b74e1ab90509fd08f" => :catalina
-    sha256 "437c96b5ab795a11341025a3d0640b289636ae2ef6f382c7d91cb4112d6f168c" => :mojave
-    sha256 "02d2d1c07b5650a4a7786d09f75a7c988a51dd20dd3bec49f0bb4a6ba6cfa9f7" => :high_sierra
+    sha256 "52371fd8a9a4781362a3312bd8cd74a9c94e539d2891d9df8b483db19744c335" => :big_sur
+    sha256 "bfb6e272fb8cb24550ebbb053e09e087dfecde627855595883a089b024f5cd75" => :catalina
+    sha256 "deb034592f8582e2281b35b4854dfe0baaec82319e65e996cdcafce0d27eb0fa" => :mojave
   end
 
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "yarn" => :build
   depends_on "node"
 
   on_linux do
     depends_on "pkg-config" => :build
     depends_on "libsecret"
+    depends_on "libx11"
+    depends_on "libxkbfile"
   end
 
   def install
@@ -68,9 +70,9 @@ class CodeServer < Formula
   end
 
   test do
+    # See https://github.com/cdr/code-server/blob/master/ci/build/test-standalone-release.sh
     system bin/"code-server", "--extensions-dir=.", "--install-extension", "ms-python.python"
-    assert_equal "info  Using config file ~/.config/code-server/config.yaml\nms-python.python\n",
-      # sed removes the leading timestamp here.
-      shell_output("#{bin/"code-server"} --extensions-dir=. --list-extensions | sed 's#[^ ]* \\(.*\\)#\\1#g'")
+    assert_match "ms-python.python",
+      shell_output("#{bin/"code-server"} --extensions-dir=. --list-extensions")
   end
 end

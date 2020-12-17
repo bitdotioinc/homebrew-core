@@ -1,8 +1,8 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://downloads.mariadb.com/MariaDB/mariadb-10.5.5/source/mariadb-10.5.5.tar.gz"
-  sha256 "cf6b2c061754c07bbb1d20b29ae111bf2d098297c9b8c321b810638a179088a4"
+  url "https://downloads.mariadb.com/MariaDB/mariadb-10.5.8/source/mariadb-10.5.8.tar.gz"
+  sha256 "eb4824f6f2c532cd3fc6a6bce7bf78ea7c6b949f8bdd07656b2c84344e757be8"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,9 +11,10 @@ class Mariadb < Formula
   end
 
   bottle do
-    sha256 "df8622183262cb4871480d909e3144fa767a0dba995929e5ddb72d310d1f6ffa" => :catalina
-    sha256 "ba7afe3313015e58b9ca9c9b17178ebbbb6b804239b31957cfaead678e31aa86" => :mojave
-    sha256 "66dfcb470c80d0b7d0b56985e84ee36af5bb4c0c488fe02327f560cdb713785e" => :high_sierra
+    rebuild 2
+    sha256 "8a27f4ff10628a7366f0a63480433fa1138c547fbd49343258abb47cd4908e67" => :big_sur
+    sha256 "4b32c4d13a178a568d7a8668f0d42c40a02d161fac8ea7b10f5c2e468cbca4a6" => :catalina
+    sha256 "c52e7c5c5a92e4e5faf2ab5aa6cb66eeabc943869161bf5c8853b37dbd6a49a3" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -113,6 +114,8 @@ class Mariadb < Formula
   end
 
   def post_install
+    return if ENV["CI"]
+
     # Make sure the var/mysql directory exists
     (var/"mysql").mkpath
     unless File.exist? "#{var}/mysql/mysql/user.frm"
@@ -158,8 +161,15 @@ class Mariadb < Formula
   end
 
   test do
-    system bin/"mysqld", "--version"
-    prune_file = etc/"my.cnf.d/.homebrew_dont_prune_me"
-    assert_predicate prune_file, :exist?, "Failed to find #{prune_file}!"
+    (testpath/"mysql").mkpath
+    port = free_port
+    system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+      "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=/tmp"
+    fork do
+      system "#{bin}/mysqld", "--datadir=#{testpath}/mysql", "--port=#{port}"
+    end
+    sleep 5
+    assert_match "information_schema",
+      shell_output("#{bin}/mysql --port=#{port} --user=''@localhost --execute='show databases;'")
   end
 end

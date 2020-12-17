@@ -8,13 +8,15 @@ class IsoCodes < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "de9e461920f45e7a41272e45c365bc03fce3897a52b14b22b5953967d595e313" => :catalina
-    sha256 "de9e461920f45e7a41272e45c365bc03fce3897a52b14b22b5953967d595e313" => :mojave
-    sha256 "de9e461920f45e7a41272e45c365bc03fce3897a52b14b22b5953967d595e313" => :high_sierra
+    rebuild 1
+    sha256 "118b191fb44a9620d8c0c354f8ac922792d3e75d54bc39ca1510be016c3a2d92" => :big_sur
+    sha256 "7188c8c30f91805fb9a57fdb2724372e3c322df32cf429b9aa83947a1fda06be" => :catalina
+    sha256 "976ba22be91927b7b3ef72c657b642b3b2c29c78d9c8ae2ce427ffd10fdca830" => :mojave
+    sha256 "eae28b543407ce32653a9c6611f89c6d7fafee8adbd84e76f4785ec962d5bcd0" => :high_sierra
   end
 
   depends_on "gettext" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
 
   def install
     system "./configure", "--prefix=#{prefix}"

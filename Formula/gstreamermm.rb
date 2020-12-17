@@ -11,6 +11,7 @@ class Gstreamermm < Formula
 
   bottle do
     cellar :any
+    sha256 "cf9874106de695f12a568ac2088edd696c99487d0ac886344bb162a92c594831" => :big_sur
     sha256 "2cd58f367c293ee4b19caddbc97ffb3be2fffb0382e0c0908bd4c2e604912ad7" => :catalina
     sha256 "8249cddb44016172a38348a0d1f1092d07fe3848b0bbb0f2b964213305bc6be4" => :mojave
     sha256 "fee76c2e868cd7f21a0953a53144ef5ee8a07960a1873cb0db84933baa471cfd" => :high_sierra
@@ -89,9 +90,11 @@ class Gstreamermm < Formula
       -lgstsdp-1.0
       -lgsttag-1.0
       -lgstvideo-1.0
-      -lintl
       -lsigc-2.0
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end

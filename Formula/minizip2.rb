@@ -1,18 +1,20 @@
 class Minizip2 < Formula
   desc "Zip file manipulation library with minizip 1.x compatibility layer"
   homepage "https://github.com/nmoinvaz/minizip"
-  url "https://github.com/nmoinvaz/minizip/archive/2.10.0.tar.gz"
-  sha256 "4c7f236268fef57ce5dcbd9645235a22890d62480a592e1b0515ecff93f9989b"
+  url "https://github.com/nmoinvaz/minizip/archive/2.10.5.tar.gz"
+  sha256 "1c6420d3f3509e722178d9130a57cb77537b34900e7b67acca7e3e2858846939"
   license "Zlib"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1e27e8b43a651ef11893cb6ce591c05b1d0bc86c092c633faa43140657a63ee3" => :catalina
-    sha256 "a878c57c455068783abeec0704ad27da5cffd5b28eae9a2f0f57b2077650e187" => :mojave
-    sha256 "e76bd49d513bfe9939d35c41451ff76807f9230b31b8761e34a26877414d2519" => :high_sierra
+    sha256 "a31d89be3574f9bff5a437254b3bb3245ce73e8c02952d36f20195a100f5b0bd" => :big_sur
+    sha256 "cc7cb586eead3a60df1605d9b7bf9b6b90205cf49869a9ce6f781b45a4ae693c" => :catalina
+    sha256 "76afb235aea00f06858d62369363ce01e06f7c009afc380b41f5d6a88bc6a8f7" => :mojave
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "bzip2"
@@ -25,7 +27,9 @@ class Minizip2 < Formula
     because: "libtcod, libzip and minizip2 install a `zip.h` header"
 
   def install
-    system "cmake", ".", *std_cmake_args, "-DIconv_IS_BUILT_IN=on"
+    system "cmake", ".", "-DIconv_IS_BUILT_IN=on",
+                         "-DMZ_FETCH_LIBS=OFF",
+                         *std_cmake_args
     system "make", "install"
   end
 
@@ -43,7 +47,7 @@ class Minizip2 < Formula
     EOS
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}",
                    "-lminizip", "-lz", "-lbz2", "-liconv",
-                   "-L#{Formula["zstd"].opt_lib}", "-lzstd",
+                   "-L#{Formula["zstd"].opt_lib}", "-lzstd", "-llzma",
                    "-framework", "CoreFoundation", "-framework", "Security", "-o", "test"
     system "./test"
   end

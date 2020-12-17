@@ -16,6 +16,8 @@ class Encfs < Formula
     sha256 "79e5d3548036ae74ed956bea6d9c4ab7f2e12faf7b49b541da9a72476159a557" => :sierra
   end
 
+  deprecate! date: "2020-11-10", because: "requires FUSE"
+
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"

@@ -1,28 +1,41 @@
 class Vgmstream < Formula
   desc "Library for playing streamed audio formats from video games"
   homepage "https://hcs64.com/vgmstream.html"
-  url "https://github.com/losnoco/vgmstream/archive/r1050-3086-gc9dc860c.tar.gz"
-  version "r1050-3086-gc9dc860c"
-  sha256 "dee8b6005db0ea4d1cd8940529bd2fe019fb753b67d1c19ac90df261f264b311"
-  head "https://github.com/kode54/vgmstream.git"
+  url "https://github.com/losnoco/vgmstream.git",
+      tag:      "r1050-3448-g77cc431b",
+      revision: "77cc431be77846f95eccca49170878434935622f"
+  version "r1050-3448-g77cc431b"
+  license "ISC"
+  revision 1
+  version_scheme 1
+  head "https://github.com/losnoco/vgmstream.git"
 
-  bottle do
-    cellar :any
-    sha256 "06b1a2c17d2b02de2d9e3580700245141b8bf8e5501e01a5f943d755fbdd9be3" => :catalina
-    sha256 "c47f6241f20aa7d9d89e7058a3fc56c844f8b0b622312c4c281393dfa86b9da4" => :mojave
-    sha256 "44200141865ea303d35c293028aafb528135e27374a116a63a6b506fa5b60ede" => :high_sierra
+  livecheck do
+    url :stable
+    strategy :github_latest
+    regex(%r{href=.*?/tag/([^"' >]+)["' >]}i)
   end
 
+  bottle do
+    sha256 "214d533c705543d4962d3c9db29f5796d40048c0ff036585ac6ad35f013ad8fa" => :big_sur
+    sha256 "4b78bf09f3643d5e2cfc3b88cad0721a4079634970eefa5aa3da56dd0e023e6b" => :catalina
+    sha256 "4fc77e961d92b85fb884370c15e57829cbc5dbf1cd9351a2420b8df68ff67f80" => :mojave
+  end
+
+  depends_on "cmake" => :build
+  depends_on "ffmpeg"
+  depends_on "jansson"
   depends_on "libao"
   depends_on "libvorbis"
   depends_on "mpg123"
 
   def install
-    system "make", "vgmstream_cli"
-    system "make", "vgmstream123"
-    bin.install "cli/vgmstream-cli"
+    system "cmake", "-DBUILD_AUDACIOUS:BOOL=OFF", *std_cmake_args, "."
+    system "cmake", "--build", ".", "--config", "Release", "--target", "vgmstream_cli", "vgmstream123"
+    bin.install "cli/vgmstream_cli"
+    bin.install_symlink "vgmstream_cli" => "vgmstream-cli"
     bin.install "cli/vgmstream123"
-    lib.install "src/libvgmstream.a"
+    lib.install "src/liblibvgmstream.a"
   end
 
   test do

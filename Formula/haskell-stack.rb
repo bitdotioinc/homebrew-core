@@ -1,5 +1,5 @@
 class HaskellStack < Formula
-  desc "The Haskell Tool Stack"
+  desc "Cross-platform program for developing Haskell projects"
   homepage "https://haskellstack.org/"
   url "https://github.com/commercialhaskell/stack/archive/v2.3.3.tar.gz"
   sha256 "57042c0c7b53a6f8dba7f31679e9049c28351a86b8bc2786f7e37eda4733634e"
@@ -7,8 +7,8 @@ class HaskellStack < Formula
   head "https://github.com/commercialhaskell/stack.git"
 
   livecheck do
-    url "https://github.com/commercialhaskell/stack/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle do

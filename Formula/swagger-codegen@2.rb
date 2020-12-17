@@ -1,9 +1,10 @@
 class SwaggerCodegenAT2 < Formula
   desc "Generate clients, server stubs, and docs from an OpenAPI spec"
   homepage "https://swagger.io/swagger-codegen/"
-  url "https://github.com/swagger-api/swagger-codegen/archive/v2.4.15.tar.gz"
-  sha256 "11991be490abcdba1051372b584ceeb5ded58d93098e2f13fd2fd89fef9d11e7"
+  url "https://github.com/swagger-api/swagger-codegen/archive/v2.4.17.tar.gz"
+  sha256 "8dbcd9311b22ca0aa16094fd616e6e6053ee081f06f26a1ae97df5b8e25dbb31"
   license "Apache-2.0"
+  revision 1
 
   livecheck do
     url "https://github.com/swagger-api/swagger-codegen.git"
@@ -12,24 +13,23 @@ class SwaggerCodegenAT2 < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1149ef4ed6c67c5b5724ae4deb2beaef231cb339c3d776ca2c7229b874d4eca6" => :catalina
-    sha256 "c441f7af6b1e0bd43f439096f64f66cf5eb23e987cfb578aa7a8a974834721d9" => :mojave
-    sha256 "2622efbf0b4aca5bd667ea70c69556d8ba91b60420ba71870c47195ba947ddcf" => :high_sierra
+    sha256 "98cfff49973a3275672bf50b263e71f3188d27638ce2c4fc6920c327e293fc89" => :big_sur
+    sha256 "86fd64b89489cfb4a376aa5f37927d39a31c62822927dd111b690905b943aee8" => :catalina
+    sha256 "a8d0a5b33d8e4fd77b2cfe7a1d606b32ceb63cba16116bda17c7222561278757" => :mojave
+    sha256 "516a29728d07daae99423110c23082ceddef8638bd83d91721e80a42eb0af340" => :high_sierra
   end
 
   keg_only :versioned_formula
 
   depends_on "maven" => :build
-  depends_on java: "1.8"
+  depends_on "openjdk@8"
 
   def install
-    # Need to set JAVA_HOME manually since maven overrides 1.8 with 1.7+
-    cmd = Language::Java.java_home_cmd("1.8")
-    ENV["JAVA_HOME"] = Utils.safe_popen_read(cmd).chomp
+    ENV["JAVA_HOME"] = Language::Java.java_home("1.8")
 
     system "mvn", "clean", "package"
     libexec.install "modules/swagger-codegen-cli/target/swagger-codegen-cli.jar"
-    bin.write_jar_script libexec/"swagger-codegen-cli.jar", "swagger-codegen"
+    bin.write_jar_script libexec/"swagger-codegen-cli.jar", "swagger-codegen", java_version: "1.8"
   end
 
   test do

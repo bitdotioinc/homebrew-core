@@ -1,16 +1,16 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.22.0.tar.gz"
-  sha256 "3090748bb656333ed98490fe62133760e5da40ba4cd429a8142b4a0b69d05586"
+  url "https://github.com/junegunn/fzf/archive/0.24.4.tar.gz"
+  sha256 "0d9d3ed3cefee86accc2634fc98211af1d571845d912256c33ca0c8b2963d8bd"
   license "MIT"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "cbb9e58e5e31c066239bef3997685b7d329e5b404d6f975cb5fdc7d2267bbe95" => :catalina
-    sha256 "dffc3afebed9d1cf1ca65bbd5c3bd691d58f642b834b3be620fb0019ac3ba947" => :mojave
-    sha256 "2ffc38ada61090825862af5b7839a8297013a1f331ebfec94faeb6ca4541e35b" => :high_sierra
+    sha256 "e2dbde85df14e4381a1ca63257a78cd3cbc60bd7c2f44910a738ad106d6517cf" => :big_sur
+    sha256 "20bae77a697278028e2a363c0286ac18d4e9f140cabf2b08ec4e3409dcde56d4" => :catalina
+    sha256 "5af94f0a2a6f33b165b509a9f02cd7862fcd209c066b1e888c012e18ffb65e43" => :mojave
   end
 
   depends_on "go" => :build
@@ -19,7 +19,7 @@ class Fzf < Formula
 
   def install
     ENV["GOPATH"] = HOMEBREW_CACHE/"go_cache"
-    system "go", "build", "-o", bin/"fzf", "-ldflags", "-X main.revision=brew"
+    system "go", "build", "-o", bin/"fzf", "-ldflags", "-X main.version=#{version} -X main.revision=brew"
 
     prefix.install "install", "uninstall"
     (prefix/"shell").install %w[bash zsh fish].map { |s| "shell/key-bindings.#{s}" }

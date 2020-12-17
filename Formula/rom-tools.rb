@@ -1,21 +1,32 @@
 class RomTools < Formula
   desc "Tools for Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/mame0224.tar.gz"
-  version "0.224"
-  sha256 "3518e71ec20fbeac8ebe93f8ec856078b8288e19f0d7cb38959d4bde30cd2810"
+  url "https://github.com/mamedev/mame/archive/mame0226.tar.gz"
+  version "0.226"
+  sha256 "7c4c9ec232ba988e65fd29665c9b8e40b5ac3aa9f561eeb107cebbf08ba94baf"
   license "GPL-2.0-or-later"
   head "https://github.com/mamedev/mame.git"
 
+  # MAME tags (and filenames) are formatted like `mame0226`, so livecheck will
+  # report the version like `0226`. We work around this by matching the link
+  # text for the release title, since it contains the properly formatted version
+  # (e.g., 0.226).
+  livecheck do
+    url :stable
+    strategy :github_latest
+    regex(%r{release-header.*?/releases/tag/mame[._-]?\d+(?:\.\d+)*["' >]>MAME v?(\d+(?:\.\d+)+)}im)
+  end
+
   bottle do
     cellar :any
-    sha256 "842639d9a190b29c3153c20465913e6de77ddd7f6290e076467f39c75b77ca50" => :catalina
-    sha256 "59d98889b7d64215c3cd06b2b974cb66038234e7375aace6d8285f79c3f1924e" => :mojave
-    sha256 "2e6905541f0364563fec7c36bb3e80202d6dc33f12dff0ace0804027edb61e51" => :high_sierra
+    sha256 "da7b5adee6874671215e497b3c468ef98b7f26ad59f784ac7360db67245aff0a" => :big_sur
+    sha256 "b0c2d7f67bc4c84d2e70d7641d72bd026b237ecd6e18b014aa785058e32f7c1e" => :catalina
+    sha256 "33e6d72e44609f8ed3cc637d7f6caa80a98b946cd4877943b8c6828776e80d68" => :mojave
+    sha256 "b8d0376fa20eb356b3bbc6aaf8712b26a2a910745b92ba54b8d9f011b4aa9ba0" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "flac"
   # Need C++ compiler and standard library support C++17.
   depends_on macos: :high_sierra
@@ -31,7 +42,7 @@ class RomTools < Formula
 
     # Use bundled asio instead of latest version.
     # See: <https://github.com/mamedev/mame/issues/5721>
-    system "make", "PYTHON_EXECUTABLE=#{Formula["python@3.8"].opt_bin}/python3",
+    system "make", "PYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3",
                    "TOOLS=1",
                    "USE_LIBSDL=1",
                    "USE_SYSTEM_LIB_EXPAT=1",

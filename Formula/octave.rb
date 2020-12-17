@@ -1,20 +1,20 @@
 class Octave < Formula
   desc "High-level interpreted language for numerical computing"
   homepage "https://www.gnu.org/software/octave/index.html"
-  url "https://ftp.gnu.org/gnu/octave/octave-5.2.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/octave/octave-5.2.0.tar.xz"
-  sha256 "2757b5cc1854c9326d6c99d2900c7cec2909ac7ed500212d170d0df592bfd26b"
-  license "GPL-3.0"
-  revision 9
+  url "https://ftp.gnu.org/gnu/octave/octave-6.1.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/octave/octave-6.1.0.tar.xz"
+  sha256 "d6cd6b79ef023e300b9287b56aa79333cfb6b651771d43ade7cbde63ca5a6010"
+  license "GPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url :stable
   end
 
   bottle do
-    sha256 "5c9af6d3f0f61cd764067c1f66997b0044788dc76e8ddc28c6f64194a275d09c" => :catalina
-    sha256 "37389123fb6ec5bda0ef8874596231b6e22a20d60ce9cb792a97c18bff7f307f" => :mojave
-    sha256 "e44de6cb9315e2f125ea516733513c048b38fd9c77719eb270717daff43360a6" => :high_sierra
+    sha256 "be7e3a520db1d6c684120effd115170f49d2cf41c4ee24a9e17af349ef3f9db2" => :big_sur
+    sha256 "7a2372bb936b1b09db7deb5b8f39a777a03f5f8238a4a4be4434f27deb4d1d52" => :catalina
+    sha256 "08d3f28fda600a60b0f0759efaf5b6e2f56124de3d2822758fbf1ba5caaad01f" => :mojave
   end
 
   head do
@@ -53,6 +53,7 @@ class Octave < Formula
   depends_on "pstoedit"
   depends_on "qhull"
   depends_on "qrupdate"
+  depends_on "qscintilla2"
   depends_on "qt"
   depends_on "readline"
   depends_on "suite-sparse"
@@ -63,14 +64,6 @@ class Octave < Formula
 
   # Dependencies use Fortran, leading to spurious messages about GCC
   cxxstdlib_check :skip
-
-  # Octave fails to build due to error with java. See also
-  # https://github.com/Homebrew/homebrew-core/issues/39848
-  # Patch submitted upstream at: https://savannah.gnu.org/patch/index.php?9806
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/a8124b73c5216cc81d63627a4b41203ab1d91a4d/octave/5.1.0-java-version.patch"
-    sha256 "7ea1e9b410a759fa136d153fb8482ecfc3425a39bfe71c1e71b3ff0f7d9a0b54"
-  end
 
   def install
     # Default configuration passes all linker flags to mkoctfile, to be

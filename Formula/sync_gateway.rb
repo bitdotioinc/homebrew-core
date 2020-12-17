@@ -2,23 +2,28 @@ class SyncGateway < Formula
   desc "Make Couchbase Server a replication endpoint for Couchbase Lite"
   homepage "https://docs.couchbase.com/sync-gateway/current/index.html"
   url "https://github.com/couchbase/sync_gateway.git",
-      tag:      "2.7.3",
-      revision: "33d352f97798e45360155b63c022e8a39485134e"
+      tag:      "2.8.0",
+      revision: "61ca30a14f10edf40a26f7b2189c962c16a04b8a"
   license "Apache-2.0"
   head "https://github.com/couchbase/sync_gateway.git"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "b1ec1b07a62ae7e15e2d16be2a10ccc18a53ba1302a8aaef1760d90046500cc0" => :catalina
-    sha256 "db5e68b8cf1d359212a549ca79685f219854652421e88459c796bf27ccaf004b" => :mojave
-    sha256 "7efcb17eada7400912053e7fc0e4851d2f3346278238f6be3bc3a854af6ee339" => :high_sierra
+    sha256 "0ef1cc1e395235f91e764036711e8ae2027c3f30fde86f1396b885d81f377866" => :big_sur
+    sha256 "3e4caa9429a0d2274e8c2ffeec79081a043a6c5c0ebba19c5f8c0fa338cfe9f3" => :catalina
+    sha256 "47a1cf6e49bd6d477d9c41a5296a8362f5a576ce868ead4239adbf5297d7cdc4" => :mojave
+    sha256 "03325c7a870a032d3ec25877aab7da989bf6212cb5329e61625d8624d9b1f672" => :high_sierra
   end
 
   depends_on "gnupg" => :build
   depends_on "go" => :build
   depends_on "repo" => :build
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   def install
     # Cache the vendored Go dependencies gathered by depot_tools' `repo` command

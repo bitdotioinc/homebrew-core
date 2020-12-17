@@ -3,9 +3,10 @@ class GraphTool < Formula
 
   desc "Efficient network analysis for Python 3"
   homepage "https://graph-tool.skewed.de/"
-  url "https://downloads.skewed.de/graph-tool/graph-tool-2.33.tar.bz2"
-  sha256 "f07025160a8cb376551508c6d8aa5fd05a146c67c4706ea4635d2766aa5c9fcb"
-  license "GPL-3.0"
+  url "https://downloads.skewed.de/graph-tool/graph-tool-2.35.tar.bz2"
+  sha256 "2395823c33d4d12cc8465782a640b99ec7bddf074a7a02e9c1eab4eb3f8ce9ba"
+  license "LGPL-3.0"
+  revision 3
 
   livecheck do
     url "https://downloads.skewed.de/graph-tool/"
@@ -13,8 +14,9 @@ class GraphTool < Formula
   end
 
   bottle do
-    sha256 "c87595bb20ff5868ca1b32ee16baf7cad07c08124b4bb209bf9fb275821cb661" => :catalina
-    sha256 "04e48635f2b6d233525a3df163acbe1fc9b6ee5859892c2a2d46afa631ae8fd3" => :mojave
+    sha256 "7b306992341901769282d80ae82de613fdbe9091cad02f17a0bb72adc52cc301" => :big_sur
+    sha256 "1f0882fe071c1784cd723bd6c8fbf0b684803d3a51d3fb0d88bd5a9f95f11ebc" => :catalina
+    sha256 "b23c8ca241e78a0cf6aa882284f64580329121874c37b0142772a4bc9c60c323" => :mojave
   end
 
   depends_on "autoconf" => :build
@@ -23,7 +25,7 @@ class GraphTool < Formula
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "boost-python3"
-  depends_on "cairomm"
+  depends_on "cairomm@1.14"
   depends_on "cgal"
   depends_on "google-sparsehash"
   depends_on "gtk+3"
@@ -32,7 +34,7 @@ class GraphTool < Formula
   depends_on "numpy"
   depends_on "py3cairo"
   depends_on "pygobject3"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "scipy"
 
   resource "Cycler" do
@@ -70,10 +72,15 @@ class GraphTool < Formula
     sha256 "30f610279e8b2578cab6db20741130331735c781b56053c59c4076da27f06b66"
   end
 
+  resource "zstandard" do
+    url "https://files.pythonhosted.org/packages/1b/a7/97b157508923ec0c2d27cdc23003cb096fa50ae38ded6e54adcbca3dca35/zstandard-0.14.0.tar.gz"
+    sha256 "9052398da52e8702cf9929999c8986b0f68b18c793e309cd8dff5cb7863d7652"
+  end
+
   def install
     system "autoreconf", "-fiv"
-    xy = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
-    venv = virtualenv_create(libexec, Formula["python@3.8"].opt_bin/"python3")
+    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
+    venv = virtualenv_create(libexec, Formula["python@3.9"].opt_bin/"python3")
 
     resources.each do |r|
       venv.pip_install_and_link r
@@ -110,6 +117,6 @@ class GraphTool < Formula
       assert g.num_edges() == 1
       assert g.num_vertices() == 2
     EOS
-    system Formula["python@3.8"].opt_bin/"python3", "test.py"
+    system Formula["python@3.9"].opt_bin/"python3", "test.py"
   end
 end

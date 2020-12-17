@@ -1,15 +1,20 @@
 class PythonAT37 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.7.8/Python-3.7.8.tar.xz"
-  sha256 "43a543404b363f0037f89df8478f19db2dbc0d6f3ffee310bc2997fa71854a63"
+  url "https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tar.xz"
+  sha256 "91923007b05005b5f9bd46f3b9172248aea5abc1543e8a636d59e629c3331b01"
   license "Python-2.0"
-  revision 1
+  revision 2
+
+  livecheck do
+    url "https://www.python.org/ftp/python/"
+    regex(%r{href=.*?v?(3\.7(?:\.\d+)*)/?["' >]}i)
+  end
 
   bottle do
-    sha256 "820f16256e3e36b6ef99538edb4b825b223ca0a8a906dc6512a1e268b39c7b0a" => :catalina
-    sha256 "e87ae74ceefe52ba923a3a604354bd6662ffa1a5e5f89461f1194c601e8dde4d" => :mojave
-    sha256 "e765c73c931d40ed8145507415ad6e511c18a615827e087d3e9c8b7a47700324" => :high_sierra
+    sha256 "936bd387e48d2dea1b743eb2812d2799f40cefbb4a4c85d1c6be8657f99f8c92" => :big_sur
+    sha256 "16b18528550d8d787456711ec1ed056cc3d6d5d6be6eb34653e20df1987ba033" => :catalina
+    sha256 "7bbb9383f3ad61757e806bae4f858ac8d46b476e18e1490209daa05bcf544311" => :mojave
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -54,6 +59,16 @@ class PythonAT37 < Formula
   resource "wheel" do
     url "https://files.pythonhosted.org/packages/75/28/521c6dc7fef23a68368efefdcd682f5b3d1d58c2b90b06dc1d0b805b51ae/wheel-0.34.2.tar.gz"
     sha256 "8788e9155fe14f54164c1b9eb0a319d98ef02c160725587ad60f14ddc57b6f96"
+  end
+
+  resource "importlib-metadata" do
+    url "https://files.pythonhosted.org/packages/56/1f/74c3e29389d34feea2d62ba3de1169efea2566eb22e9546d379756860525/importlib_metadata-2.0.0.tar.gz"
+    sha256 "77a540690e24b0305878c37ffd421785a6f7e53c8b5720d211b211de8d0e95da"
+  end
+
+  resource "zipp" do
+    url "https://files.pythonhosted.org/packages/ce/b0/757db659e8b91cb3ea47d90350d7735817fe1df36086afc77c1c4610d559/zipp-3.4.0.tar.gz"
+    sha256 "ed5eee1974372595f9e416cc7bbeeb12335201d8081ca8a0743c954d4446e5cb"
   end
 
   def install
@@ -154,7 +169,7 @@ class PythonAT37 < Formula
     # Remove the site-packages that Python created in its Cellar.
     (prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/site-packages").rmtree
 
-    %w[setuptools pip wheel].each do |r|
+    %w[setuptools pip wheel importlib-metadata zipp].each do |r|
       (libexec/r).install resource(r)
     end
 
@@ -203,7 +218,7 @@ class PythonAT37 < Formula
     rm_rf Dir["#{site_packages}/distribute*"]
     rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
 
-    %w[setuptools pip wheel].each do |pkg|
+    %w[setuptools pip wheel importlib-metadata zipp].each do |pkg|
       (libexec/pkg).cd do
         system bin/"python3", "-s", "setup.py", "--no-user-cfg", "install",
                "--force", "--verbose", "--install-scripts=#{bin}",
@@ -278,9 +293,9 @@ class PythonAT37 < Formula
           long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/#{xy}/lib/python#{xy}/site-packages')
           sys.path = [long_prefix.sub('#{HOMEBREW_PREFIX/"lib/python#{xy}/site-packages"}', p) for p in sys.path]
 
-          # Set the sys.executable to use the opt_prefix, unless explicitly set
-          # with PYTHONEXECUTABLE:
-          if 'PYTHONEXECUTABLE' not in os.environ:
+          # Set the sys.executable to use the opt_prefix. Only do this if PYTHONEXECUTABLE is not
+          # explicitly set and we are not in a virtualenv:
+          if 'PYTHONEXECUTABLE' not in os.environ and sys.prefix == sys.base_prefix:
               sys.executable = '#{opt_bin}/python#{xy}'
     EOS
   end

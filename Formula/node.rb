@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v14.9.0/node-v14.9.0.tar.gz"
-  sha256 "413d91191bd69ce1cfdb956116461db4f70f2019f10f78802db545ad3e341b39"
+  url "https://nodejs.org/dist/v15.4.0/node-v15.4.0.tar.gz"
+  sha256 "b199796544d988b4bb61e38584cd097744e073fa0559cbec772858d91ce4649f"
   license "MIT"
   head "https://github.com/nodejs/node.git"
 
@@ -13,32 +13,30 @@ class Node < Formula
 
   bottle do
     cellar :any
-    sha256 "df9d87a46dfa38140b2742ab1b00121825b92aabbcd98be2b8c7b4900752f749" => :catalina
-    sha256 "f9c186c264f8b4511b981a7332ffaddd6e58cab2276c45e87c0e75d35a55e43f" => :mojave
-    sha256 "2996971a08a2db37f99390a82e5c94850f8dca1006827ce9669ec96bd249b64e" => :high_sierra
+    sha256 "96ab3e3d127c46c67423db6208300774910b4e338c87fc0a3d80f0e3792742c7" => :big_sur
+    sha256 "690c2aa209cb286ab0d7492e1fdcb8e33d3e21c17d6a424a026461cd09d399db" => :arm64_big_sur
+    sha256 "9fd658c97b8b6d2c075b72f3bd683202e83dcc6926bb7c2a784d1c1a595f0739" => :catalina
+    sha256 "2d8c7769ecc75808e6b04b17ba23d7eb40a14af28d8f587cb2ad73d8b48cf755" => :mojave
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "icu4c"
 
   # We track major/minor from upstream Node releases.
   # We will accept *important* npm patch releases when necessary.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-6.14.7.tgz"
-    sha256 "510091d3b42b60ab75c9d46cebb769ee5204d58d948a61bf913455437fa768c5"
+    url "https://registry.npmjs.org/npm/-/npm-7.0.15.tgz"
+    sha256 "da7b5b0f6750e918baa741b465115f715fac9aa265e85166c3513e44d7326c2a"
   end
 
   def install
     # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = Formula["python@3.8"].opt_bin/"python3"
+    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
 
     # Never install the bundled "npm", always prefer our
     # installation from tarball for better packaging control.
     args = %W[--prefix=#{prefix} --without-npm --with-intl=system-icu]
-    # Remove `--openssl-no-asm` workaround when upstream releases a fix
-    # See also: https://github.com/nodejs/node/issues/34043
-    args << "--openssl-no-asm" if Hardware::CPU.arm?
     args << "--tag=head" if build.head?
 
     system "./configure", *args
@@ -49,6 +47,8 @@ class Node < Formula
 
     bootstrap = buildpath/"npm_bootstrap"
     bootstrap.install resource("npm")
+    # These dirs must exists before npm install.
+    mkdir_p libexec/"lib"
     system "node", bootstrap/"bin/npm-cli.js", "install", "-ddd", "--global",
             "--prefix=#{libexec}", resource("npm").cached_download
 

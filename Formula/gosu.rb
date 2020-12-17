@@ -1,26 +1,25 @@
 class Gosu < Formula
   desc "Pragmatic language for the JVM"
   homepage "https://gosu-lang.github.io/"
-  url "https://github.com/gosu-lang/gosu-lang/archive/v1.14.18.tar.gz"
-  sha256 "b6bf6967ee127b727b4be56aaa02bc807340d4663e00dafd9fd8a6c1a5cd6958"
+  url "https://github.com/gosu-lang/gosu-lang/archive/v1.14.20.tar.gz"
+  sha256 "56c4782087c20ed9a5d6e8912d128c3f87d6906d74c0b75d3b63d7fabd705e73"
   license "Apache-2.0"
   head "https://github.com/gosu-lang/gosu-lang.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f727564002df8588a711228ee9da4ff92636f32cbaac3f851d4840e9c6330649" => :catalina
-    sha256 "ecd68c00bfcd4384bfb10d8ef05edb7e63b3835405514233dff3899766db4dff" => :mojave
-    sha256 "45f6fc1936fc923213326882d70aaec798e0c1cffb7b33d05f9d6f1cc0e75b6c" => :high_sierra
+    sha256 "693e5dc4f4424b3a38797ca8cfefebee998c157abc23e7f2aee9d86f719f3812" => :big_sur
+    sha256 "64abc4230c722c02801160e8ed6640c6dba29817ca80f3832f58e47e2ceb58ad" => :catalina
+    sha256 "705ebbe2c1b1aafb4ce5995b132b7e65471ab5e24d4889981d1779018b7e610b" => :mojave
   end
 
   depends_on "maven" => :build
-  depends_on java: "1.8"
+  depends_on "openjdk@8"
 
   skip_clean "libexec/ext"
 
   def install
-    cmd = Language::Java.java_home_cmd("1.8")
-    ENV["JAVA_HOME"] = Utils.safe_popen_read(cmd).chomp
+    ENV["JAVA_HOME"] = Language::Java.java_home("1.8")
 
     system "mvn", "package"
     libexec.install Dir["gosu/target/gosu-#{version}-full/gosu-#{version}/*"]

@@ -1,22 +1,22 @@
 class Mosquitto < Formula
   desc "Message broker implementing the MQTT protocol"
   homepage "https://mosquitto.org/"
-  url "https://mosquitto.org/files/source/mosquitto-1.6.12.tar.gz"
-  sha256 "548d73d19fb787dd0530334e398fd256ef3a581181678488a741a995c4f007fb"
+  url "https://mosquitto.org/files/source/mosquitto-2.0.2.tar.gz"
+  sha256 "5ea9ebf0a5ed3e95cecd75f30ebcf84f054584eff5617ac0f2e60428d3ad9707"
   # dual-licensed under EPL-1.0 and EDL-1.0 (Eclipse Distribution License v1.0),
   # EDL-1.0 is not in the SPDX list
   license "EPL-1.0"
+  revision 1
 
   livecheck do
-    url "https://mosquitto.org/files/source/"
+    url "https://mosquitto.org/download/"
     regex(/href=.*?mosquitto[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    cellar :any
-    sha256 "385bec6fa5729c75da5f86e33be78f38d675fa9fd5a95b5065305fda0253cef0" => :catalina
-    sha256 "e2c98b06302c46381e05f7b16bb52cfff9f04555ca4b9f5987764e0429018874" => :mojave
-    sha256 "32fbadbfcbc5a741c650559e056d1d61e0cdc869abc76674e7df5b1f08879e5f" => :high_sierra
+    sha256 "9d6edef26665aebd822a31bd400632ca142d33134f5e94425ed3f8cbc6adfb48" => :big_sur
+    sha256 "21b536463afd47c3614cc6363be117e8e46b0a88b6cab086a4765577f1a1468b" => :catalina
+    sha256 "b85113a27b4ad9a8543327eb6f77c100ee7af79282b1516054a330cdd2178336" => :mojave
   end
 
   depends_on "cmake" => :build

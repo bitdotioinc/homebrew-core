@@ -1,11 +1,12 @@
 class Openssh < Formula
   desc "OpenBSD freely-licensed SSH connectivity tools"
   homepage "https://www.openssh.com/"
-  url "https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.3p1.tar.gz"
-  mirror "https://mirror.vdms.io/pub/OpenBSD/OpenSSH/portable/openssh-8.3p1.tar.gz"
-  version "8.3p1"
-  sha256 "f2befbe0472fe7eb75d23340eb17531cb6b3aac24075e2066b41f814e12387b2"
+  url "https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.4p1.tar.gz"
+  mirror "https://mirror.vdms.io/pub/OpenBSD/OpenSSH/portable/openssh-8.4p1.tar.gz"
+  version "8.4p1"
+  sha256 "5a01d22e407eb1c05ba8a8f7c654d388a13e9f226e4ed33bd38748dafa1d2b24"
   license "SSH-OpenSSH"
+  revision 1
 
   livecheck do
     url "https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/"
@@ -13,9 +14,10 @@ class Openssh < Formula
   end
 
   bottle do
-    sha256 "3f5a9e5b5bbf82235fb47f893b71f514b10adc344c7d3c0f57b3837cfa50458f" => :catalina
-    sha256 "d7b58684502abed77b364c5742ea4a1682e29e2df08d86a1ff6f249409e4b085" => :mojave
-    sha256 "a096eab677ff45aa7e4e1b7da4f2a0f7ebf34ff579d6bc679858cda8d482b6c8" => :high_sierra
+    sha256 "81b1bc06acd742b34d7052d80a6b2abb121776a1329a2e030a381344f3d92098" => :big_sur
+    sha256 "a0f055aee213648631e6e74839f99a813752272c580d77dd6b0e915e73f81a75" => :catalina
+    sha256 "d155b770a00d936c956ed27536cc4e8ab3ef331279f63d84c70b28133cb263fa" => :mojave
+    sha256 "88b6002bde6b63e6b7b64c626c71b0d34f86b5e79c0398802d940c4b5bbd5f08" => :high_sierra
   end
 
   # Please don't resubmit the keychain patch option. It will never be accepted.

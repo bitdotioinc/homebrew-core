@@ -2,21 +2,22 @@ class Micropython < Formula
   desc "Python implementation for microcontrollers and constrained systems"
   homepage "https://www.micropython.org/"
   url "https://github.com/micropython/micropython.git",
-      tag:      "v1.12",
-      revision: "1f371947309c5ea6023b6d9065415697cbc75578"
+      tag:      "v1.13",
+      revision: "b0932fcf2e2f9a81abf7737ed4b2573bd9ad4a49"
   license "MIT"
-  revision 2
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "af98b434dd38d24a28541b3bdc168a689b914b425aa80a6bf384c18862ed3737" => :catalina
-    sha256 "dff6248820013f3f31408252de971418ac26f6eacd20791c6eaeb9527ea552f2" => :mojave
-    sha256 "19800fe474da81062c005732c1dd6c3e66e6a2a8e04f38a4a69ce8513808895c" => :high_sierra
+    sha256 "fab7a3acdbaa60a27d55130096af91d1573b384150ea225c5cfe5a3ae45f5c31" => :big_sur
+    sha256 "593be38355167b300f1ccd41747e376450bbdea12e6e2abf9f299babd627bd54" => :catalina
+    sha256 "84ca89452928c450a8e93cef50606760cb651ce7ed357d1713a53581d4afb915" => :mojave
+    sha256 "f0812daab9555d0f3668463a7327a763639257103925c253923be18faa721a04" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
   depends_on "libffi" # Requires libffi v3 closure API; macOS version is too old
-  depends_on "python@3.8" # Requires python3 executable
+  depends_on "python@3.9" # Requires python3 executable
 
   def install
     # Build mpy-cross before building the rest of micropython. Build process expects executable at

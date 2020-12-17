@@ -2,8 +2,8 @@ class KubernetesCli < Formula
   desc "Kubernetes command-line interface"
   homepage "https://kubernetes.io/"
   url "https://github.com/kubernetes/kubernetes.git",
-      tag:      "v1.19.1",
-      revision: "206bcadf021e76c27513500ca24182692aabd17e"
+      tag:      "v1.20.0",
+      revision: "af46c47ce925f4c4ad5cc8d1fca46c7b77d13b38"
   license "Apache-2.0"
   head "https://github.com/kubernetes/kubernetes.git"
 
@@ -14,9 +14,9 @@ class KubernetesCli < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0038cd9ee8b1f266df2e1842da768faac6a28ae73336a55631a0738ddda64014" => :catalina
-    sha256 "09fc4442ff78ea737f343e25c22fa9dbd30b4e84fe2f407e1b6d9ba82b41dae4" => :mojave
-    sha256 "92c1c37bd26196b8eea55418ee31f418ebe0a41bc4ad024198ad175050eef818" => :high_sierra
+    sha256 "6bd48c9cb824e125ff176e333a7310551beab9e9a88fff0cfcef841a8d5c9a52" => :big_sur
+    sha256 "7794b8f4c4cdf40adeea824c86ec5cac32f32c34c211fca428aab05390d734a5" => :catalina
+    sha256 "f3db1ff9a3a5411b39a99f899a5aaf46a045bacfcf4e15ada679945d9627dbd0" => :mojave
   end
 
   depends_on "go" => :build

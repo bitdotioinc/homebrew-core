@@ -1,8 +1,9 @@
 class Sbcl < Formula
   desc "Steel Bank Common Lisp system"
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/2.0.7/sbcl-2.0.7-source.tar.bz2"
-  sha256 "f596eed82c50abdf48dee5aba0bc39f62d158be29d2e1306f2b0b804219c617c"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/2.0.11/sbcl-2.0.11-source.tar.bz2"
+  sha256 "87d2aa53cef092119a1c8b2f3de48d209375a674c3b60e08596838013bd7971d"
+  license all_of: [:public_domain, "MIT", "Xerox", "BSD-3-Clause"]
 
   livecheck do
     url :stable
@@ -10,22 +11,23 @@ class Sbcl < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "07d7dfed05a86aec933840d64ec534dc581cc0059f10b389d120044219515510" => :catalina
-    sha256 "ec883b7f67545d74f517055fa49864eba2158ea2fc66791151f5c44fde642d4c" => :mojave
-    sha256 "54364f8aa91c03efced4f014618360ffd4cc9627ca0a9757faa4019703476e8c" => :high_sierra
+    sha256 "e6a0d4ba798d435a261e93062461a15801a42af1cab9344cdeab824b00112318" => :big_sur
+    sha256 "82afe9ba6dad370ba0895be28b3591eeae9bb88fbba93a916637cea1e6b140c3" => :catalina
+    sha256 "a8eadb8a7b8a092995d0f29f4b68cf5450c070dd41bdf3f9f15e4907b516d48b" => :mojave
   end
 
   uses_from_macos "zlib"
 
   # Current binary versions are listed at https://sbcl.sourceforge.io/platform-table.html
   resource "bootstrap64" do
-    url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.11/sbcl-1.2.11-x86-64-darwin-binary.tar.bz2"
-    sha256 "057d3a1c033fb53deee994c0135110636a04f92d2f88919679864214f77d0452"
-  end
-
-  patch :p0 do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/c5ffdb1118ce0c125c42ab396fa244a7aa01f863/sbcl/patch-make-doc.diff"
-    sha256 "7c21c89fd6ec022d4f17670c3253bd33a4ac2784744e4c899c32fbe27203d87e"
+    on_macos do
+      url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.11/sbcl-1.2.11-x86-64-darwin-binary.tar.bz2"
+      sha256 "057d3a1c033fb53deee994c0135110636a04f92d2f88919679864214f77d0452"
+    end
+    on_linux do
+      url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.3.3/sbcl-1.3.3-x86-64-linux-binary.tar.bz2"
+      sha256 "e8b1730c42e4a702f9b4437d9842e91cb680b7246f88118c7443d7753e61da65"
+    end
   end
 
   def install

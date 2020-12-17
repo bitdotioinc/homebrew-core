@@ -1,8 +1,8 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
   homepage "https://curl.haxx.se/"
-  url "https://curl.haxx.se/download/curl-7.72.0.tar.bz2"
-  sha256 "ad91970864102a59765e20ce16216efc9d6ad381471f7accceceab7d905703ef"
+  url "https://curl.haxx.se/download/curl-7.74.0.tar.bz2"
+  sha256 "0f4d63e6681636539dc88fa8e929f934cd3a840c46e0bf28c73be11e521b77a5"
   license "curl"
 
   livecheck do
@@ -11,10 +11,9 @@ class Curl < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "cf0b3a7fa1d1608caad2c0a9c9a8336f354e5376c827205d65cd17768dea62d8" => :catalina
-    sha256 "49f8082e1253de80b4178a30a3c1ea368d438139584ac4aa2b837e7568179404" => :mojave
-    sha256 "38ec51342cdf8105a69780cede9c6c28164d112119791d318610893ddf77e314" => :high_sierra
+    sha256 "4e85f5e083888ddb215cc7cb445748b5a35baf1853214b2d9ef11ba2c1cc89e0" => :big_sur
+    sha256 "35edb3fd3ce31448b290ce441d43235d004e36de4b8f299e8a5c2e2b5118b7fe" => :catalina
+    sha256 "36496011f345bd36b4ca83aca7bca3efbc5d30da0b7b039ab847b64aca5ca48d" => :mojave
   end
 
   head do
@@ -28,24 +27,38 @@ class Curl < Formula
   keg_only :provided_by_macos
 
   depends_on "pkg-config" => :build
+  depends_on "brotli"
+  depends_on "libidn2"
+  depends_on "libmetalink"
+  depends_on "libssh2"
+  depends_on "nghttp2"
+  depends_on "openldap"
+  depends_on "openssl@1.1"
+  depends_on "rtmpdump"
+  depends_on "zstd"
 
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "openssl@1.1"
-  end
 
   def install
     system "./buildconf" if build.head?
 
+    openssl = Formula["openssl@1.1"]
     args = %W[
       --disable-debug
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
+      --with-ssl=#{openssl.opt_prefix}
+      --with-ca-bundle=#{openssl.pkgetc}/cert.pem
+      --with-ca-path=#{openssl.pkgetc}/certs
       --with-secure-transport
-      --without-ca-bundle
-      --without-ca-path
+      --with-default-ssl-backend=openssl
+      --with-gssapi
+      --with-libidn2
+      --with-libmetalink
+      --with-librtmp
+      --with-libssh2
+      --without-libpsl
     ]
 
     system "./configure", *args

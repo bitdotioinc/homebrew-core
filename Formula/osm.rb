@@ -1,15 +1,15 @@
 class Osm < Formula
   desc "Open Service Mesh (OSM)"
   homepage "https://openservicemesh.io/"
-  url "https://github.com/openservicemesh/osm/archive/v0.3.0.tar.gz"
-  sha256 "d4b9fa2789fd8dfadae9df5a8a80d3e6db24cca7629a52b0d61608761ae70d73"
-  license "MIT"
+  url "https://github.com/openservicemesh/osm/archive/v0.6.0.tar.gz"
+  sha256 "303471eb096ffcedfb433d8531ab685aacd587f43a86021561d38d2a42fa523d"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1d919080c06f48497aa61afa3218a14e16deb130de69237b55e9d55c18bd9cd5" => :catalina
-    sha256 "6d61028e903da81e664ee9994c3948353303d52212f1c1e894af0baa15b259ca" => :mojave
-    sha256 "08c329ad3fa81cd0da5e94015d462c35cb7764f7a1e490bdac51e8d3021ebbb3" => :high_sierra
+    sha256 "2ea4693e7560013d61b5173c7c10207c051926812c06f9173be36bc484ac71c6" => :big_sur
+    sha256 "e7a7990a6378f86e7faa9f323dbf74b0125ca21939ddfa334ab149d0f97b7c6c" => :catalina
+    sha256 "e6cc48d691a875b8e21833da92821de372ecbd4f6a424da66429c20f751d819c" => :mojave
   end
 
   depends_on "go" => :build
@@ -20,6 +20,6 @@ class Osm < Formula
   end
 
   test do
-    assert_match "Error: Error fetching kubeconfig", shell_output("#{bin}/osm namespace list 2>&1", 1)
+    assert_match "Error: Could not list namespaces related to osm", shell_output("#{bin}/osm namespace list 2>&1", 1)
   end
 end

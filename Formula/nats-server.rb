@@ -1,23 +1,24 @@
 class NatsServer < Formula
   desc "Lightweight cloud messaging system"
   homepage "https://nats.io"
-  url "https://github.com/nats-io/nats-server/archive/v2.1.7.tar.gz"
-  sha256 "2e571b8c23c5ba1b083b2b4822bb2b4aca99692112a0cd4212237a92d5aa1e2e"
+  url "https://github.com/nats-io/nats-server/archive/v2.1.9.tar.gz"
+  sha256 "643b3688063f9a626798ccdac419fc6dd814219113559c9995556cbd12d28049"
   license "Apache-2.0"
   head "https://github.com/nats-io/nats-server.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "75373587ef838b12f3ace83a39e8987496d551c786711ccd46c4f1d3c038d44c" => :catalina
-    sha256 "66a6cb75b86ccc17aebd7d1494de0fdf06b880186a0e1cbac2eb131e870cf461" => :mojave
-    sha256 "2c3f3a8192cc2358a30c0a8d6bccc1bd6faf2f4e49c726dfb8d71606496ea6f1" => :high_sierra
+    rebuild 1
+    sha256 "48e5ce9c0aac69f8ca0f27db652227900df5c772472bb391b8702457ecfe0caf" => :big_sur
+    sha256 "42c81987bbcffffee20ece6c4534a77612496c2b082723681f4468eab7a0fd61" => :catalina
+    sha256 "c5e96271283bee73b7ff9cfa68f6d1f566765bf2e41374c67ae66c51e502e2d8" => :mojave
+    sha256 "e4d101f7ea1263dabd9a95a3b90925082a003274d1a45c2168b4bf7bbb8a1fa1" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"nats-server"
-    prefix.install_metafiles
+    system "go", "build", "-ldflags", "-s -w", *std_go_args
   end
 
   plist_options manual: "nats-server"
@@ -42,20 +43,16 @@ class NatsServer < Formula
   end
 
   test do
-    pid = fork do
+    port = free_port
+    fork do
       exec bin/"nats-server",
-           "--port=8085",
+           "--port=#{port}",
            "--pid=#{testpath}/pid",
            "--log=#{testpath}/log"
     end
     sleep 3
 
-    begin
-      assert_match version.to_s, shell_output("curl localhost:8085")
-      assert_predicate testpath/"log", :exist?
-    ensure
-      Process.kill "SIGINT", pid
-      Process.wait pid
-    end
+    assert_match version.to_s, shell_output("curl localhost:#{port}")
+    assert_predicate testpath/"log", :exist?
   end
 end

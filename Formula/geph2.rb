@@ -1,16 +1,16 @@
 class Geph2 < Formula
   desc "Modular Internet censorship circumvention system"
   homepage "https://geph.io"
-  url "https://github.com/geph-official/geph2/archive/v0.22.2.tar.gz"
-  sha256 "dd1ccd9c5aac06b46d57b9ba7aab00b6f42b3ec8fde85d00f09e2e474e7c1dc1"
+  url "https://github.com/geph-official/geph2/archive/v0.22.5.tar.gz"
+  sha256 "4afca74d97c890061d34c8885258d6f4a48c63e69c7e8b56719fdae68c4f306b"
   license "GPL-3.0-only"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "6a596d4f5c73bdaf166874f9ad4c8721d8ccbbe39da45541b00293a4b55675d1" => :catalina
-    sha256 "6a596d4f5c73bdaf166874f9ad4c8721d8ccbbe39da45541b00293a4b55675d1" => :mojave
-    sha256 "6a596d4f5c73bdaf166874f9ad4c8721d8ccbbe39da45541b00293a4b55675d1" => :high_sierra
+    sha256 "7d6622ad8567fda7a73bd85ae3ca5229bd83c6289d3e56aa2b7c6aa67eb0c621" => :big_sur
+    sha256 "c289cb8558247b38814c51298da6ba86ed16ab0f9ee49eeb097464aee5702189" => :catalina
+    sha256 "8133f7174bdd1218ad3799543b85d2e932ffab60b89181ce209b314c57847c9d" => :mojave
+    sha256 "392a4199771a8ff4c5aa1c45bd3225640d9949aa1e2a9af915e488093fe84ff9" => :high_sierra
   end
 
   depends_on "go" => :build

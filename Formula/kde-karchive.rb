@@ -1,14 +1,20 @@
 class KdeKarchive < Formula
   desc "Reading, creating, and manipulating file archives"
   homepage "https://api.kde.org/frameworks/karchive/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.73/karchive-5.73.0.tar.xz"
-  sha256 "25481ebbba8f58d9ab45bde804ab0d873c45550b482e27e7856b362cd9aa434f"
+  url "https://download.kde.org/stable/frameworks/5.77/karchive-5.77.0.tar.xz"
+  sha256 "2239af811b9205d9f4486791f4b25ff5ea299b3873021a646e1c8b9d44c2be36"
+  license all_of: [
+    "BSD-2-Clause",
+    "LGPL-2.0-only",
+    "LGPL-2.0-or-later",
+    any_of: ["LGPL-2.0-only", "LGPL-3.0-only"],
+  ]
   head "https://invent.kde.org/frameworks/karchive.git"
 
   bottle do
-    sha256 "5d5993edc094152be0659cf0c8f6bec828aa8f0ceb187644958bd80936af3c67" => :catalina
-    sha256 "cd68910063856432b3f983a0d9ee7eb8faff9d0328221dded1c89daef11d8bdb" => :mojave
-    sha256 "79f0a91cc9dcaf24a033b23c4b46269244a4f4642ec6c68756e29b735aa9e2aa" => :high_sierra
+    sha256 "f5cde4cf769c9ade2f09b8e51eed847ee4af926f898b49cb8c533d4b67de59af" => :big_sur
+    sha256 "e284dad7930966c54df3f93901f55842654ad498a380259b15239fd3e1aa4930" => :catalina
+    sha256 "c8f734a6345b440574e9263d8007b7359987e4236258e4fe0e72aa6ec3f55ae6" => :mojave
   end
 
   depends_on "cmake" => [:build, :test]

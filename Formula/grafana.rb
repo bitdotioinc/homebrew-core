@@ -1,16 +1,16 @@
 class Grafana < Formula
   desc "Gorgeous metric visualizations and dashboards for timeseries databases"
   homepage "https://grafana.com"
-  url "https://github.com/grafana/grafana/archive/v7.1.5.tar.gz"
-  sha256 "7ae69011674a5b6a792e8ec84c93e8be9d50ad2e995cc63f3508d0b2e7acb754"
+  url "https://github.com/grafana/grafana/archive/v7.3.5.tar.gz"
+  sha256 "c63cf5b24733261386777a91e34b2d7646965e4a9adcea64dca519c5bc2cbede"
   license "Apache-2.0"
   head "https://github.com/grafana/grafana.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4aab29ec123a0722f956fd1c57de26f13b8ed4533f28fbc7b99cb6faff3cede8" => :catalina
-    sha256 "24256ff01c8ab97a09d2055f4bbd826ed61649ccfd74fc390ad02462fae3e745" => :mojave
-    sha256 "ced76b82ec518833deaa4ee1011098c4e1a305e0ef94b170cd85f2765ab3a194" => :high_sierra
+    sha256 "a103d949b41c57fa2dd19adee85cadf3e3635e9d11c24a9f7c906c90b24b5d86" => :big_sur
+    sha256 "ea0caebf54a5f6ecc76a7a3bd3ffb162e09072bb8755fa42bb693e4344b83f4c" => :catalina
+    sha256 "4fc4d9a273ea336fffbc2a331bb2ddf4e6851227d8db38f95d98ded30cd7c73a" => :mojave
   end
 
   depends_on "go" => :build
@@ -25,26 +25,25 @@ class Grafana < Formula
   end
 
   def install
-    ENV["GOPATH"] = buildpath
-    grafana_path = buildpath/"src/github.com/grafana/grafana"
-    grafana_path.install buildpath.children
+    system "go", "run", "build.go", "build"
 
-    cd grafana_path do
-      system "go", "run", "build.go", "build"
+    system "yarn", "install", "--ignore-engines"
 
-      system "yarn", "install", "--ignore-engines"
+    system "node_modules/grunt-cli/bin/grunt", "build"
 
-      system "node_modules/grunt-cli/bin/grunt", "build"
-
+    on_macos do
       bin.install "bin/darwin-amd64/grafana-cli"
       bin.install "bin/darwin-amd64/grafana-server"
-      (etc/"grafana").mkpath
-      cp("conf/sample.ini", "conf/grafana.ini.example")
-      etc.install "conf/sample.ini" => "grafana/grafana.ini"
-      etc.install "conf/grafana.ini.example" => "grafana/grafana.ini.example"
-      pkgshare.install "conf", "public", "tools"
-      prefix.install_metafiles
     end
+    on_linux do
+      bin.install "bin/linux-amd64/grafana-cli"
+      bin.install "bin/linux-amd64/grafana-server"
+    end
+    (etc/"grafana").mkpath
+    cp("conf/sample.ini", "conf/grafana.ini.example")
+    etc.install "conf/sample.ini" => "grafana/grafana.ini"
+    etc.install "conf/grafana.ini.example" => "grafana/grafana.ini.example"
+    pkgshare.install "conf", "public", "tools"
   end
 
   def post_install

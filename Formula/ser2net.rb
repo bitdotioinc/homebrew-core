@@ -1,8 +1,8 @@
 class Ser2net < Formula
   desc "Allow network connections to serial ports"
   homepage "https://ser2net.sourceforge.io"
-  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.2.1.tar.gz"
-  sha256 "a0d84c71a6bc75d73737461708f964084c6bbfe0cc1ef4725b4cd9cc35de14c0"
+  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.2.3.tar.gz"
+  sha256 "d63448d10064419f1783fbb04d0a95461d54d6b17cf50c9d33a63cbf0c732f37"
   license "GPL-2.0-only"
 
   livecheck do
@@ -12,9 +12,10 @@ class Ser2net < Formula
 
   bottle do
     cellar :any
-    sha256 "ae75303b4163f8f89366652ef7fafea5af5e158cb8f38b60ba11d71802f5b437" => :catalina
-    sha256 "05f13e77292479fa8f605d854fe853d57b078b3afee2038c1bdf12470e670664" => :mojave
-    sha256 "5888f6158084ff46d3d863ad468dd0a776bc84116a7100a85e5b9fbbfc781291" => :high_sierra
+    sha256 "daff205c7e62f7a0ad6ce064b5005f80f4e8362b17a2cb3ad87676174d683ba7" => :big_sur
+    sha256 "3477841d573b2612fff98a0dd1fa8ac46e3d43fdc110ddfd3767f6b433b344a4" => :catalina
+    sha256 "822c56bfd75eccbdcc8a447236c996ca146e5efe324eea471dbbc212611dc0be" => :mojave
+    sha256 "b11cef34c33d9f40ac677c034ff1557444d69735f3d5c88e8eaaffd135237d7d" => :high_sierra
   end
 
   depends_on "libyaml"

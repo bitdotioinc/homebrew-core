@@ -4,21 +4,22 @@ class Jmxtrans < Formula
   url "https://github.com/jmxtrans/jmxtrans/archive/jmxtrans-parent-271.tar.gz"
   sha256 "4aee400641eaeee7f33e1253043b1e644f8a9ec18f95ddc911ff8d35e2ca6530"
   license "MIT"
+  revision 1
   version_scheme 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "775e5443bc4570f5af09ff033609193c69c05d0ab80150cd67811dd1cc3a7e56" => :catalina
-    sha256 "8ef8263d13b6dc9d913cf2c13f4c75ecc63c20dab9c7d977d1ecfa0e86977eb1" => :mojave
-    sha256 "97546c9316f94cfa738e4bba4363adaa0b3838e3f8bc4aed6b8ae4822b57a182" => :high_sierra
+    sha256 "96faa92ad0e8117a5376a7fc24432027429caafe40c1d918cdb738089d1d9f28" => :big_sur
+    sha256 "5fee07fef9c31f52a0b00441e1a8e0bf2cb2d5c64e7d2349c7482c220516c816" => :catalina
+    sha256 "4c5edee577aca39e0559011f715169a1cc9e29f94439acfd9625242a6fef114c" => :mojave
+    sha256 "7968cefc0a3b6b81afc15121cef7025c32e540636b36e70691a0e752ed6abdf8" => :high_sierra
   end
 
   depends_on "maven" => :build
-  depends_on java: "1.8"
+  depends_on "openjdk@8"
 
   def install
-    cmd = Language::Java.java_home_cmd("1.8")
-    ENV["JAVA_HOME"] = Utils.safe_popen_read(cmd).chomp
+    ENV["JAVA_HOME"] = Formula["openjdk@8"].opt_prefix
 
     system "mvn", "package", "-DskipTests=true",
                              "-Dmaven.javadoc.skip=true",
@@ -40,7 +41,7 @@ class Jmxtrans < Formula
       doc.install Dir["doc/*"]
     end
 
-    (bin/"jmxtrans").write_env_script libexec/"jmxtrans.sh", Language::Java.java_home_env("1.8")
+    (bin/"jmxtrans").write_env_script libexec/"jmxtrans.sh", JAVA_HOME: Formula["openjdk@8"].opt_prefix
   end
 
   test do

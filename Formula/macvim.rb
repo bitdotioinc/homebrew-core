@@ -2,28 +2,35 @@
 class Macvim < Formula
   desc "GUI for vim, made for macOS"
   homepage "https://github.com/macvim-dev/macvim"
-  url "https://github.com/macvim-dev/macvim/archive/snapshot-165.tar.gz"
-  version "8.2-165"
-  sha256 "83b80b87dbd269d4e70d05f9327dc550585d1712331f266c7c10f2ac6cc3745a"
+  url "https://github.com/macvim-dev/macvim/archive/snapshot-166.tar.gz"
+  version "8.2-166"
+  sha256 "d9745f01c45fb2c1c99ce3b74bf1db6b888805bbb2d2a570bfb5742828ca601a"
   license "Vim"
-  revision 1
+  revision 2
   head "https://github.com/macvim-dev/macvim.git"
 
   bottle do
-    sha256 "4d713a53cbff8ff7ac148d46554e35a23cd524fdcc8fc90004c7ff1c6973ef1e" => :catalina
-    sha256 "48122702342ce1a199c69d00c9b01059e3613fd6f788dce7a9028309c7e8de54" => :mojave
-    sha256 "9ff46b5ec556f7d99aafab95239a34041cd2a36e6a97a96cb193a3bb3b1559f0" => :high_sierra
+    sha256 "1b1d92000e321cf0a172c26965404c738be5ac68c51203ee34164152528bd67a" => :big_sur
+    sha256 "f2e611635742434ebfaffa952918ac44bbb7c2da40782304b49ee7d847ce62a9" => :catalina
+    sha256 "c2c4ffb3a206a59ad3ba17dc70e3a46b5cd25d79cb297732cf8a653018ce2059" => :mojave
   end
 
   depends_on xcode: :build
   depends_on "cscope"
   depends_on "gettext"
   depends_on "lua"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "ruby"
 
   conflicts_with "vim",
     because: "vim and macvim both install vi* binaries"
+
+  # Fix for Big Sur bug, remove in next version
+  # https://github.com/macvim-dev/macvim/issues/1113
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/bd6637/macvim/big_sur.patch"
+    sha256 "1d3737d664b39f902d22da392869c66397b6b5d8a420d1a83f34f9ffaf963c38"
+  end
 
   def install
     # Avoid issues finding Ruby headers
@@ -67,7 +74,7 @@ class Macvim < Formula
     assert_match "+gettext", output
 
     # Simple test to check if MacVim was linked to Homebrew's Python 3
-    py3_exec_prefix = shell_output(Formula["python@3.8"].opt_bin/"python3-config --exec-prefix")
+    py3_exec_prefix = shell_output(Formula["python@3.9"].opt_bin/"python3-config --exec-prefix")
     assert_match py3_exec_prefix.chomp, output
     (testpath/"commands.vim").write <<~EOS
       :python3 import vim; vim.current.buffer[0] = 'hello python3'

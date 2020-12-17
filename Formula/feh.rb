@@ -1,8 +1,8 @@
 class Feh < Formula
   desc "X11 image viewer"
   homepage "https://feh.finalrewind.org/"
-  url "https://feh.finalrewind.org/feh-3.5.tar.bz2"
-  sha256 "388f9dcc8284031023364355e23a82c276e79ca614f2dcd64d2f927857a4531e"
+  url "https://feh.finalrewind.org/feh-3.6.1.tar.bz2"
+  sha256 "9b1edec52cbae97b17530cb5db10666abfb9983f51a5d820c89added6f7b1ea8"
   license "MIT-feh"
 
   livecheck do
@@ -11,14 +11,16 @@ class Feh < Formula
   end
 
   bottle do
-    sha256 "9ab3087cc24d59b54e032dd37f6d04ab367f6b4121576bd0c969303e9a341b35" => :catalina
-    sha256 "9240eda39c189b0c0c78d4cc53f11642dec23ea9e58b899ede9fa7dec5101a30" => :mojave
-    sha256 "e73c73c598430c28f998b14191009c237668c17e71f9ce4f32686e504bb21111" => :high_sierra
+    sha256 "e1d1f215337bc782e22c0be9bab3d21724bc39d5ed7e4e79ed08d409e9c1a862" => :big_sur
+    sha256 "c99b3a9f524feaae060b15d8d5707a95cc73345934d30038726be58519fe7855" => :catalina
+    sha256 "2f0068a025b73f6906e7235359cb0aed127ac236db2d89874f1c61e0465c62c3" => :mojave
   end
 
   depends_on "imlib2"
   depends_on "libexif"
-  depends_on :x11
+  depends_on "libx11"
+  depends_on "libxinerama"
+  depends_on "libxt"
 
   def install
     system "make", "PREFIX=#{prefix}", "verscmp=0", "exif=1"

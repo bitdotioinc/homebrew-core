@@ -3,7 +3,8 @@ class Gtksourceviewmm < Formula
   homepage "https://developer.gnome.org/gtksourceviewmm/"
   url "https://download.gnome.org/sources/gtksourceviewmm/2.10/gtksourceviewmm-2.10.3.tar.xz"
   sha256 "0000df1b582d7be2e412020c5d748f21c0e6e5074c6b2ca8529985e70479375b"
-  revision 6
+  license "LGPL-2.1-or-later"
+  revision 8
 
   livecheck do
     url :stable
@@ -12,10 +13,9 @@ class Gtksourceviewmm < Formula
 
   bottle do
     cellar :any
-    sha256 "11a112b786ce66947f6a9a0988d7ecafe62360492e0bab36490bb9bf63e50a17" => :catalina
-    sha256 "3cc10eb3380492729132b0518d0ad95ab81cd88ece8b871ddb139c0517f89a41" => :mojave
-    sha256 "4b1dfd6e1b0a4a78e33f49a4fdf95b1d880bc2148049be74fa6b5b8cb8532372" => :high_sierra
-    sha256 "f7d4623be50ab3901c895998c87b1d5719aff1d2e92f5974a98f71d5f5ed6911" => :sierra
+    sha256 "e7b60935858da17205ce9a2f442360861562234a60d2b16f3404e6d24626caa9" => :big_sur
+    sha256 "69918b93f9acd74c4b023501dcc873e254d5a10a006521288fd89a1a360a03e1" => :catalina
+    sha256 "f19fdf35b5ce776a22d4ef6b9e7c1a45706e3d21f4e0101054e52b66ac69260d" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -41,7 +41,7 @@ class Gtksourceviewmm < Formula
     atk = Formula["atk"]
     atkmm = Formula["atkmm"]
     cairo = Formula["cairo"]
-    cairomm = Formula["cairomm"]
+    cairomm = Formula["cairomm@1.14"]
     fontconfig = Formula["fontconfig"]
     freetype = Formula["freetype"]
     gdk_pixbuf = Formula["gdk-pixbuf"]
@@ -60,6 +60,7 @@ class Gtksourceviewmm < Formula
     flags = %W[
       -I#{atk.opt_include}/atk-1.0
       -I#{atkmm.opt_include}/atkmm-1.6
+      -I#{atkmm.opt_lib}/atkmm-1.6/include
       -I#{cairo.opt_include}/cairo
       -I#{cairomm.opt_include}/cairomm-1.0
       -I#{cairomm.opt_lib}/cairomm-1.0/include

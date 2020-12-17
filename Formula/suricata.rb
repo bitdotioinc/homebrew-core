@@ -1,9 +1,9 @@
 class Suricata < Formula
   desc "Network IDS, IPS, and security monitoring engine"
   homepage "https://suricata-ids.org/"
-  url "https://www.openinfosecfoundation.org/download/suricata-5.0.3.tar.gz"
-  sha256 "34413ecdad2ff2452526dbcd22f1279afd0935151916c0ff9cface4b0b5665db"
-  license "GPL-2.0"
+  url "https://www.openinfosecfoundation.org/download/suricata-6.0.1.tar.gz"
+  sha256 "e7a1798fe59c1d213f752feefbf8bb54168f9fa56235cf3380347c696ecdb1ae"
+  license "GPL-2.0-only"
 
   livecheck do
     url "https://suricata-ids.org/download/"
@@ -11,9 +11,9 @@ class Suricata < Formula
   end
 
   bottle do
-    sha256 "ce6e9acf117b139febc73ae854aa279c1bab29981c107524ee3ff7c1b3c780a8" => :catalina
-    sha256 "033c282b979418b4356b4f208781bcea7fd9100c62e4981a8980b396424aefc9" => :mojave
-    sha256 "6943af9391e189cd28c441645aeec26f48782eaf1c7760c30bdd9ef2e5cf3c7d" => :high_sierra
+    sha256 "cd52148789f69cc1a7de96263331bb83bfef1d1700b1f4ae0b4b30713126c9c7" => :big_sur
+    sha256 "3cebeba7f69d0a43cfc8198158418ef3b5b059dc7095705a111451b386378ec1" => :catalina
+    sha256 "c12d4452106bb1a388dc7785117f052dba38a162b9c2df973d1286c37e05ab51" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -26,7 +26,7 @@ class Suricata < Formula
   depends_on "nspr"
   depends_on "nss"
   depends_on "pcre"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "argparse" do
     url "https://files.pythonhosted.org/packages/18/dd/e617cfc3f6210ae183374cd9f6a26b20514bbb5a792af97949c5aacddf0f/argparse-1.4.0.tar.gz"
@@ -44,7 +44,7 @@ class Suricata < Formula
   end
 
   def install
-    python3 = Formula["python@3.8"].opt_bin/"python3"
+    python3 = Formula["python@3.9"].opt_bin/"python3"
     xy = Language::Python.major_minor_version python3
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
     resources.each do |r|

@@ -1,16 +1,15 @@
 class Pdftoipe < Formula
   desc "Reads arbitrary PDF files and generates an XML file readable by Ipe"
   homepage "https://github.com/otfried/ipe-tools"
-  url "https://github.com/otfried/ipe-tools/archive/v7.2.13.1.tar.gz"
-  sha256 "c8725d78e43b7d6a04465e8a156bc4c6a78121f291aac74e0b0a10286ef95544"
-  license "GPL-2.0"
-  revision 7
+  url "https://github.com/otfried/ipe-tools/archive/v7.2.20.1.tar.gz"
+  sha256 "233f5629986ade3d70de6dd1af85d578d6aa0f92f9bcd1ecd4e8e5a94b508376"
+  license "GPL-2.0-or-later"
+  revision 3
 
   bottle do
     cellar :any
-    sha256 "2a87dbf06db83c9d397994817e64c6727c1dc593f6263822ca80d050f2495e56" => :catalina
-    sha256 "d6ad23747f3c1319cbbe7e2b1faf6f91c68199d4ef712a8e1005082acb526451" => :mojave
-    sha256 "bfbb2639bc3c0817f2a05fcfcceca6bd8741103f04a7f81826eb5d1dc6541880" => :high_sierra
+    sha256 "a2f5d865c61774a77bd7420ea558aa10121a7673ab546f2282570bc2b38fb02a" => :catalina
+    sha256 "68072ec9d29f873e3cb9f110ee97d9b76d8e69c1b6142397609f81af79fcd3cd" => :mojave
   end
 
   depends_on "pkg-config" => :build

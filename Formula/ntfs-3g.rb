@@ -27,14 +27,15 @@ class Ntfs3g < Formula
   end
 
   head do
-    url "https://git.code.sf.net/p/ntfs-3g/ntfs-3g.git",
-        branch: "edge"
+    url "https://git.code.sf.net/p/ntfs-3g/ntfs-3g.git", branch: "edge"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libgcrypt" => :build
     depends_on "libtool" => :build
   end
+
+  deprecate! date: "2020-11-10", because: "requires FUSE"
 
   depends_on "pkg-config" => :build
   depends_on "coreutils" => :test
@@ -80,6 +81,7 @@ class Ntfs3g < Formula
           -o volname="${VOLUME_NAME}" \\
           -o local \\
           -o negative_vncache \\
+          -o auto_xattr \\
           -o auto_cache \\
           -o noatime \\
           -o windows_names \\

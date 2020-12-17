@@ -11,6 +11,7 @@ class Inetutils < Formula
   end
 
   bottle do
+    sha256 "c91540c2e73378ddc2da24503537e096647b084e10bffd1d29311848c896f8b5" => :big_sur
     sha256 "9f227bd3a357e822a8fbc399828a5ac3c06cc32c1d8d8e8da9a03a11f3df92e8" => :catalina
     sha256 "cd8d9c2d67518442b03bd4c6573a22408136fbfa54822db89db9236dca9d31bb" => :mojave
     sha256 "52c3e2f7e4d62cf0e0c742e81c026f591b9c331a338d110619b285d02a9d8b2f" => :high_sierra
@@ -34,27 +35,31 @@ class Inetutils < Formula
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
-      --program-prefix=g
       --with-idn
     ]
 
+    on_macos do
+      args << "--program-prefix=g"
+    end
     system "./configure", *args
     system "make", "install"
 
-    # Binaries not shadowing macOS utils symlinked without 'g' prefix
-    noshadow.each do |cmd|
-      bin.install_symlink "g#{cmd}" => cmd
-      man1.install_symlink "g#{cmd}.1" => "#{cmd}.1"
-    end
+    on_macos do
+      # Binaries not shadowing macOS utils symlinked without 'g' prefix
+      noshadow.each do |cmd|
+        bin.install_symlink "g#{cmd}" => cmd
+        man1.install_symlink "g#{cmd}.1" => "#{cmd}.1"
+      end
 
-    # Symlink commands without 'g' prefix into libexec/gnubin and
-    # man pages into libexec/gnuman
-    bin.find.each do |path|
-      next unless File.executable?(path) && !File.directory?(path)
+      # Symlink commands without 'g' prefix into libexec/gnubin and
+      # man pages into libexec/gnuman
+      bin.find.each do |path|
+        next unless File.executable?(path) && !File.directory?(path)
 
-      cmd = path.basename.to_s.sub(/^g/, "")
-      (libexec/"gnubin").install_symlink bin/"g#{cmd}" => cmd
-      (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}.1" => "#{cmd}.1"
+        cmd = path.basename.to_s.sub(/^g/, "")
+        (libexec/"gnubin").install_symlink bin/"g#{cmd}" => cmd
+        (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}.1" => "#{cmd}.1"
+      end
     end
 
     libexec.install_symlink "gnuman" => "man"
@@ -74,8 +79,15 @@ class Inetutils < Formula
   end
 
   test do
-    output = pipe_output("#{libexec}/gnubin/ftp -v",
+    on_macos do
+      output = pipe_output("#{libexec}/gnubin/ftp -v",
                          "open ftp.gnu.org\nanonymous\nls\nquit\n")
-    assert_match "Connected to ftp.gnu.org.\n220 GNU FTP server ready", output
+      assert_match "Connected to ftp.gnu.org.\n220 GNU FTP server ready", output
+    end
+    on_linux do
+      output = pipe_output("#{bin}/ftp -v",
+                         "open ftp.gnu.org\nanonymous\nls\nquit\n")
+      assert_match "Connected to ftp.gnu.org.\n220 GNU FTP server ready", output
+    end
   end
 end

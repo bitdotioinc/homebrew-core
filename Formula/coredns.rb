@@ -1,21 +1,22 @@
 class Coredns < Formula
   desc "DNS server that chains plugins"
   homepage "https://coredns.io/"
-  url "https://github.com/coredns/coredns/archive/v1.7.0.tar.gz"
-  sha256 "7e436e9d0c0b84af863685e05d701b84247bb0f12b6dbf05ea87e165c1398b2b"
+  url "https://github.com/coredns/coredns/archive/v1.8.0.tar.gz"
+  sha256 "74bdfdd0bc314d2191159b6782f678989aa0cff1af993a1d384f62d1585070d8"
   license "Apache-2.0"
   head "https://github.com/coredns/coredns.git"
 
   livecheck do
-    url "https://github.com/coredns/coredns/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "717eb60a8e16116051725b2717cad72aa288038c08087981a4afdbf707bbec7f" => :catalina
-    sha256 "f9cea81b5c945bdf7201d9104236a71a624816093a5479fe695de727eff5682e" => :mojave
-    sha256 "9de8f7e481877045fdb18aad99723773a18f5a7de5c0aea1965ddece445e5092" => :high_sierra
+    sha256 "a6f1e2dccdd0f658c18508fa8cc65fdfcd1c10ff0bc5cb417e5e687ca173dab3" => :big_sur
+    sha256 "effbd42542b71878967de42c4eaee916fa45bd245704cf5507b9310b552c89e1" => :catalina
+    sha256 "13cdbec577e0c594c58899e00d11b49253797e7516d74859eb11179e51658480" => :mojave
+    sha256 "ee162e739ebe97f27833680c2da6cd2b3a4578897207ff9e3513a4c1a2987f6f" => :high_sierra
   end
 
   depends_on "go" => :build

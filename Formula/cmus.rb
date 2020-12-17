@@ -4,15 +4,13 @@ class Cmus < Formula
   url "https://github.com/cmus/cmus/archive/v2.8.0.tar.gz"
   sha256 "756ce2c6241b2104dc19097488225de559ac1802a175be0233cfb6fbc02f3bd2"
   license "GPL-2.0"
-  revision 1
+  revision 5
   head "https://github.com/cmus/cmus.git"
 
   bottle do
-    rebuild 1
-    sha256 "d89a46acdec0e5830d41d2d40419d62fe555f34b99f93bf758e749e023e9b294" => :catalina
-    sha256 "5597b87c7fcdceec789103df12ae89408e69f98668da522b7ee6a908e622c290" => :mojave
-    sha256 "38f6dda244d82bc960b7e1c65e2e0316c2cde6cc61174bad763b7243e6f88ad8" => :high_sierra
-    sha256 "42cab3ddb96e7b36b2b8cf67d2384adea5169e2955841c35166aece5afcd9329" => :sierra
+    sha256 "9125314022209f8a28ec6b9b0f1298c990b3ef4a7b5d3970c1466fd95ee3023b" => :big_sur
+    sha256 "9e9a3aff98eab65a1e1f5b212dab68af90affb189cf80b22a526037a50c5da43" => :catalina
+    sha256 "cecf891598d7edd93be3f429ed5ef05a2962a23fb0b53e54c413373b72ddeb6b" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -27,7 +25,8 @@ class Cmus < Formula
   depends_on "opusfile"
 
   def install
-    system "./configure", "prefix=#{prefix}", "mandir=#{man}"
+    system "./configure", "prefix=#{prefix}", "mandir=#{man}",
+                          "CONFIG_WAVPACK=n", "CONFIG_MPC=n"
     system "make", "install"
   end
 

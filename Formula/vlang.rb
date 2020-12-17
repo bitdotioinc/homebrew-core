@@ -1,16 +1,23 @@
 class Vlang < Formula
   desc "V programming language"
   homepage "https://vlang.io"
-  # Note: Keep this in sync with V compiler below when updating
-  url "https://github.com/vlang/v/archive/0.1.29.tar.gz"
-  sha256 "5111d04663d8454c9e8bcbd7e3544dcbd6abc54eb5034e31649417af6e8418a6"
+  # NOTE: Keep this in sync with V compiler below when updating
+  url "https://github.com/vlang/v/archive/weekly.2020.48.2.tar.gz"
+  version "0.1.30"
+  sha256 "15921991779262dfcf01cc3399ceccd831588ce313b99a46dcb7bed9dbabcc2c"
   license "MIT"
+  revision 1
+
+  livecheck do
+    url "https://raw.githubusercontent.com/vlang/v/master/CHANGELOG.md"
+    regex(/## v?\s?(\d+(?:\.\d+)+)/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "584ea22b4d50d0da4f08cae22b8f59f4a9fe4b789a2c070d22d0b7dc36be864a" => :catalina
-    sha256 "a67724f8d35b90f3ebc4f385bd2eb6658e340a1d38a42f7328fd545324e35935" => :mojave
-    sha256 "33a9a5f5ece4ab6088e08b5d6e4d31c34a041a5b2cc006eb5270b332c5d6ee25" => :high_sierra
+    sha256 "c23cedc60c6004cb453fefeba70473fd56b5d856da6dd4c7ae8f57c92d8ca95b" => :big_sur
+    sha256 "c1cd351872627566b1da7fd2d2759dd255aa99021a57d8b4e950ac7b96e7c175" => :catalina
+    sha256 "d12d4bd7226aa06f7be1632455db6c85b20b996d85fc9f913645381607ba37e8" => :mojave
   end
 
   resource "vc" do
@@ -18,7 +25,7 @@ class Vlang < Formula
     # "[v:master] {short SHA of the vlang release commit} - {vlang version number}".
     # The sources of this V compiler commit need to be used here
     url "https://github.com/vlang/vc.git",
-      revision: "b01d0fcda4b55861baa4be82e307cca4834b1641"
+        revision: "e8da48b5e44c3671cf5fc649cae5c38983b1ff52"
   end
 
   def install

@@ -1,38 +1,33 @@
 class Deno < Formula
   desc "Secure runtime for JavaScript and TypeScript"
   homepage "https://deno.land/"
-  url "https://github.com/denoland/deno/releases/download/v1.3.2/deno_src.tar.gz"
-  sha256 "4476a76fed7f23aad553883f041bf3b7ebb9ab649334f734e90137fadfda5932"
+  url "https://github.com/denoland/deno/releases/download/v1.6.0/deno_src.tar.gz"
+  sha256 "60491d842e04ce162face61bb8857bf18a41726afbcbcd9fa532055ace7431ae"
   license "MIT"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "11668d21a11c6b68fa97ef5b3b5daf8874ed796cb02fb42616ab5e6cbe80438a" => :catalina
-    sha256 "05913d1308eb0786688e9b8b1e45a9ad3acfdaf1fe4253a9aa3ff71821096f2f" => :mojave
-    sha256 "b022dbaf8b5168d3dc01722851e6fb0f211065f3a87e1db920f882395554df4e" => :high_sierra
+    sha256 "f57ffbf236768e798bda681cf9d6809752fb53763469c37164ab7e5bf71d98ef" => :big_sur
+    sha256 "6a100d4b0384eae1eec6bb8bd52587b99633d13a07ad8811759216aef45366db" => :catalina
+    sha256 "1bb8ada642868d8741e44316c3b7d69b6a2bd1741d4653d5b19f6c6749e5c07e" => :mojave
   end
 
   depends_on "llvm" => :build
-  depends_on "ninja" => :build
   depends_on "rust" => :build
   depends_on xcode: ["10.0", :build] # required by v8 7.9+
   depends_on :macos # Due to Python 2 (see https://github.com/denoland/deno/issues/2893)
 
   uses_from_macos "xz"
 
-  resource "gn" do
-    url "https://gn.googlesource.com/gn.git",
-      revision: "5ed3c9cc67b090d5e311e4bd2aba072173e82db9"
+  # Remove at next version bump. Check that new release includes:
+  # https://github.com/denoland/deno/pull/8718
+  patch do
+    url "https://github.com/denoland/deno/commit/cea42bec3272a8020f1d94afcf1a4cd7e3985553.patch?full_index=1"
+    sha256 "640ece7aab8e7486ea0ec4bfd29ac7e980822a57d12123e802d022bdc7bbaed7"
   end
 
   def install
-    # Build gn from source (used as a build tool here)
-    (buildpath/"gn").install resource("gn")
-    cd "gn" do
-      system "python", "build/gen.py"
-      system "ninja", "-C", "out/", "gn"
-    end
-
     # env args for building a release build with our clang, ninja and gn
     ENV["GN"] = buildpath/"gn/out/gn"
     # build rusty_v8 from source

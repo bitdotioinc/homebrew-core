@@ -4,11 +4,13 @@ class Scrcpy < Formula
   url "https://github.com/Genymobile/scrcpy/archive/v1.16.tar.gz"
   sha256 "94cbd59e26faa08ca25d5126d6c8d45e831b6a9e716ce05cd57bc4bcc751f742"
   license "Apache-2.0"
+  revision 2
 
   bottle do
-    sha256 "ba6b589a05badb63cddb4d6624980d525c6b71e01509e9661f04de457d971803" => :catalina
-    sha256 "5390385c2d1813d566fd6657183188b162856010db9d767a8cdbae12b6a11e44" => :mojave
-    sha256 "74e4d0a9ad2d6b105822b8d716bd88093317d12a234c58a5c4691b61c2c35796" => :high_sierra
+    sha256 "c9658d00be68ecb6e0a4375a94d241f0f9499bf1495cf5713c61a5b6dd238de4" => :big_sur
+    sha256 "e6201c5231f70f2a2ea894e5103fc3de4ac6ecd3646898642346dea3973b5943" => :catalina
+    sha256 "b0d097de2bbec45803d193a4e7f49245ba97e30ef3a23b4f68a8dc38756847e9" => :mojave
+    sha256 "67b0df2cfc95417ce5f300229fb14f84e20003f409bda70e76a8e75fa51c9df5" => :high_sierra
   end
 
   depends_on "meson" => :build
@@ -20,6 +22,13 @@ class Scrcpy < Formula
   resource "prebuilt-server" do
     url "https://github.com/Genymobile/scrcpy/releases/download/v1.16/scrcpy-server-v1.16"
     sha256 "94a79e05b4498d0460ab7bd9d12cbf05156e3a47bf0c5d1420cee1d4493b3832"
+  end
+
+  # Fix build on Xcode 12 (https://github.com/Genymobile/scrcpy/issues/1726)
+  # Remove in the next release
+  patch do
+    url "https://github.com/Genymobile/scrcpy/commit/bd9f656933e79f7b21b42993f8a70a761ab47226.patch?full_index=1"
+    sha256 "3ab1c2d4b9cc38fe94ae24c49c74b4008a36ffb8079442545feeffa5d3448540"
   end
 
   def install
@@ -41,7 +50,7 @@ class Scrcpy < Formula
       At runtime, adb must be accessible from your PATH.
 
       You can install adb from Homebrew Cask:
-        brew cask install android-platform-tools
+        brew install --cask android-platform-tools
     EOS
   end
 

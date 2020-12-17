@@ -1,10 +1,9 @@
 class Questdb < Formula
   desc "Time Series Database"
   homepage "https://questdb.io"
-  url "https://github.com/questdb/questdb/releases/download/5.0.2/questdb-5.0.2-no-jre-bin.tar.gz"
-  sha256 "3a72b98b01c4e8219b920c4096ab9fb85f382d232fead4bbdcb186d074679c14"
+  url "https://github.com/questdb/questdb/releases/download/5.0.5/questdb-5.0.5-no-jre-bin.tar.gz"
+  sha256 "8c3760cb070ded18cbc6193626b691aee5088e7b408bae7eef1b31cc035933e4"
   license "Apache-2.0"
-  revision 1
 
   bottle :unneeded
 
@@ -13,7 +12,7 @@ class Questdb < Formula
   def install
     rm_rf "questdb.exe"
     libexec.install Dir["*"]
-    (bin/"questdb").write_env_script libexec/"questdb.sh", java_version: "11"
+    (bin/"questdb").write_env_script libexec/"questdb.sh", Language::Java.overridable_java_home_env("11")
   end
 
   plist_options manual: "questdb start"

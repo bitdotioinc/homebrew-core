@@ -1,10 +1,11 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-1.0.1/apache-arrow-1.0.1.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-1.0.1/apache-arrow-1.0.1.tar.gz"
-  sha256 "149ca6aa969ac5742f3b30d1f69a6931a533fd1db8b96712e60bf386a26dc75c"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-2.0.0/apache-arrow-2.0.0.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-2.0.0/apache-arrow-2.0.0.tar.gz"
+  sha256 "be0342cc847bb340d86aeaef43596a0b6c1dbf1ede9c789a503d939e01c71fbe"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/apache/arrow.git"
 
   livecheck do
@@ -13,13 +14,14 @@ class ApacheArrow < Formula
 
   bottle do
     cellar :any
-    sha256 "02de039dba50f1d877fc1a1985556c6dc567e394c70b81792984b811056592f6" => :catalina
-    sha256 "3b182187486e7df8b750bac60c08b5a74f10394e2e82c2dce824a95d93f8e847" => :mojave
-    sha256 "006e8ade39d21f9da3cd4b52c83ad4458df52fe74d405d5d696c8075036cadc2" => :high_sierra
+    sha256 "c4eacba6faeac0c43dbda3deb7dcc165e8cdecc6050de0286bbf94ebdb60ed71" => :big_sur
+    sha256 "524086a1fafea08afae498b587c52a6171ce5a862d3ced4fa70857e9c2a95693" => :catalina
+    sha256 "cb2fd7de62c49aae81e001955384016b6d5b3e50daee25add17a1575bff04782" => :mojave
   end
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
+  depends_on "llvm@9" => :build
   depends_on "brotli"
   depends_on "glog"
   depends_on "grpc"
@@ -27,16 +29,21 @@ class ApacheArrow < Formula
   depends_on "numpy"
   depends_on "openssl@1.1"
   depends_on "protobuf"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "rapidjson"
+  depends_on "re2"
   depends_on "snappy"
   depends_on "thrift"
   depends_on "zstd"
 
   def install
     ENV.cxx11
+    # link against system libc++ instead of llvm provided libc++
+    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm@9"].opt_lib
     args = %W[
+      -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=TRUE
       -DARROW_FLIGHT=ON
+      -DARROW_GANDIVA=ON
       -DARROW_JEMALLOC=ON
       -DARROW_ORC=ON
       -DARROW_PARQUET=ON
@@ -50,11 +57,10 @@ class ApacheArrow < Formula
       -DARROW_WITH_SNAPPY=ON
       -DARROW_WITH_BROTLI=ON
       -DARROW_INSTALL_NAME_RPATH=OFF
-      -DPYTHON_EXECUTABLE=#{Formula["python@3.8"].bin/"python3"}
+      -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].bin/"python3"}
     ]
 
-    mkdir "build"
-    cd "build" do
+    mkdir "build" do
       system "cmake", "../cpp", *std_cmake_args, *args
       system "make"
       system "make", "install"

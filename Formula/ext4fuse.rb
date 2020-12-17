@@ -16,6 +16,8 @@ class Ext4fuse < Formula
     sha256 "b11f564b7e7c08af0b0a3e9854973d39809bf2d8a56014f4882772b2f7307ac1" => :yosemite
   end
 
+  deprecate! date: "2020-11-10", because: "requires FUSE"
+
   depends_on "pkg-config" => :build
   depends_on :osxfuse
 

@@ -1,14 +1,19 @@
 class KdeKi18n < Formula
   desc "KDE Gettext-based UI text internationalization"
   homepage "https://api.kde.org/frameworks/ki18n/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.73/ki18n-5.73.0.tar.xz"
-  sha256 "97eef22d6cdd65c57edfe54fa9760a69005e15b7d8f4270f6185916c33e14689"
+  url "https://download.kde.org/stable/frameworks/5.77/ki18n-5.77.0.tar.xz"
+  sha256 "b2e1b74dedc1a3af88f04c470922d1fafb892d5846ea91ad139d421070cff357"
+  license all_of: [
+    "BSD-3-Clause",
+    "LGPL-2.0-or-later",
+    any_of: ["LGPL-2.1-only", "LGPL-3.0-only"],
+  ]
   head "https://invent.kde.org/frameworks/ki18n.git"
 
   bottle do
-    sha256 "f9d52d1a2d3f15381ccdc9db1a100a3213ffd7776204cb6d7a3cf57d1e309ba5" => :catalina
-    sha256 "420f3d6c03500801899b6ae9bf74f4d84320d24be1b5e8e54ac804fa7275babd" => :mojave
-    sha256 "0d6367dc3131883930262c99d7d4ff35da8639c795a424a212d1f3894bd251f7" => :high_sierra
+    sha256 "727a0636bd38e7d2efdb6f9b1c6730853454025a1c09b6b925d48a6db6561a4e" => :big_sur
+    sha256 "f40801e895c598b54e997d8b7a964414cc6a3b110f3b06f20f3e49edc0273de3" => :catalina
+    sha256 "f979b2436650892d4fcb4a20ed3cb202d0733a185f0102e5755cc4fafef4396d" => :mojave
   end
 
   depends_on "cmake" => [:build, :test]

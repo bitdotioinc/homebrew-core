@@ -3,8 +3,8 @@ class Borgmatic < Formula
 
   desc "Simple wrapper script for the Borg backup software"
   homepage "https://torsion.org/borgmatic/"
-  url "https://files.pythonhosted.org/packages/3a/ef/de134b945ec2a73eeaea23efc9d8ff4f2c8ab23b14208d6c7b5e2a8b8137/borgmatic-1.5.10.tar.gz"
-  sha256 "31459e5573c34b7b9e53ad54012be6d367e2f23c0612fd5a315593ebf23074c5"
+  url "https://files.pythonhosted.org/packages/b8/f6/ab3ab90ab10bec6e0b24d59966bcc11fd07c2e05b48a8f4e5953cc527800/borgmatic-1.5.12.tar.gz"
+  sha256 "5cb6c126f351987f16f529ce8c5ef351b6b3458142316e9210edb028dff65536"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -13,17 +13,17 @@ class Borgmatic < Formula
 
   bottle do
     cellar :any
-    sha256 "1779e107b6760355c7fd974356e687d680e0c03d34c39617cca6408f142e0b2f" => :catalina
-    sha256 "3f87068d5e4339228793005f4b67f79367e9bc13ac53a57fd5020aebda12cfbe" => :mojave
-    sha256 "161c4fde2155faa1949a3fd99321d66ea5be85dc1810558007426494b9de1665" => :high_sierra
+    sha256 "875035ec5d79c0641ef5a86ad7f41d79b9e965a90a2a9a822881cce3c318b14c" => :big_sur
+    sha256 "23676967eec18bcf94d54357eef710b94274b2b988a576eb933c2823da418bcc" => :catalina
+    sha256 "61eb64ccf14eca1e09de11aa94adfa64190354fb58b1f66eebcca0f71661bedf" => :mojave
   end
 
   depends_on "libyaml"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/40/a7/ded59fa294b85ca206082306bba75469a38ea1c7d44ea7e1d64f5443d67a/certifi-2020.6.20.tar.gz"
-    sha256 "5930595817496dd21bb8dc35dad090f1c2cd0adfaf21204bf6732ca5d8ee34d3"
+    url "https://files.pythonhosted.org/packages/e6/de/879cf857ae6f890dfa23c3d6239814c5471936b618c8fb0c8732ad5da885/certifi-2020.11.8.tar.gz"
+    sha256 "f05def092c44fbf25834a51509ef6e631dc19765ab8a57b4e7ab85531f0a9cf4"
   end
 
   resource "chardet" do
@@ -32,8 +32,8 @@ class Borgmatic < Formula
   end
 
   resource "colorama" do
-    url "https://files.pythonhosted.org/packages/82/75/f2a4c0c94c85e2693c229142eb448840fba0f9230111faa889d1f541d12d/colorama-0.4.3.tar.gz"
-    sha256 "e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
+    url "https://files.pythonhosted.org/packages/1f/bb/5d3246097ab77fa083a61bd8d3d527b7ae063c7d8e8671b1cf8c4ec10cbe/colorama-0.4.4.tar.gz"
+    sha256 "5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"
   end
 
   resource "docopt" do
@@ -62,18 +62,13 @@ class Borgmatic < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/da/67/672b422d9daf07365259958912ba533a0ecab839d4084c487a5fe9a5405f/requests-2.24.0.tar.gz"
-    sha256 "b3559a131db72c33ee969480840fff4bb6dd111de7dd27c8ee1f820f4f00231b"
+    url "https://files.pythonhosted.org/packages/9f/14/4a6542a078773957aa83101336375c9597e6fe5889d20abda9c38f9f3ff2/requests-2.25.0.tar.gz"
+    sha256 "7f1a0b932f4a60a1a65caa4263921bb7d9ee911957e0ae4a23a6dd08185ad5f8"
   end
 
   resource "ruamel.yaml" do
-    url "https://files.pythonhosted.org/packages/16/8b/54a26c1031595e5edd0e616028b922d78d8ffba8bc775f0a4faeada846cc/ruamel.yaml-0.16.10.tar.gz"
-    sha256 "099c644a778bf72ffa00524f78dd0b6476bca94a1da344130f4bf3381ce5b954"
-  end
-
-  resource "ruamel.yaml.clib" do
-    url "https://files.pythonhosted.org/packages/92/28/612085de3fae9f82d62d80255d9f4cf05b1b341db1e180adcf28c1bf748d/ruamel.yaml.clib-0.2.0.tar.gz"
-    sha256 "b66832ea8077d9b3f6e311c4a53d06273db5dc2db6e8a908550f3c14d67e718c"
+    url "https://files.pythonhosted.org/packages/17/2f/f38332bf6ba751d1c8124ea70681d2b2326d69126d9058fbd9b4c434d268/ruamel.yaml-0.16.12.tar.gz"
+    sha256 "076cc0bc34f1966d920a49f18b52b6ad559fbe656a0748e3535cf7b3f29ebf9e"
   end
 
   resource "six" do
@@ -82,8 +77,8 @@ class Borgmatic < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/81/f4/87467aeb3afc4a6056e1fe86626d259ab97e1213b1dfec14c7cb5f538bf0/urllib3-1.25.10.tar.gz"
-    sha256 "91056c15fa70756691db97756772bb1eb9678fa585d9184f24534b100dc60f4a"
+    url "https://files.pythonhosted.org/packages/29/e6/d1a1d78c439cad688757b70f26c50a53332167c364edb0134cadd280e234/urllib3-1.26.2.tar.gz"
+    sha256 "19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08"
   end
 
   def install
@@ -115,6 +110,7 @@ class Borgmatic < Formula
     config_content = File.read(config_path)
                          .gsub(/# ?local_path: borg1/, "local_path: #{borg}")
                          .gsub(/user@backupserver:sourcehostname.borg/, repo_path)
+                         .gsub("- user@backupserver:{fqdn}", "")
                          .gsub("- /var/log/syslog*", "")
     File.open(config_path, "w") { |file| file.puts config_content }
 

@@ -1,9 +1,9 @@
 class Zebra < Formula
   desc "Information management system"
   homepage "https://www.indexdata.com/zebra"
-  url "http://ftp.indexdata.dk/pub/zebra/idzebra-2.1.4.tar.gz"
-  sha256 "f45b0461cf40fafddd97d447695a087be0ba0981c108bf509d4c11f6d1db1ae2"
-  revision 4
+  url "http://ftp.indexdata.dk/pub/zebra/idzebra-2.2.2.tar.gz"
+  sha256 "513c2bf272e12745d4a7b58599ded0bc1292a84e9dc420a32eb53b6601ae0000"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url "https://www.indexdata.com/resources/software/zebra"
@@ -11,9 +11,10 @@ class Zebra < Formula
   end
 
   bottle do
-    sha256 "06034a1fa44ffa343907b961799909eb32556f300129109c05771ad9cc5ef82d" => :catalina
-    sha256 "33810ebcbd8ce8a0b3e972a98a9be0a000d064122fc41b58ce748479fb286275" => :mojave
-    sha256 "d8c190c482b012b20ad5b2f14fd7c5d59ac4a50aaa75b126871efff83b2999a1" => :high_sierra
+    sha256 "3521e4cde145c7ebd38c406d4a0c3a75d8f9154fe8a91ee63c62765befefb5d7" => :big_sur
+    sha256 "b78b4ca52c9274c42692d190beb13c9b3709b8cb610831ee04bae42bf1ef4c04" => :catalina
+    sha256 "0c4967b8025621b5c3bc343329a2f01e07292163df9151c1432c70886dc81500" => :mojave
+    sha256 "a7f24384ddd17dda271a6c44a9f2db5f91ba3ee50944fbccc156ca9cd6387b3e" => :high_sierra
   end
 
   depends_on "icu4c"

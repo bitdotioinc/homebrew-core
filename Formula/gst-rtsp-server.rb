@@ -1,8 +1,9 @@
 class GstRtspServer < Formula
   desc "RTSP server library based on GStreamer"
   homepage "https://gstreamer.freedesktop.org/modules/gst-rtsp-server.html"
-  url "https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.16.2.tar.xz"
-  sha256 "de07a2837b3b04820ce68264a4909f70c221b85dbff0cede7926e9cdbb1dc26e"
+  url "https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.18.2.tar.xz"
+  sha256 "973922aba65a1672a131527dee965fb09bab4bb996c351f0ee7f42f0d5b954e2"
+  license "LGPL-2.0-or-later"
 
   livecheck do
     url "https://gstreamer.freedesktop.org/src/gst-rtsp-server/"
@@ -10,28 +11,32 @@ class GstRtspServer < Formula
   end
 
   bottle do
-    sha256 "30d213fe81eece2d6a566c7d53ea36f9f3ee24219aa7b0be4edf15d46559cc03" => :catalina
-    sha256 "fc5d1f94602dc377f2d6938ed5f97e1a104958fbfeb26e48598e18c0dd0ca9ca" => :mojave
-    sha256 "94e6f9c451be9c5f2e3b3a92d7450b730b3cea49c85f1e03cd8348943385a311" => :high_sierra
+    cellar :any
+    sha256 "b4317689acd1ab2242fbf79485c6e41d3f7b6022f655cc5a1c0051a0e83fa58f" => :big_sur
+    sha256 "6de0097ebaf534fd685c904cea67866f038bfecf37c81f18b002746194d3a73c" => :catalina
+    sha256 "e02cd4c0dcb586239614eb6d7775956933a40661dc9d3863e6c11809463a6085" => :mojave
   end
 
   depends_on "gobject-introspection" => :build
-  depends_on "libtool" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gst-plugins-base"
   depends_on "gstreamer"
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--disable-examples",
-                          "--disable-tests",
-                          "--enable-introspection=yes"
+    args = std_meson_args + %w[
+      -Dintrospection=enabled
+      -Dexamples=disabled
+      -Dtests=disabled
+    ]
 
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
+    end
   end
 
   test do

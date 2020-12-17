@@ -1,9 +1,10 @@
 class Rabbitmq < Formula
   desc "Messaging broker"
   homepage "https://www.rabbitmq.com"
-  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.7/rabbitmq-server-generic-unix-3.8.7.tar.xz"
-  sha256 "7b36e4d3e9359185d9da477b68f01d07321288288bcc45198f4ffe0242d76287"
+  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.9/rabbitmq-server-generic-unix-3.8.9.tar.xz"
+  sha256 "fe1f1ef9b1bd8362421d689ec9b73cb33c8aaf96acf990df6549e3c0275b7aa0"
   license "MPL-2.0"
+  revision 1
 
   livecheck do
     url :stable
@@ -12,7 +13,7 @@ class Rabbitmq < Formula
 
   bottle :unneeded
 
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "erlang"
 
   uses_from_macos "unzip" => :build

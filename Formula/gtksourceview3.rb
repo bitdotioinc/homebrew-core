@@ -11,9 +11,11 @@ class Gtksourceview3 < Formula
   end
 
   bottle do
-    sha256 "b34db76dca1649cd3ecb7a0e62904c093381902199b427d444e5974f3017c8ed" => :catalina
-    sha256 "fdd26532623b2ab2f6333c51ea0bb2addca737ab79b74c18ea4e5d49d687ce89" => :mojave
-    sha256 "310d80ce58f5e77fa2b3ca1867e081a1c03c2da31d7560faf8e0f218378e5a17" => :high_sierra
+    rebuild 1
+    sha256 "2dc6c71c803b006967ee4154912c7f6e050c5c8c8f68a113335e66f48fe32277" => :big_sur
+    sha256 "e82371b46c1d8206c5aedf9966835e27ffb3bd011ad936bffa0e26cfe3c2808c" => :catalina
+    sha256 "f9f3856ad743d604e084f77e68d2edd53d99093ce06dc23b9f0cdbdc5e70c5d0" => :mojave
+    sha256 "d67cdf5db8996c90d56ad6468c830fcb8e28b26753ab7d332b3a4c990c17e84b" => :high_sierra
   end
 
   depends_on "autoconf" => :build
@@ -37,7 +39,7 @@ class Gtksourceview3 < Formula
 
   test do
     (testpath/"test.c").write <<~EOS
-      #include <gtksourceview/gtksourceview.h>
+      #include <gtksourceview/gtksource.h>
 
       int main(int argc, char *argv[]) {
         gchar *text = gtk_source_utils_unescape_search_text("hello world");
@@ -94,10 +96,12 @@ class Gtksourceview3 < Formula
       -lgobject-2.0
       -lgtk-3
       -lgtksourceview-3.0
-      -lintl
       -lpango-1.0
       -lpangocairo-1.0
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

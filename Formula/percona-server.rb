@@ -10,9 +10,10 @@ class PerconaServer < Formula
   end
 
   bottle do
-    sha256 "c6ad05c52e82f419f65a46bd627c784fec43dfb8545e68fb4939995fb5fefed2" => :catalina
-    sha256 "cae8782ea16aa5fdfebe4ccac3189d2e7fbdc0d6290c0b8fda6ab46792f956eb" => :mojave
-    sha256 "30719045c2ee376f8cf269e12fcd307f7d0313338b59b6e1c24861207177b287" => :high_sierra
+    rebuild 1
+    sha256 "9047fd11394d720736b4b866be2f62d3e676243b17c10fda3d649eecc2da257d" => :big_sur
+    sha256 "156224d81ec50f401b366051de9a5c02b3921f54f61ebed2d6897edb5c313ef0" => :catalina
+    sha256 "ee1f35b9a3817d3cab87034cbfb04867bf5366a0f0ad5cce539d9bb71812f03d" => :mojave
   end
 
   pour_bottle? do
@@ -25,8 +26,8 @@ class PerconaServer < Formula
 
   conflicts_with "mariadb", "mysql",
     because: "percona, mariadb, and mysql install the same binaries"
-  conflicts_with "protobuf",
-    because: "both install libprotobuf(-lite) libraries"
+  conflicts_with "protobuf", because: "both install libprotobuf(-lite) libraries"
+  conflicts_with "percona-xtrabackup", because: "both install comp_err.1 man page"
 
   # https://bugs.mysql.com/bug.php?id=86711
   # https://github.com/Homebrew/homebrew-core/pull/20538
@@ -116,6 +117,8 @@ class PerconaServer < Formula
   end
 
   def post_install
+    return if ENV["CI"]
+
     # Make sure the datadir exists
     datadir.mkpath
     unless (datadir/"mysql/user.frm").exist?

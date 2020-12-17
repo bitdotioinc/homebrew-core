@@ -1,10 +1,9 @@
 class Gtkmm3 < Formula
   desc "C++ interfaces for GTK+ and GNOME"
   homepage "https://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.2.tar.xz"
-  sha256 "6d71091bcd1863133460d4188d04102810e9123de19706fb656b7bb915b4adc3"
-  license "LGPL-2.1"
-  revision 1
+  url "https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.3.tar.xz"
+  sha256 "60497c4f7f354c3bd2557485f0254f8b7b4cf4bebc9fee0be26a77744eacd435"
+  license "LGPL-2.1-or-later"
 
   livecheck do
     url :stable
@@ -13,21 +12,27 @@ class Gtkmm3 < Formula
 
   bottle do
     cellar :any
-    sha256 "c656b3844e5e94f34556e5b8b0b6ee3099e7a2c1b96c839229bbc9997c18218d" => :catalina
-    sha256 "12efd715a1422f80321a2af07a6d82d1e95772b4c23dea90d8138e3a22475886" => :mojave
-    sha256 "2183abaf056161d4d13d8bd86fc5795b3e32caf3db7c1a4b8a44eba320104402" => :high_sierra
+    sha256 "b8e813ea94cacde6d50a0c1cc0d816984d85b2bd7bd84175df0e86d07f056c75" => :big_sur
+    sha256 "5d771001790cc4cafe5efa990a503e2fc1500f7e08d460829527323c63e6387f" => :catalina
+    sha256 "0128c86b4d3f8e090e9e9bf240a3cf2273cb15ecd26f4d9121f9b6663a10bdb8" => :mojave
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "atkmm"
+  depends_on "cairomm@1.14"
   depends_on "gtk+3"
   depends_on "pangomm"
 
   def install
     ENV.cxx11
 
-    system "./configure", "--disable-silent-rules", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja"
+      system "ninja", "install"
+    end
   end
 
   test do
@@ -43,7 +48,7 @@ class Gtkmm3 < Formula
     atk = Formula["atk"]
     atkmm = Formula["atkmm"]
     cairo = Formula["cairo"]
-    cairomm = Formula["cairomm"]
+    cairomm = Formula["cairomm@1.14"]
     fontconfig = Formula["fontconfig"]
     freetype = Formula["freetype"]
     gdk_pixbuf = Formula["gdk-pixbuf"]
@@ -61,6 +66,7 @@ class Gtkmm3 < Formula
     flags = %W[
       -I#{atk.opt_include}/atk-1.0
       -I#{atkmm.opt_include}/atkmm-1.6
+      -I#{atkmm.opt_lib}/atkmm-1.6/include
       -I#{cairo.opt_include}/cairo
       -I#{cairomm.opt_include}/cairomm-1.0
       -I#{cairomm.opt_lib}/cairomm-1.0/include
@@ -120,12 +126,14 @@ class Gtkmm3 < Formula
       -lgobject-2.0
       -lgtk-3
       -lgtkmm-3.0
-      -lintl
       -lpango-1.0
       -lpangocairo-1.0
       -lpangomm-1.4
       -lsigc-2.0
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
