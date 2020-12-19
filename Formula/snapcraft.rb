@@ -4,22 +4,27 @@ class Snapcraft < Formula
   desc "Package any app for every Linux desktop, server, cloud or device"
   homepage "https://snapcraft.io/"
   url "https://github.com/snapcore/snapcraft.git",
-      tag:      "4.1.3",
-      revision: "e6ef1ce1138d90e6ddbd6bab4f825ad38b2e310e"
-  license "GPL-3.0"
+      tag:      "4.4.1",
+      revision: "24162f9de394d11e9debf166f59fe190c9dcff3a"
+  license "GPL-3.0-only"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any
-    sha256 "f94cbaeeb3ab6422aa3b1a5f6fc59de80075f2de3a65ad593404b4362963f2c3" => :catalina
-    sha256 "94f6c90dca9290dcfaba605ac4bd8203bb785099dbceee7759671d5f56906de8" => :mojave
-    sha256 "b24928cee79a9c9eea2c933aaf0005f4a0d9164dc22599c7e0fcc64a67bbbc8e" => :high_sierra
+    sha256 "d591898e5dca16073006237aad418aefae520eeefc36037f37dfc6ff5c73b776" => :big_sur
+    sha256 "2e9edb07d9da2e91de1eb7d7031d6c9e6e9c2014b49ad43ecbd0c772c0c5e450" => :catalina
+    sha256 "941754cf65e07f1e73c7b0ad55638b69c86fb3f013b0c554269bda24b2299ab6" => :mojave
   end
 
   depends_on "libsodium"
   depends_on "libyaml"
   depends_on "lxc"
-  depends_on "python@3.8"
-  depends_on "squashfs"
+  depends_on "python@3.9"
+  depends_on "snap"
   depends_on "xdelta"
 
   resource "attrs" do
@@ -28,8 +33,8 @@ class Snapcraft < Formula
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/40/a7/ded59fa294b85ca206082306bba75469a38ea1c7d44ea7e1d64f5443d67a/certifi-2020.6.20.tar.gz"
-    sha256 "5930595817496dd21bb8dc35dad090f1c2cd0adfaf21204bf6732ca5d8ee34d3"
+    url "https://files.pythonhosted.org/packages/e6/de/879cf857ae6f890dfa23c3d6239814c5471936b618c8fb0c8732ad5da885/certifi-2020.11.8.tar.gz"
+    sha256 "f05def092c44fbf25834a51509ef6e631dc19765ab8a57b4e7ab85531f0a9cf4"
   end
 
   resource "cffi" do
@@ -183,8 +188,8 @@ class Snapcraft < Formula
   end
 
   resource "pyxdg" do
-    url "https://files.pythonhosted.org/packages/47/6e/311d5f22e2b76381719b5d0c6e9dc39cd33999adae67db71d7279a6d70f4/pyxdg-0.26.tar.gz"
-    sha256 "fe2928d3f532ed32b39c32a482b54136fe766d19936afc96c8f00645f9da1a06"
+    url "https://files.pythonhosted.org/packages/6f/2e/2251b5ae2f003d865beef79c8fcd517e907ed6a69f58c32403cec3eba9b2/pyxdg-0.27.tar.gz"
+    sha256 "80bd93aae5ed82435f20462ea0208fb198d8eec262e831ee06ce9ddb6b91c5a5"
   end
 
   resource "PyYAML" do
@@ -198,8 +203,8 @@ class Snapcraft < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/da/67/672b422d9daf07365259958912ba533a0ecab839d4084c487a5fe9a5405f/requests-2.24.0.tar.gz"
-    sha256 "b3559a131db72c33ee969480840fff4bb6dd111de7dd27c8ee1f820f4f00231b"
+    url "https://files.pythonhosted.org/packages/9f/14/4a6542a078773957aa83101336375c9597e6fe5889d20abda9c38f9f3ff2/requests-2.25.0.tar.gz"
+    sha256 "7f1a0b932f4a60a1a65caa4263921bb7d9ee911957e0ae4a23a6dd08185ad5f8"
   end
 
   resource "requests-toolbelt" do
@@ -238,8 +243,8 @@ class Snapcraft < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/81/f4/87467aeb3afc4a6056e1fe86626d259ab97e1213b1dfec14c7cb5f538bf0/urllib3-1.25.10.tar.gz"
-    sha256 "91056c15fa70756691db97756772bb1eb9678fa585d9184f24534b100dc60f4a"
+    url "https://files.pythonhosted.org/packages/29/e6/d1a1d78c439cad688757b70f26c50a53332167c364edb0134cadd280e234/urllib3-1.26.2.tar.gz"
+    sha256 "19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08"
   end
 
   resource "wadllib" do

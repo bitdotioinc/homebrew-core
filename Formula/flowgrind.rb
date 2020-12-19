@@ -7,11 +7,12 @@ class Flowgrind < Formula
 
   livecheck do
     url :stable
-    regex(%r{<div class="version">\s*Latest version is flowgrind[._-]v?(\d+(?:\.\d+)+)\s*</div>})
+    regex(%r{<div class="version">\s*Latest version is flowgrind[._-]v?(\d+(?:\.\d+)+)\s*</div>}i)
   end
 
   bottle do
     cellar :any
+    sha256 "631e7fc8316f75178ac6d6dd82f750ccd5d61b60be2d02735af82f3a19009ccd" => :big_sur
     sha256 "e598d94bf046253c93bfb394d532584bca417b69e63b70b851f0ab4f9adf3089" => :catalina
     sha256 "652a07d073f21ae8158fed8b7a34c739a88a0e594c32408a83d48e80a93df944" => :mojave
     sha256 "4b723ca4f7f92a354bf8226d67fd8537a13c07223ff5d05ebd9da82491cb546a" => :high_sierra

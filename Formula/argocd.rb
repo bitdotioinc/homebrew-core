@@ -2,15 +2,15 @@ class Argocd < Formula
   desc "GitOps Continuous Delivery for Kubernetes"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj/argo-cd.git",
-      tag:      "v1.7.2",
-      revision: "c342d3fc9c9c9f0d1c18254b6ffa1e106984a76c"
+      tag:      "v1.8.1",
+      revision: "c2547dca95437fdbb4d1e984b0592e6b9110d37f"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9ec237158d857bfd2197d16794a508fbeabefb71353137c69469be23156b450b" => :catalina
-    sha256 "785012592f4dd8e2cf1cd85035720d8bb56c5bd75f595b9e79a6dc18f4218bdd" => :mojave
-    sha256 "1c19168dc4a2c3ba8e25114f9c531d9f3a467ffeaa7d12a763c8b8893f558d2d" => :high_sierra
+    sha256 "4e634028a60640744048e1dddb3f21da7a24f04c998eb717904ae7422628f11a" => :big_sur
+    sha256 "ecd1a9d9cf3451a94f33b6564ef4cdf0b99caf8a18de84e1c8fd91dc2c22e79d" => :catalina
+    sha256 "6d2ea94a1146bfa831717080676da93afa175a75d3d9f52f8cdbfa66fa70b001" => :mojave
   end
 
   depends_on "go" => :build
@@ -20,6 +20,11 @@ class Argocd < Formula
     inreplace "Makefile", "CGO_ENABLED=0", ""
     system "make", "cli-local"
     bin.install "dist/argocd"
+
+    output = Utils.safe_popen_read("#{bin}/argocd", "completion", "bash")
+    (bash_completion/"argocd").write output
+    output = Utils.safe_popen_read("#{bin}/argocd", "completion", "zsh")
+    (zsh_completion/"_argocd").write output
   end
 
   test do

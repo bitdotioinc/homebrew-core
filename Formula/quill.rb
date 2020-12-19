@@ -1,16 +1,16 @@
 class Quill < Formula
   desc "C++14 Asynchronous Low Latency Logging Library"
   homepage "https://github.com/odygrd/quill"
-  url "https://github.com/odygrd/quill/archive/v1.4.0.tar.gz"
-  sha256 "e6e9b603caa32c6693cccda8c547b298f3f73867a45e49b33c006cb17b24fa33"
+  url "https://github.com/odygrd/quill/archive/v1.6.0.tar.gz"
+  sha256 "ab83b418f720effb4a626af7b851fa6421aa8cdb43f4f492ba81aa3ad148ad89"
   license "MIT"
   head "https://github.com/odygrd/quill.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "28af658907cc0cb9b01675e951afbdf074afbd128a763e5e8d4067869ae9146b" => :catalina
-    sha256 "643497902d7e23557b543e45972405765d5f3555a852f82907bf3443ed2c5e24" => :mojave
-    sha256 "c46e30954680dde579499619460aff56f8bb495bef0b81f524f3782659634e24" => :high_sierra
+    sha256 "63adcc4aa824061b010935f824208babaf0dc3537909024a6b8c6e73b00c68d9" => :big_sur
+    sha256 "6c6a52facab9c272c622c090de6217068cf21e9ba24ab91876fda3a73385c618" => :catalina
+    sha256 "9fe8025a5665dce0892a1fe1806d5572c49c463056f4b7eb36f37473d29a53fc" => :mojave
   end
 
   depends_on "cmake" => :build

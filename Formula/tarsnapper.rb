@@ -3,20 +3,20 @@ class Tarsnapper < Formula
 
   desc "Tarsnap wrapper which expires backups using a gfs-scheme"
   homepage "https://github.com/miracle2k/tarsnapper"
-  url "https://github.com/miracle2k/tarsnapper/archive/0.4.tar.gz"
-  sha256 "94ac22c3ed72e6321596f7d229b34fd21b59a00035162c5b22f2a1ee64dc6d01"
+  url "https://files.pythonhosted.org/packages/4e/c5/0a08950e5faba96e211715571c68ef64ee37b399ef4f0c4ab55e66c3c4fe/tarsnapper-0.5.0.tar.gz"
+  sha256 "b129b0fba3a24b2ce80c8a2ecd4375e36b6c7428b400e7b7ab9ea68ec9bb23ec"
   license "BSD-2-Clause"
-  revision 2
 
   bottle do
     cellar :any
-    sha256 "1a349c8831f9538426254c7bd811c5144f481728ea259dd5ad8d0af629a1d406" => :catalina
-    sha256 "a153f159001c5be37fcf8ae16e89dc6aa99d752854620d3fb289e8745795a034" => :mojave
-    sha256 "a39196665b10717c42c69bc749e35cee06736e3509e992db950ccd6b248f2e23" => :high_sierra
+    sha256 "bc6193b16d969dd37047b726cf50a243ec08f2f015b85bda59acfd9ec18c9451" => :big_sur
+    sha256 "fce1d4069e55c05f40ec638e27e4b064ae5ed72854b8ddd13268d6baf735cd95" => :catalina
+    sha256 "aba5962a85058b3468e224b15d0c8f294ba4472f1b29c5d1072c64fc6c6a104b" => :mojave
+    sha256 "810a32cba365609ed7d28dd52d2f68aaded70deccde209849db5be49a3662e68" => :high_sierra
   end
 
   depends_on "libyaml"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "tarsnap"
 
   resource "argparse" do

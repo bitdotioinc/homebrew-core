@@ -1,10 +1,11 @@
 class Cassandra < Formula
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.lua?path=cassandra/3.11.7/apache-cassandra-3.11.7-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/3.11.7/apache-cassandra-3.11.7-bin.tar.gz"
-  sha256 "b9c0d5b08ae2660810227b1881e8b7b5bc9ae0549cb8efb866b99884ad7346e2"
+  url "https://www.apache.org/dyn/closer.lua?path=cassandra/3.11.9/apache-cassandra-3.11.9-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/3.11.9/apache-cassandra-3.11.9-bin.tar.gz"
+  sha256 "0c90cf369e86cef10c53be2d0196ba4019150f2a84653a291547821f18536ab2"
   license "Apache-2.0"
+  revision 1
 
   livecheck do
     url :stable
@@ -12,13 +13,15 @@ class Cassandra < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "faa06a0b2ef7f257a29c57f2e772256e8b4be0ddd9617f0f4d2b3edca4432281" => :catalina
-    sha256 "5decf89224693fd1dfe2c53f28220729c3b267bb68ada4385f7de7626b5bfab9" => :mojave
-    sha256 "abf2a9566e3895758320a195b266acd1241627eca15621142b58fee16e7c9ed9" => :high_sierra
+    sha256 "5a9c16a717b01e4de7ca72bf51f6e77cd67ac5367ce48c599a3aad0ff165ea97" => :big_sur
+    sha256 "9f9e9d7068ab6cb2c47e905fb74eca85f2e22bd400ceaef2ef316ae59e5ef7f8" => :catalina
+    sha256 "34e8f5d301f6d6cf3e3a16e1fc1702e2dd1440487929ca392c4fffd9bb4c3f91" => :mojave
   end
 
   depends_on "cython" => :build
-  depends_on :macos # Due to Python 2 (https://issues.apache.org/jira/browse/CASSANDRA-10190)
+  # Due to Python 2 (https://issues.apache.org/jira/browse/CASSANDRA-10190), cassandra 4 will support python3
+  depends_on :macos
+  depends_on "openjdk@8" # cassandra 4 will support Java 11
 
   # Only >=Yosemite has new enough setuptools for successful compile of the below deps.
   # Python 2 needs setuptools < 45.0.0 (https://github.com/pypa/setuptools/issues/2094)
@@ -85,6 +88,9 @@ class Cassandra < Formula
       # Storage path
       s.gsub! "cassandra_storagedir\=\"$CASSANDRA_HOME/data\"",
               "cassandra_storagedir\=\"#{var}/lib/cassandra\""
+
+      s.gsub! "#JAVA_HOME=/usr/local/jdk6",
+              "JAVA_HOME=#{Language::Java.overridable_java_home_env("1.8")[:JAVA_HOME]}"
     end
 
     rm Dir["bin/*.bat", "bin/*.ps1"]

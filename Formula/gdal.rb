@@ -1,9 +1,10 @@
 class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://www.gdal.org/"
-  url "https://download.osgeo.org/gdal/3.1.2/gdal-3.1.2.tar.xz"
-  sha256 "767c8d0dfa20ba3283de05d23a1d1c03a7e805d0ce2936beaff0bb7d11450641"
+  url "https://download.osgeo.org/gdal/3.2.0/gdal-3.2.0.tar.xz"
+  sha256 "b051f852600ffdf07e337a7f15673da23f9201a9dbb482bd513756a3e5a196a6"
   license "MIT"
+  revision 1
 
   livecheck do
     url "https://download.osgeo.org/gdal/CURRENT/"
@@ -11,9 +12,9 @@ class Gdal < Formula
   end
 
   bottle do
-    sha256 "b781dd4174e448f161d1e3f38fa898fea35ea16cb9fa6212cbcd0cffd6951e81" => :catalina
-    sha256 "5a517fafd975da2c073cbca3946b481683f88e832432efdc6c3951c8aac325d3" => :mojave
-    sha256 "d3e3b959e7c6f80ff748a345ba26c1876568de7f0edffe69ae6ed40959ddeee9" => :high_sierra
+    sha256 "9bd0f40b59d27f00e1c7f13708ba696dc468953e5aea4b3424379d31b60c4a2b" => :big_sur
+    sha256 "44123d30fa54f66b366bf8c8bb241d92a5ad1a2c57fe29719de3c841b9f7248e" => :catalina
+    sha256 "91528c91fff12e5a48cf4c4488c38a112dbf6c45798d9daf12a43b57cc2a8b53" => :mojave
   end
 
   head do
@@ -30,7 +31,6 @@ class Gdal < Formula
   depends_on "geos"
   depends_on "giflib"
   depends_on "hdf5"
-  depends_on "jasper"
   depends_on "jpeg"
   depends_on "json-c"
   depends_on "libdap"
@@ -42,10 +42,11 @@ class Gdal < Formula
   depends_on "libxml2"
   depends_on "netcdf"
   depends_on "numpy"
+  depends_on "openjpeg"
   depends_on "pcre"
   depends_on "poppler"
   depends_on "proj"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "sqlite" # To ensure compatibility with SpatiaLite
   depends_on "unixodbc" # macOS version is not complete enough
   depends_on "webp"
@@ -71,8 +72,6 @@ class Gdal < Formula
       "--with-threads",
 
       # GDAL native backends
-      "--with-bsb",
-      "--with-grib",
       "--with-pam",
       "--with-pcidsk=internal",
       "--with-pcraster=internal",
@@ -97,7 +96,7 @@ class Gdal < Formula
       "--with-cfitsio=#{Formula["cfitsio"].opt_prefix}",
       "--with-hdf5=#{Formula["hdf5"].opt_prefix}",
       "--with-netcdf=#{Formula["netcdf"].opt_prefix}",
-      "--with-jasper=#{Formula["jasper"].opt_prefix}",
+      "--with-openjpeg",
       "--with-xerces=#{Formula["xerces-c"].opt_prefix}",
       "--with-odbc=#{Formula["unixodbc"].opt_prefix}",
       "--with-dods-root=#{Formula["libdap"].opt_prefix}",
@@ -109,6 +108,7 @@ class Gdal < Formula
       "--with-armadillo=no",
       "--with-qhull=no",
       "--without-grass",
+      "--without-jasper",
       "--without-jpeg12",
       "--without-libgrass",
       "--without-mysql",
@@ -118,24 +118,23 @@ class Gdal < Formula
       # Unsupported backends are either proprietary or have no compatible version
       # in Homebrew. Podofo is disabled because Poppler provides the same
       # functionality and then some.
-      "--without-gta",
-      "--without-ogdi",
-      "--without-fme",
-      "--without-hdf4",
-      "--without-openjpeg",
-      "--without-fgdb",
       "--without-ecw",
+      "--without-fgdb",
+      "--without-fme",
+      "--without-gta",
+      "--without-hdf4",
+      "--without-idb",
+      "--without-ingres",
+      "--without-jp2mrsid",
       "--without-kakadu",
       "--without-mrsid",
-      "--without-jp2mrsid",
       "--without-mrsid_lidar",
       "--without-msg",
       "--without-oci",
-      "--without-ingres",
-      "--without-idb",
-      "--without-sde",
+      "--without-ogdi",
       "--without-podofo",
       "--without-rasdaman",
+      "--without-sde",
       "--without-sosi",
     ]
 
@@ -152,7 +151,7 @@ class Gdal < Formula
 
     # Build Python bindings
     cd "swig/python" do
-      system Formula["python@3.8"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
+      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
     end
     bin.install Dir["swig/python/scripts/*.py"]
 
@@ -167,7 +166,7 @@ class Gdal < Formula
     # basic tests to see if third-party dylibs are loading OK
     system "#{bin}/gdalinfo", "--formats"
     system "#{bin}/ogrinfo", "--formats"
-
-    system Formula["python@3.8"].opt_bin/"python3", "-c", "import gdal"
+    # Changed Python package name from "gdal" to "osgeo.gdal" in 3.2.0.
+    system Formula["python@3.9"].opt_bin/"python3", "-c", "import osgeo.gdal"
   end
 end

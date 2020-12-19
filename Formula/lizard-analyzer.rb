@@ -3,8 +3,9 @@ class LizardAnalyzer < Formula
 
   desc "Extensible Cyclomatic Complexity Analyzer"
   homepage "http://www.lizard.ws"
-  url "https://files.pythonhosted.org/packages/ef/bc/c9b66e557203f2a6f5cf3eb704c640e433385dda639c1b2da56b966f9c42/lizard-1.17.4.tar.gz"
-  sha256 "ae9485f66e824756a82589e0d9effe58826c3d9f66c9a59b93343d5a8c5ef5a5"
+  url "https://files.pythonhosted.org/packages/60/a7/7a93f5d004bf86209406c533d21d7dede965f976384d29e8681aa47faed9/lizard-1.17.7.tar.gz"
+  sha256 "d08e7afb4534fc326401ede2d5aace027757fb1a9deb3cc9f8e7f4339983c630"
+  license "MIT"
 
   livecheck do
     url :stable
@@ -12,12 +13,13 @@ class LizardAnalyzer < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "498bb2088df06bb05ae070e5d7c8ddf0fe866b56b8ecb8eb6706cba52d4a39ac" => :catalina
-    sha256 "91af68d9681bddda4bdb7558ed676c1756873e4ac58276b5dfb1a7f9f74b1bef" => :mojave
-    sha256 "2571285d55aa0c1653d78594291159f04898d7a0529701fca7f75dacd7e145c3" => :high_sierra
+    sha256 "7c38c8e8ed4b8cb71d2021b6d4eb0aae2d8bae8976634f93242943ce91bf1bbe" => :big_sur
+    sha256 "f3e7d8d0c1108714727d7b8065166073f207a5d35ad302f1be788d48c91cca51" => :catalina
+    sha256 "bc9bca50b8f2d83404353f5692021d00e995ca95dc389eb976584ae29d1bb1f9" => :mojave
+    sha256 "79f9a6da530de4e7d15a93256a7eb7ec4bcf4b4a227c601974cccdeee21b9a32" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   def install
     virtualenv_install_with_resources

@@ -1,24 +1,27 @@
 class KymaCli < Formula
   desc "Kyma command-line interface"
   homepage "https://kyma-project.io"
-  url "https://github.com/kyma-project/cli.git",
-      tag:      "1.15.0",
-      revision: "31ee12fdc214124aabb70be036d27e76ee8b9ad9"
+  url "https://github.com/kyma-project/cli/archive/1.17.0.tar.gz"
+  sha256 "dc700e977cc7e1b12b3dd9f12e3ae5276cb710c98dd01f9d336c360f9a605777"
   license "Apache-2.0"
   head "https://github.com/kyma-project/cli.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b7a55116242f040d070ed81cadb372361609e6cc41902c85c02b6289e5e10121" => :catalina
-    sha256 "33fc6118e946a2d3ec280dd3e49b784bd79607b41a60e36bfdfb3f6aaefec491" => :mojave
-    sha256 "bef618a94baf34cc932a183b8200db73264fa22ddae55792e328ad0e000f3ff8" => :high_sierra
+    sha256 "6ee3d5d7ebec60115cb0a901495d9d34938a8096839b07a64ee428308e974ab9" => :big_sur
+    sha256 "bfa4a2accfa9d6bff270568f3221cf3fc8cdf7b854b2e524f924395dd091dec2" => :catalina
+    sha256 "9b50502234b8d207eddc402e7a7c779d35884a9aa6da3628e514ac17bd930ccb" => :mojave
   end
 
   depends_on "go@1.14" => :build
 
   def install
-    system "make", "build-darwin"
-    bin.install "bin/kyma-darwin" => "kyma"
+    ldflags = %W[
+      -s -w
+      -X github.com/kyma-project/cli/cmd/kyma/version.Version=#{version}
+    ].join(" ")
+
+    system "go", "build", *std_go_args, "-o", bin/"kyma", "-ldflags", ldflags, "./cmd"
   end
 
   test do

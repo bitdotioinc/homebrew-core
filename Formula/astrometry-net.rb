@@ -6,12 +6,19 @@ class AstrometryNet < Formula
   url "https://github.com/dstndstn/astrometry.net/releases/download/0.82/astrometry.net-0.82.tar.gz"
   sha256 "20f7ac7474962546f462286178e40b09602eeda10af98c828c64f67771fbc197"
   license "BSD-3-Clause"
+  revision 1
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any
-    sha256 "3bc7c8dfe2e54468e9afad45a2146b217e5888158615d3c98c7d4c95ead028a9" => :catalina
-    sha256 "710713585ca331943ba15fb88aefef6d251e78b11f9765e99a4d9752982411c1" => :mojave
-    sha256 "81b1052ddf30d7f91b934c72603347430dc8046ec2f315d1d7f62dec972c39b8" => :high_sierra
+    sha256 "700e922e70fab4f449c5167c376cc2105d94d72c1ffbc674cfc8a40f15527338" => :big_sur
+    sha256 "341deb97e8b97022dba091f90eb564fb69993e686a7e3ce4f5ecee824f99a572" => :catalina
+    sha256 "c21290e658b447a4ee10e33c6f0924ba7224bf31863e2541cb2ee502781cec28" => :mojave
+    sha256 "da1ed3b61a7388044bc0b40fc58f9b9d1ecc2b27df25ff47596980b56edc82ad" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -23,7 +30,7 @@ class AstrometryNet < Formula
   depends_on "libpng"
   depends_on "netpbm"
   depends_on "numpy"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "wcslib"
 
   resource "fitsio" do
@@ -32,16 +39,20 @@ class AstrometryNet < Formula
   end
 
   def install
+    # astrometry-net doesn't support parallel build
+    # See https://github.com/dstndstn/astrometry.net/issues/178#issuecomment-592741428
+    ENV.deparallelize
+
     ENV["NETPBM_INC"] = "-I#{Formula["netpbm"].opt_include}/netpbm"
     ENV["NETPBM_LIB"] = "-L#{Formula["netpbm"].opt_lib} -lnetpbm"
     ENV["SYSTEM_GSL"] = "yes"
-    ENV["PYTHON"] = Formula["python@3.8"].opt_bin/"python3"
+    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
 
-    venv = virtualenv_create(libexec, Formula["python@3.8"].opt_bin/"python3")
+    venv = virtualenv_create(libexec, Formula["python@3.9"].opt_bin/"python3")
     venv.pip_install resources
 
     ENV["INSTALL_DIR"] = prefix
-    xy = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
+    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV["PY_BASE_INSTALL_DIR"] = libexec/"lib/python#{xy}/site-packages/astrometry"
     ENV["PY_BASE_LINK_DIR"] = libexec/"lib/python#{xy}/site-packages/astrometry"
     ENV["PYTHON_SCRIPT"] = libexec/"bin/python3"

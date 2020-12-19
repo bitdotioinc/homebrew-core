@@ -2,16 +2,15 @@ class DockerLs < Formula
   desc "Tools for browsing and manipulating docker registries"
   homepage "https://github.com/mayflower/docker-ls"
   url "https://github.com/mayflower/docker-ls.git",
-      tag:      "v0.3.2",
-      revision: "d371240c3dd46a73f9c516475d5f611c8f699419"
+      tag:      "v0.5.0",
+      revision: "0eb4c9ab7f04f48dadd9e32aecace4a7da2270e5"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0dd57092a34d0bfac07d79e87912e3bedfda5f9b7046db31c9c637d080519f2c" => :catalina
-    sha256 "13e48e45be8cdb09ff06ca244927b8131debc11b3bc8a31f3d1a1960015024f9" => :mojave
-    sha256 "f16bb4511bb3880c9f9dfe114c825f57075ae5524c4e009372a4c9305c236f8d" => :high_sierra
-    sha256 "a32421f644c0385dfce1af8091c254502471625cde6ba304cba9dd86f547ada9" => :sierra
+    sha256 "5ca16daa59b3fcb5cf7196492d8307b1f40fa92932f9573d9568c9acd3806e20" => :big_sur
+    sha256 "8e08cc258716c42f48d8000423772dfb00903b85b18e3633c53dad99697b4210" => :catalina
+    sha256 "5994442415bfbcc775069311428b7f3b810e5ca09ff7af25f2c3a322d8105786" => :mojave
   end
 
   depends_on "go" => :build

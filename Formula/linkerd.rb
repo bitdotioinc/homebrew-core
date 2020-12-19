@@ -3,8 +3,8 @@ class Linkerd < Formula
   homepage "https://linkerd.io"
 
   url "https://github.com/linkerd/linkerd2.git",
-    tag:      "stable-2.8.1",
-    revision: "83ae0ccf0f1aad636764fd0e606ac577e426d3f9"
+      tag:      "stable-2.9.1",
+      revision: "c3cb84a6382c781f9650d90875a1e89d95346d0c"
   license "Apache-2.0"
 
   livecheck do
@@ -14,10 +14,9 @@ class Linkerd < Formula
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "e7935ba4364476f17408883ee28616ef184313141b3bf867741909abcd350715" => :catalina
-    sha256 "5e68a496869ae3c8aef8c99331f573e2a49c7fa831584737f133e5efa7784a69" => :mojave
-    sha256 "341c693291213280a51bf4ad81281e8428a3c264301be1074ae09395b1b09e66" => :high_sierra
+    sha256 "5e1d514e823f835f30c245dbc2e2d115f287ccb60f25d33335e7aaa71adf4ba4" => :big_sur
+    sha256 "42d10f369486219dfe203c4a219310be08d2a62250e31ddfb31668921204fef2" => :catalina
+    sha256 "972c9162520a936baf72bbf3771a52f5698f15903cd7418724cfcab008669b9a" => :mojave
   end
 
   depends_on "go" => :build

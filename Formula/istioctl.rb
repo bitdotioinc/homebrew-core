@@ -1,22 +1,24 @@
 class Istioctl < Formula
   desc "Istio configuration command-line utility"
-  homepage "https://github.com/istio/istio"
+  homepage "https://istio.io/"
   url "https://github.com/istio/istio.git",
-      tag:      "1.7.0",
-      revision: "2022348138e47498c4b54995b4cb5a1656817c4e"
+      tag:      "1.8.1",
+      revision: "806fb24bc121bf93ea06f6a38b7ccb3d78d1f326"
   license "Apache-2.0"
+  head "https://github.com/istio/istio.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ada28021256a12012af3b6718bd3c31bd6c394aeb37d53116f396fc91a35bfd3" => :catalina
-    sha256 "ea17265935f80dfc1dc22b31b562b6cfa75c636eca30125ff1df86cc03c8a11e" => :mojave
-    sha256 "e1fd9c5d28f89de11178c33b1ffe71c4bd0533ec244a0e557346f99a607b865d" => :high_sierra
+    sha256 "4800b4e1f1fb2967dc36aab48dc535e9d7ea9673b94b05a381ac9e522d3a5c86" => :big_sur
+    sha256 "810e84cb98f5e1d75715eb8376b44c64cdaad7be026bf8f2461cba9c814f27cf" => :catalina
+    sha256 "0b5585969427eca2432fa787cb452f6bddca55398d0e17d279ca58fa909f8be7" => :mojave
   end
 
   depends_on "go" => :build
   depends_on "go-bindata" => :build
 
   def install
+    ENV["VERSION"] = version.to_s
     ENV["TAG"] = version.to_s
     ENV["ISTIO_VERSION"] = version.to_s
     ENV["HUB"] = "docker.io/istio"
@@ -31,6 +33,6 @@ class Istioctl < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/istioctl version --remote=false")
+    assert_equal version.to_s, shell_output("#{bin}/istioctl version --remote=false").strip
   end
 end

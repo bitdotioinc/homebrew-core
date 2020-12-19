@@ -1,21 +1,26 @@
 class Teleport < Formula
   desc "Modern SSH server for teams managing distributed infrastructure"
   homepage "https://gravitational.com/teleport"
-  url "https://github.com/gravitational/teleport/archive/v4.3.5.tar.gz"
-  sha256 "7a4081117e4a13bfbea0d1cc64aef6e8103c360551523b2abef0971712beb5a9"
+  url "https://github.com/gravitational/teleport/archive/v5.0.1.tar.gz"
+  sha256 "3145e0b93c7b38fdf94e8cd995699fca8f78c26228bd19b1aad66b4749fd7719"
   license "Apache-2.0"
   head "https://github.com/gravitational/teleport.git"
 
+  # We check the Git tags instead of using the `GithubLatest` strategy, as the
+  # "latest" version can be incorrect. As of writing, two major versions of
+  # `teleport` are being maintained side by side and the "latest" tag can point
+  # to a release from the older major version.
   livecheck do
-    url "https://github.com/gravitational/teleport/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    url :stable
+    strategy :git
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "25f58c4d14b1276df4b957b51edebb9cfae56083f6084cc831c29ea5e79720e6" => :catalina
-    sha256 "0b5c412839bf5f27fd70a752a2a28ffd1408dc30a5dd489e2aaf1ad7275d538c" => :mojave
-    sha256 "3c5f65eb7952139861314f3a7a571b66d03defb883e963d15746d78d5926b723" => :high_sierra
+    sha256 "0974ae48535b723a3cc38cb238602a4e4bf542192c85e5a3c7487248863a69d4" => :big_sur
+    sha256 "fcab18d54a2f2cd6cf4fd2ae24123f58517620bc94fd807249ee3575e81e00b4" => :catalina
+    sha256 "6d71dbf63fdd7c5019a15c701d211951aa330a610d17b256fadc1e5c3852e5d5" => :mojave
   end
 
   depends_on "go" => :build

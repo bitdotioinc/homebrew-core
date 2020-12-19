@@ -1,8 +1,8 @@
 class Clib < Formula
   desc "Package manager for C programming"
   homepage "https://github.com/clibs/clib"
-  url "https://github.com/clibs/clib/archive/2.1.14.tar.gz"
-  sha256 "70d2cc252173054899a0a296ad4e91116d4cac434545332f47f55ccc27f693be"
+  url "https://github.com/clibs/clib/archive/2.5.0.tar.gz"
+  sha256 "74643374883651a272ed8ac8e8a6789c0b4a4b13e20a9d45798fd770821e620d"
   license "MIT"
   head "https://github.com/clibs/clib.git"
 
@@ -13,9 +13,9 @@ class Clib < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fd29b216886e47f1868b9ab39e42d516f51a513afc5b780c8f9e4899f459aa59" => :catalina
-    sha256 "662ea4a128da3773ede79b8d2f9f4b77fdd5ace072d451d30c2181063ae250ff" => :mojave
-    sha256 "9259cafa9e7e5171e1cd49bb165741f7fb7aad4e4471faaa517fcd6402a9fe97" => :high_sierra
+    sha256 "5c09d1b21de092b57a9fb16170dba836e5f4df51b9a6a47302aa4f2f90b565a0" => :big_sur
+    sha256 "e6f3ca8fbc6b39325af968a81e8f09045de75e90dae2d6db3a5a6e72afee2766" => :catalina
+    sha256 "acebab1f84196d10519777630a1dec10858f2729208c111094bdaf49a11b77bb" => :mojave
   end
 
   uses_from_macos "curl"

@@ -1,16 +1,16 @@
 class Tealdeer < Formula
   desc "Very fast implementation of tldr in Rust"
   homepage "https://github.com/dbrgn/tealdeer"
-  url "https://github.com/dbrgn/tealdeer/archive/v1.3.0.tar.gz"
-  sha256 "d384176263c1377b241f4e41f8efd564052e506af00e014240f3874419e187e0"
+  url "https://github.com/dbrgn/tealdeer/archive/v1.4.1.tar.gz"
+  sha256 "eaf42fe17be751985cbf46c170ef623fcbd36028c88c2e70823492a9335a4a8e"
   license "Apache-2.0"
-  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9db1cd67e060652967a899a4266758bf0b460b1426bea40a822f217c4edf4d80" => :catalina
-    sha256 "379f9775e19bf959868350869913b83458b3f14b4aacdd4e5432c2a4cdcf8e9d" => :mojave
-    sha256 "fd5d4b07815554a32fc161accc1145d1a7ef761bd20f2f94bdb94eca57563e32" => :high_sierra
+    sha256 "5f323f75b7d481e86187ac45f9931ad114e1a9d4e7035f04a368d690de77e9e0" => :big_sur
+    sha256 "db4a2fc7dceef4f4f914aaf7b655741e960664b46c61ab2c163f015a74949533" => :catalina
+    sha256 "9ad3e3ea878b05fd2764cc8e534888b8bf810f88cc4d986de158ed6b33633b42" => :mojave
+    sha256 "80a29641c9b29a3cda69adf5afd2c36b27f84fb8f89a555dbf2a676dddf03b70" => :high_sierra
   end
 
   depends_on "rust" => :build
@@ -23,6 +23,9 @@ class Tealdeer < Formula
   conflicts_with "tldr", because: "both install `tldr` binaries"
 
   def install
+    on_linux do
+      ENV["OPENSSL_DIR"] = Formula["openssl@1.1"].opt_prefix
+    end
     system "cargo", "install", *std_cargo_args
     bash_completion.install "bash_tealdeer" => "tldr"
     zsh_completion.install "zsh_tealdeer" => "_tldr"

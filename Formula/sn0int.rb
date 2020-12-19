@@ -3,13 +3,15 @@ class Sn0int < Formula
   homepage "https://github.com/kpcyrd/sn0int"
   url "https://github.com/kpcyrd/sn0int/archive/v0.19.1.tar.gz"
   sha256 "4720736805bec49102f0622ba6b68cc63da0a023a029687140d5b4d2a4d637dc"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
 
   bottle do
     cellar :any
-    sha256 "618417dd910df3bb10c461c4e5b41f202c23ce24bf39043e5b88e544bc56df0a" => :catalina
-    sha256 "cff5e42d3b5e9e44b92f437601ef1764f93df0f5bb259ec0d683cd4d2be59e83" => :mojave
-    sha256 "66382b358f95db51620653c1120e903dd009a8a2e4be25c759593a01956df48d" => :high_sierra
+    rebuild 1
+    sha256 "b925f372e5ba2cbd848b7a95da0fb9f053b2f6078bc23dacdb324b7668bb0e39" => :big_sur
+    sha256 "5a6cc5bdf07a29ebf714aff83d338394d030780aaf69dda387499ca0db8138f2" => :catalina
+    sha256 "75c89017e8f92cc2ef2a1701554a2047ec1a4a42806bc47081c7af42935a8043" => :mojave
+    sha256 "0cf32130ed1155b959935202031f7d71c34f141a46c726233836e402c9bd8bc8" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -18,6 +20,10 @@ class Sn0int < Formula
   depends_on "libsodium"
 
   uses_from_macos "sqlite"
+
+  on_linux do
+    depends_on "libseccomp"
+  end
 
   def install
     system "cargo", "install", *std_cargo_args

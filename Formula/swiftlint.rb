@@ -2,22 +2,23 @@ class Swiftlint < Formula
   desc "Tool to enforce Swift style and conventions"
   homepage "https://github.com/realm/SwiftLint"
   url "https://github.com/realm/SwiftLint.git",
-      tag:      "0.40.1",
-      revision: "1a1db6c706de7e6c6caa4df78e9368a67a7772d3"
+      tag:      "0.42.0",
+      revision: "d53fc2664df92ef322bfa9ce5238d34f1461526a"
   license "MIT"
   head "https://github.com/realm/SwiftLint.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5d24f5ffdfc80f1027a9a0dbe03cb519f33e4ae395eb0ed0cb79451df665d45b" => :catalina
-    sha256 "696a974b205a589fed4b1fdb48081f630a67181f3d959636ac4d0d10216f6320" => :mojave
+    sha256 "1a0540f0ff6cac2da0a51672db7963aef71cc58954c34791e9b01dafd63c5898" => :big_sur
+    sha256 "e9023ed754eb8cb78a9f2b469a90875ca42a7afffd3e96f8142252e81d889793" => :catalina
   end
 
-  depends_on xcode: ["10.2", :build]
+  depends_on xcode: ["11.4", :build]
   depends_on xcode: "8.0"
 
   def install
-    system "make", "prefix_install", "PREFIX=#{prefix}", "TEMPORARY_FOLDER=#{buildpath}/SwiftLint.dst"
+    system "swift", "build", "--disable-sandbox", "--configuration", "release"
+    bin.install ".build/release/swiftlint"
   end
 
   test do

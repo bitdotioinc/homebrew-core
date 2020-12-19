@@ -12,6 +12,7 @@ class Usbredir < Formula
 
   bottle do
     cellar :any
+    sha256 "8f86636870cc889d4a8ef202fdf4d65681e930961e19de50438deb49d1d2065d" => :big_sur
     sha256 "c7182aed390cc4cf96e9a99a728129367714b954062b7f92471a6e3864aed244" => :catalina
     sha256 "579f1db366d50c027cfd6ea92149878b358d86bb6a9d491320e5f7fd62dfd2e8" => :mojave
     sha256 "0d83ca33451b2c382dcf4b70be515549db139b0960712dc7f213e993ba7973d7" => :high_sierra
@@ -25,8 +26,8 @@ class Usbredir < Formula
   # Upstream patch, remove for next release
   # https://gitlab.freedesktop.org/spice/usbredir/issues/9
   patch do
-    url "https://gitlab.freedesktop.org/spice/usbredir/commit/985e79d5f98d5586d87204317462549332c1dd46.diff"
-    sha256 "21c0da8f6be94764e1e3363f5ed76ed070b5087034420cb17a81da06e4b73f83"
+    url "https://gitlab.freedesktop.org/spice/usbredir/commit/985e79d5f98d5586d87204317462549332c1dd46.patch"
+    sha256 "2647e12ce39b509d4b5afec12643da76a7eea978241d2169e8eded44c8108a33"
   end
 
   def install

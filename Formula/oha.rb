@@ -1,16 +1,16 @@
 class Oha < Formula
   desc "HTTP load generator, inspired by rakyll/hey with tui animation"
   homepage "https://github.com/hatoo/oha/"
-  url "https://github.com/hatoo/oha/archive/v0.4.1.tar.gz"
-  sha256 "2a713a00aef8db3de98fe5a936e84fdf7fcebfa8211aee03a4c7754aa094d7d1"
+  url "https://github.com/hatoo/oha/archive/v0.4.4.tar.gz"
+  sha256 "e40fa987e0a2ab8f04b00ea90892b0ccdcecbb2e8d2cafc2ca318aa44a7dcf03"
   license "MIT"
   head "https://github.com/hatoo/oha.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "31e9544f9612b2211bd224d6112da755ed92af8051046f13c518d95e3778a1b3" => :catalina
-    sha256 "087d14cbe0e3972365b71896a7e29a60f95c0a943fb65ee4969ea5e222be34da" => :mojave
-    sha256 "aff27d4b0f0a25c45707ed170b2ff63a32a83a5a48efcb48fd498b924940ffd9" => :high_sierra
+    sha256 "948fb9ba126aab229a17dd9c273f01eb62488abf0282f1cbc8e22d4402a6ec2c" => :big_sur
+    sha256 "3c542d6da4bcaf5acf993f6e775019ca5c9299a8a772c67386f4b988731cbee1" => :catalina
+    sha256 "5ad840b9b8d11da27f29a54c7587d4baeb6bffbd36ce86cd17327c8d2b5dfa28" => :mojave
   end
 
   depends_on "rust" => :build

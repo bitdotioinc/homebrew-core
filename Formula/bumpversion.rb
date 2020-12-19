@@ -5,18 +5,19 @@ class Bumpversion < Formula
   homepage "https://pypi.python.org/pypi/bumpversion"
   # maintained fork for the project
   # Ongoing maintenance discussion for the project, https://github.com/c4urself/bump2version/issues/86
-  url "https://github.com/c4urself/bump2version/archive/v1.0.0.tar.gz"
-  sha256 "06a7cb0fb7155b9283c4d10180e477f658754595b4dedb249f1e143e899d0e6c"
+  url "https://github.com/c4urself/bump2version/archive/v1.0.1.tar.gz"
+  sha256 "b0864d58b0ef231f99fef85ee028633d9366557a748e29cd92df0aa94f83f5fc"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a379a5aa089128d51f39a585e3465520b4a109a7b98e0237dc5b4478ce050001" => :catalina
-    sha256 "dea282fd874f598a1099885ee821f1f45662844724e9650362848de637e421d0" => :mojave
-    sha256 "0ef3a9a86d8504dc510d4ccff21d71b832335abb7d7c739b5e514ef654b3900c" => :high_sierra
+    sha256 "d8b819a451310e2c12c43f7fc33b7c59b9a8dbeb9836729357c97b4faf8a991d" => :big_sur
+    sha256 "98faab4d2a8683aeae0d70544ddd975fe3bb67754faa5723ef085555d103990f" => :catalina
+    sha256 "7e216796b73d0fd1903ee89b84bbaa259e64aafc3db6596dbb5e6009b7870d44" => :mojave
+    sha256 "15fa88250157b9773f20b7645410778be0afb63855eabe38bc572f52dafb31b6" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   def install
     virtualenv_install_with_resources

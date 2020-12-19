@@ -1,9 +1,9 @@
 class Hbase < Formula
   desc "Hadoop database: a distributed, scalable, big data store"
   homepage "https://hbase.apache.org"
-  url "https://www.apache.org/dyn/closer.lua?path=hbase/2.3.1/hbase-2.3.1-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/hbase/2.3.1/hbase-2.3.1-bin.tar.gz"
-  sha256 "f082da6ba9b0fb8270d6a20ead96334590eba62bbfa960f8e74b312d7bc4c00f"
+  url "https://www.apache.org/dyn/closer.lua?path=hbase/2.3.3/hbase-2.3.3-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/hbase/2.3.3/hbase-2.3.3-bin.tar.gz"
+  sha256 "783fec0f1ca67cef53524a2e05f1744c84821454d1a69355e373acb09efeea06"
   license "Apache-2.0"
 
   livecheck do
@@ -11,9 +11,10 @@ class Hbase < Formula
   end
 
   bottle do
-    sha256 "fdf0eb89433c3c1d3b6432a5261f9a433dba0c1d128cba544d1a69861d931c07" => :catalina
-    sha256 "cf38cab402d016cfed0c937b67ea84fc4faf620121f422a673b81b422fd2356f" => :mojave
-    sha256 "fd9352d2ba177f23ae5388fe63f7abdc528d7d9013a03a2c022c926456b0268e" => :high_sierra
+    sha256 "d59f469c0fc89b942be566b057e5243cbd19ac6229ec75f93245779474acd1ef" => :big_sur
+    sha256 "f703e3ddce84f7a365e55075d4a488971b7857f2b8c310005d0fa239728a3727" => :catalina
+    sha256 "6f6a789f2bc0a72c81c7ae393438add0506e426365acf81045fea89be5778874" => :mojave
+    sha256 "487a62bec9fa66f7303c4863587cfed140630a4b14510076d771f10f38f31f37" => :high_sierra
   end
 
   depends_on "ant" => :build

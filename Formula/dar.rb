@@ -1,9 +1,9 @@
 class Dar < Formula
   desc "Backup directory tree and files"
   homepage "http://dar.linux.free.fr/doc/index.html"
-  url "https://downloads.sourceforge.net/project/dar/dar/2.6.10/dar-2.6.10.tar.gz"
-  sha256 "16a0b755c648c4ce6598e258ccf375f55d4f2f943448341ed41085ac7a27d2e7"
-  license "GPL-2.0"
+  url "https://downloads.sourceforge.net/project/dar/dar/2.6.13/dar-2.6.13.tar.gz"
+  sha256 "3fea9ff9e55fb9827e17a080de7d1a2605b82c2320c0dec969071efefdbfd097"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url :stable
@@ -12,9 +12,9 @@ class Dar < Formula
 
   bottle do
     cellar :any
-    sha256 "715d4c42deee8466b4c4ca1eb5c1eb0e353531f008162a1caa0ac3cebed80eea" => :catalina
-    sha256 "da4e6447538509a0cf9b67cd126096ff8b4967ea9503681d8a985b557128cd1a" => :mojave
-    sha256 "589731424a6eb153ea8ad9f60e05f18e077194c7ca5d95784bd102bb7781652b" => :high_sierra
+    sha256 "e3c5b475201e6916f344653c86357a54cdd5bf081a6b5ecc72e1f8cea67bbb8d" => :catalina
+    sha256 "3297d386d1572cf82676d96809cea6b54a4338c1a51213c6c059c81206b98c5b" => :mojave
+    sha256 "7f44bc4ac5e17f47705f8a338517432690dadcf6e6f9e7cce502624d4849c6ca" => :high_sierra
   end
 
   depends_on "upx" => :build

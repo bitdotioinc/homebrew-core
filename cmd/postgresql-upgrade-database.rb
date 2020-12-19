@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "cli/parser"
-require "open-uri"
-require "resource"
 require "formula"
 
 module Homebrew
@@ -106,7 +104,7 @@ module Homebrew
         initdb_args += if setting == "server_encoding"
           ["-E #{value}"]
         else
-          ["--#{setting.tr!("_", "-")}=#{value}"]
+          ["--#{setting.tr("_", "-")}=#{value}"]
         end
       end
 

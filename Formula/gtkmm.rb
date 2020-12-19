@@ -3,7 +3,8 @@ class Gtkmm < Formula
   homepage "https://www.gtkmm.org/"
   url "https://download.gnome.org/sources/gtkmm/2.24/gtkmm-2.24.5.tar.xz"
   sha256 "0680a53b7bf90b4e4bf444d1d89e6df41c777e0bacc96e9c09fc4dd2f5fe6b72"
-  revision 3
+  license "LGPL-2.1-or-later"
+  revision 5
 
   livecheck do
     url :stable
@@ -12,15 +13,14 @@ class Gtkmm < Formula
 
   bottle do
     cellar :any
-    sha256 "172050b87d5a7d4cd945722d80d5a8c933ed6329ad130ba9f92c0705a44acbbd" => :catalina
-    sha256 "bfa9c862a46b1ca66466e30ba6dfcb74bf69a345089aba76f6620f6aa28b69dc" => :mojave
-    sha256 "160a917c60ae9f41117f297a3bc8933fffb0084edccb6113fc7510798ad01d3e" => :high_sierra
-    sha256 "d525d513745bb81d43bcd3b43fc7067f64a8425640c9e1a959e94bd2c7d4eee9" => :sierra
+    sha256 "c9e5728a06139ff573e5629975dc9e43d96223533fac5eb3e994c8b0da1ac258" => :big_sur
+    sha256 "2abecc62affcdfd0d4f9f3609a10e239f518af89526c3083a81acc29a256da0f" => :catalina
+    sha256 "ed81ab47fb417cde880d799998dcbeb6fc1c8ac52554a4470f9275a4751cc4e9" => :mojave
   end
 
   depends_on "pkg-config" => :build
   depends_on "atkmm"
-  depends_on "cairomm"
+  depends_on "cairomm@1.14"
   depends_on "glibmm"
   depends_on "gtk+"
   depends_on "libsigc++@2"
@@ -44,7 +44,7 @@ class Gtkmm < Formula
     atk = Formula["atk"]
     atkmm = Formula["atkmm"]
     cairo = Formula["cairo"]
-    cairomm = Formula["cairomm"]
+    cairomm = Formula["cairomm@1.14"]
     fontconfig = Formula["fontconfig"]
     freetype = Formula["freetype"]
     gdk_pixbuf = Formula["gdk-pixbuf"]
@@ -61,6 +61,7 @@ class Gtkmm < Formula
     flags = %W[
       -I#{atk.opt_include}/atk-1.0
       -I#{atkmm.opt_include}/atkmm-1.6
+      -I#{atkmm.opt_lib}/atkmm-1.6/include
       -I#{cairo.opt_include}/cairo
       -I#{cairomm.opt_include}/cairomm-1.0
       -I#{cairomm.opt_lib}/cairomm-1.0/include

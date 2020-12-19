@@ -1,17 +1,19 @@
 class Rocksdb < Formula
   desc "Embeddable, persistent key-value store for fast storage"
   homepage "https://rocksdb.org/"
-  url "https://github.com/facebook/rocksdb/archive/v6.11.4.tar.gz"
-  sha256 "6793ef000a933af4a834b59b0cd45d3a03a3aac452a68ae669fb916ddd270532"
-  license "GPL-2.0"
+  url "https://github.com/facebook/rocksdb/archive/v6.14.6.tar.gz"
+  sha256 "fa61c55735a4911f36001a98aa2f5df1ffe4b019c492133d0019f912191209ce"
+  license any_of: ["GPL-2.0-only", "Apache-2.0"]
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "e480342b56120c038d7d29de482eea256f3d4b4b173701a37fdf9afddf92b9a9" => :catalina
-    sha256 "230c7bb4164b9a819da6b8118252c650e6b71a04769bfd242d3e561ab9361cc2" => :mojave
-    sha256 "c08fc8d6ad16f159fe8a2dccf118752e730fad45840c95ed2cf34cf875474c66" => :high_sierra
+    sha256 "f8065a2594655a33d36335f516b0448f2195ba5b4088aa36186b56bf3c1fb989" => :big_sur
+    sha256 "a9e2c1d9c7f27200b8ff1483233fdf671665f8bbc5671eeb27875ae20d212e07" => :catalina
+    sha256 "629da5a15d3e75afc921716e2c13b5f580444d6c9bf380e3ccb92e215c9978a0" => :mojave
   end
 
+  depends_on "cmake" => :build
   depends_on "gflags"
   depends_on "lz4"
   depends_on "snappy"
@@ -20,37 +22,48 @@ class Rocksdb < Formula
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
+  # Add artifact suffix to shared library
+  # https://github.com/facebook/rocksdb/pull/7755
+  patch do
+    url "https://github.com/facebook/rocksdb/commit/98f3f3143007bcb5455105a05da7eeecc9cf53a0.patch?full_index=1"
+    sha256 "6fb59cd640ed8c39692855115b72e8aa8db50a7aa3842d53237e096e19f88fc1"
+  end
+
   def install
     ENV.cxx11
-    ENV["PORTABLE"] = "1"
-    ENV["DEBUG_LEVEL"] = "0"
-    ENV["USE_RTTI"] = "1"
-    ENV["ROCKSDB_DISABLE_ALIGNED_NEW"] = "1" if MacOS.version <= :sierra
-    ENV["DISABLE_JEMALLOC"] = "1" # prevent opportunistic linkage
+    args = std_cmake_args
+    args << "-DPORTABLE=ON"
+    args << "-DUSE_RTTI=ON"
+    args << "-DWITH_BENCHMARK_TOOLS=OFF"
+    args << "-DWITH_BZ2=ON"
+    args << "-DWITH_LZ4=ON"
+    args << "-DWITH_SNAPPY=ON"
+    args << "-DWITH_ZLIB=ON"
+    args << "-DWITH_ZSTD=ON"
 
     # build regular rocksdb
-    system "make", "clean"
-    system "make", "static_lib"
-    system "make", "shared_lib"
-    system "make", "tools"
-    system "make", "install", "INSTALL_PATH=#{prefix}"
+    system "cmake", ".", *args
+    system "make", "install"
 
-    bin.install "sst_dump" => "rocksdb_sst_dump"
-    bin.install "db_sanity_test" => "rocksdb_sanity_test"
-    bin.install "db_stress" => "rocksdb_stress"
-    bin.install "write_stress" => "rocksdb_write_stress"
-    bin.install "ldb" => "rocksdb_ldb"
-    bin.install "db_repl_stress" => "rocksdb_repl_stress"
-    bin.install "rocksdb_dump"
-    bin.install "rocksdb_undump"
+    cd "tools" do
+      bin.install "sst_dump" => "rocksdb_sst_dump"
+      bin.install "db_sanity_test" => "rocksdb_sanity_test"
+      bin.install "write_stress" => "rocksdb_write_stress"
+      bin.install "ldb" => "rocksdb_ldb"
+      bin.install "db_repl_stress" => "rocksdb_repl_stress"
+      bin.install "rocksdb_dump"
+      bin.install "rocksdb_undump"
+    end
+    bin.install "db_stress_tool/db_stress" => "rocksdb_stress"
 
     # build rocksdb_lite
-    ENV.append_to_cflags "-DROCKSDB_LITE=1"
-    ENV["LIBNAME"] = "librocksdb_lite"
+    args << "-DROCKSDB_LITE=ON"
+    args << "-DARTIFACT_SUFFIX=_lite"
+    args << "-DWITH_CORE_TOOLS=OFF"
+    args << "-DWITH_TOOLS=OFF"
     system "make", "clean"
-    system "make", "static_lib"
-    system "make", "shared_lib"
-    system "make", "install", "INSTALL_PATH=#{prefix}"
+    system "cmake", ".", *args
+    system "make", "install"
   end
 
   test do
@@ -65,8 +78,14 @@ class Rocksdb < Formula
       }
     EOS
 
+    extra_args = []
+    on_macos do
+      extra_args << "-stdlib=libc++"
+      extra_args << "-lstdc++"
+    end
     system ENV.cxx, "test.cpp", "-o", "db_test", "-v",
-                                "-std=c++11", "-stdlib=libc++", "-lstdc++",
+                                "-std=c++11",
+                                *extra_args,
                                 "-lz", "-lbz2",
                                 "-L#{lib}", "-lrocksdb_lite",
                                 "-DROCKSDB_LITE=1",
@@ -83,5 +102,17 @@ class Rocksdb < Formula
     assert_match "rocksdb_repl_stress:", shell_output("#{bin}/rocksdb_repl_stress --help 2>&1", 1)
     assert_match "rocksdb_dump:", shell_output("#{bin}/rocksdb_dump --help 2>&1", 1)
     assert_match "rocksdb_undump:", shell_output("#{bin}/rocksdb_undump --help 2>&1", 1)
+
+    db = testpath / "db"
+    %w[no snappy zlib bzip2 lz4 zstd].each_with_index do |comp, idx|
+      key = "key-#{idx}"
+      value = "value-#{idx}"
+
+      put_cmd = "#{bin}/rocksdb_ldb put --db=#{db} --create_if_missing --compression_type=#{comp} #{key} #{value}"
+      assert_equal "OK", shell_output(put_cmd).chomp
+
+      get_cmd = "#{bin}/rocksdb_ldb get --db=#{db} #{key}"
+      assert_equal value, shell_output(get_cmd).chomp
+    end
   end
 end

@@ -1,8 +1,8 @@
 class Ballerina < Formula
   desc "Programming Language for Network Distributed Applications"
   homepage "https://ballerina.io"
-  url "https://dist.ballerina.io/downloads/1.2.8/ballerina-1.2.8.zip"
-  sha256 "bade40aea47ed75c15efe99425908cb3a9401e410310bf59f0cd3f5602fb911d"
+  url "https://dist.ballerina.io/downloads/1.2.11/ballerina-1.2.11.zip"
+  sha256 "c7b62a5a52fa9dde5180ee108cc5931a18d505abfceeec28554bda77f8d72b4c"
   license "Apache-2.0"
 
   livecheck do
@@ -12,7 +12,7 @@ class Ballerina < Formula
 
   bottle :unneeded
 
-  depends_on java: "1.8"
+  depends_on "openjdk@8"
 
   def install
     # Remove Windows files

@@ -4,17 +4,18 @@ class Godep < Formula
   url "https://github.com/tools/godep/archive/v80.tar.gz"
   sha256 "029adc1a0ce5c63cd40b56660664e73456648e5c031ba6c214ba1e1e9fc86cf6"
   license "BSD-3-Clause"
-  revision 38
+  revision 42
   head "https://github.com/tools/godep.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "141260f7b4c5e0dbd5c2c7b4ec513ae1e5f8d5ab20661a0c872c95f6d5f459fe" => :catalina
-    sha256 "b07e664a25d5384e11c9f4623de7bb2b3921cb99485a66f86f1f711fa9d49624" => :mojave
-    sha256 "86892d7dd9770920ee08c761a722f85a9354f9813e0119e8fc2f67e8fff0b79b" => :high_sierra
+    sha256 "5b45501518691f47fe24b01610aeca28e042edb9330276449b21d982a04780b0" => :big_sur
+    sha256 "782f348e415f6f3d41b19f1c6c7b531c8e397ac50560bed30894dad6402c9048" => :catalina
+    sha256 "1b6409ac0394b28d044107c11da263b863b5f800504058751c85108398fff79a" => :mojave
+    sha256 "ed88d3864defb8f4773327d81be0f23c154669b4025a20ed5f92647c5b145d1a" => :high_sierra
   end
 
-  deprecate! date: "2018-01-26", because: :repo_archived
+  disable! date: "2018-01-26", because: :unmaintained
 
   depends_on "go"
 

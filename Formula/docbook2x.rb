@@ -11,6 +11,7 @@ class Docbook2x < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "9a9d1f18cb66569bdebd729119d64719a8e4990ceab99a10a395d61eea3217ae" => :big_sur
     sha256 "a7562a999301c0879be6f39bd031bb886e68ca56c8aca08b1977eaf1e2927496" => :catalina
     sha256 "2009056af30fb2a08a751e055fbdec14d49b4bc51da34cb63737b22b4b4d7784" => :mojave
     sha256 "81734088203909fc5db96462d14116596058910cd1b7ab67389a7bf93c9bae63" => :high_sierra
@@ -24,6 +25,13 @@ class Docbook2x < Formula
 
   uses_from_macos "libxslt"
   uses_from_macos "perl"
+
+  on_linux do
+    resource "XML::Parser" do
+      url "https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.44.tar.gz"
+      sha256 "1ae9d07ee9c35326b3d9aad56eae71a6730a73a116b9fe9e8a4758b7cc033216"
+    end
+  end
 
   def install
     inreplace "perl/db2x_xsltproc.pl", "http://docbook2x.sf.net/latest/xslt", "#{share}/docbook2X/xslt"

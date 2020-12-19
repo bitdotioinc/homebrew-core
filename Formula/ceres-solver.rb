@@ -3,14 +3,14 @@ class CeresSolver < Formula
   homepage "http://ceres-solver.org/"
   url "http://ceres-solver.org/ceres-solver-1.14.0.tar.gz"
   sha256 "4744005fc3b902fed886ea418df70690caa8e2ff6b5a90f3dd88a3d291ef8e8e"
-  revision 12
+  revision 14
   head "https://ceres-solver.googlesource.com/ceres-solver.git"
 
   bottle do
     cellar :any
-    sha256 "2c086c9caaf2828a6429164960e438bc7b1d601a468599400dbcd9fce6baa33e" => :catalina
-    sha256 "6f3edef5bdaf1b23723825305b7cdc84d28a06705bd55735de70813b28cef37f" => :mojave
-    sha256 "4d59a78cc1d4fa075ad3cebfabb88f59080b3abe80a834445b018b670f9f2d0b" => :high_sierra
+    sha256 "489c57c69f839424ff0b9e74ad3ad798622dbe20e3b6b32b9e4b0bfde8b10a6f" => :big_sur
+    sha256 "2e64cbafd1d0297c5b87f560122bc2393b2215f440f39c50e5d9a7c958b68f35" => :catalina
+    sha256 "aa4449eb545fe2a289777824d39eb080ae01dd2a9f6349943db72fab33f2a25a" => :mojave
   end
 
   depends_on "cmake"
@@ -24,10 +24,10 @@ class CeresSolver < Formula
     system "cmake", ".", *std_cmake_args,
                     "-DBUILD_SHARED_LIBS=ON",
                     "-DEIGEN_INCLUDE_DIR=#{Formula["eigen"].opt_include}/eigen3",
-                    "-DMETIS_LIBRARY=#{Formula["metis"].opt_lib}/libmetis.dylib",
+                    "-DMETIS_LIBRARY=#{Formula["metis"].opt_lib}/#{shared_library("libmetis")}",
                     "-DGLOG_INCLUDE_DIR_HINTS=#{Formula["glog"].opt_include}",
                     "-DGLOG_LIBRARY_DIR_HINTS=#{Formula["glog"].opt_lib}",
-                    "-DTBB=OFF"
+                    "-DTBB=OFF", "-DBUILD_EXAMPLES=OFF"
     system "make"
     system "make", "install"
     pkgshare.install "examples", "data"

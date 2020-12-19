@@ -1,11 +1,13 @@
 class Checkstyle < Formula
   desc "Check Java source against a coding standard"
   homepage "https://checkstyle.sourceforge.io/"
-  url "https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.36/checkstyle-8.36-all.jar"
-  sha256 "108a045d6aab90636fc6498023ad6dc39face7347ebf56066b7af4a9c0180fb9"
+  url "https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.38/checkstyle-8.38-all.jar"
+  sha256 "340f3c51b9e86607ceaebba7e10004acf8a67e4ad535a900b9da89b1633993c8"
   license "LGPL-2.1-or-later"
 
   bottle :unneeded
+
+  depends_on "openjdk"
 
   def install
     libexec.install "checkstyle-#{version}-all.jar"

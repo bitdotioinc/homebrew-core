@@ -6,6 +6,7 @@ class Mkdocs < Formula
   url "https://files.pythonhosted.org/packages/78/a3/ec98a4eab53b7adf435df6c17765e1d7b603e1487ad6ab7c824d5488bf5c/mkdocs-1.1.2.tar.gz"
   sha256 "f0b61e5402b99d7789efa032c7a74c90a20220a9c81749da06dbfbcbd52ffb39"
   license "BSD-2-Clause"
+  revision 1
 
   livecheck do
     url :stable
@@ -13,12 +14,13 @@ class Mkdocs < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3f45e40b1f8cb82988b294a9a44c57b33fcfcc718b4130b2aa684ba6b95fa08f" => :catalina
-    sha256 "456b37b9de877e5bf5836337075add02d844169aa28dd39c3d42c69b04b887a0" => :mojave
-    sha256 "9f8fbedf9f950579f4c6496807ff8de30d47b117ea76877ada80133f9fd795ee" => :high_sierra
+    sha256 "c632678896672c74e404e891f8ed7c94fbbef5d73c38397f0f77398ea98d8162" => :big_sur
+    sha256 "13c230e5bf220b7263cbf1313da9cf65bae3c00e3be2539578393ace54aa9b28" => :catalina
+    sha256 "638c33971c1a7ee2c005e7904ed055b6ed73cc93fadab1366192a6e909bafe0c" => :mojave
+    sha256 "98ef5fb680e42e9ac1e49a27c4583959496f68df2be46f61ed33752ff27fae87" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "click" do
     url "https://files.pythonhosted.org/packages/4e/ab/5d6bc3b697154018ef196f5b17d958fac3854e2efbc39ea07a284d4a6a9b/click-7.1.1.tar.gz"

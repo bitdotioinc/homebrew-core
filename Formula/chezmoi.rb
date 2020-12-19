@@ -1,16 +1,16 @@
 class Chezmoi < Formula
-  desc "Manage your dotfiles across multiple machines, securely"
+  desc "Manage your dotfiles across multiple diverse machines, securely"
   homepage "https://chezmoi.io/"
   url "https://github.com/twpayne/chezmoi.git",
-      tag:      "v1.8.5",
-      revision: "c5dbedcf0256d6da92f774eb57e8d1d198f6e6c5"
+      tag:      "v1.8.9",
+      revision: "4fd06fa089912eb833bc6dc33fd50c0129a0e6ae"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d2a219e5e7f459ad41bf562461108687942e513888a72663b5557ca849dcf1f0" => :catalina
-    sha256 "ea6bb2de05ac3add80c4f116474137a268dbfa86a51db35a6a5f02e0183bb6d3" => :mojave
-    sha256 "ab4b776fcf2c27e3042cd7f04f324730f4b620240e970696fc90b287fc816d68" => :high_sierra
+    sha256 "b735a696e3d2d9e4acbd3468a525b32814e127df190bc1cc36c8cfacad827214" => :big_sur
+    sha256 "109f8906b4d1367159b2ce9dd29493aa348d3f49450bfea70a980392f38285b0" => :catalina
+    sha256 "7a845f5d3b1b96b7cd0f94829f3d012f073cbec5666b57d8a8950362478a1674" => :mojave
   end
 
   depends_on "go" => :build

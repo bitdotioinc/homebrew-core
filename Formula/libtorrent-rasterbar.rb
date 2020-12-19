@@ -1,9 +1,10 @@
 class LibtorrentRasterbar < Formula
   desc "C++ bittorrent library with Python bindings"
   homepage "https://www.libtorrent.org/"
-  url "https://github.com/arvidn/libtorrent/releases/download/libtorrent-1.2.9/libtorrent-rasterbar-1.2.9.tar.gz"
-  sha256 "6c986225a1c2d9eb23c5b1ac0692d83208b721a05c968102a17ee3fde01bd709"
+  url "https://github.com/arvidn/libtorrent/releases/download/libtorrent-1.2.10/libtorrent-rasterbar-1.2.10.tar.gz"
+  sha256 "d0dd30bdc3926587c4241f4068d8e39628a6c1f9f6cf53195f0e9bc90017befb"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url :head
@@ -12,9 +13,10 @@ class LibtorrentRasterbar < Formula
 
   bottle do
     cellar :any
-    sha256 "0e6895cc08dbd61dfa24beaa432285b23625c57a2630a7ae0a8ea88bd2b8ed57" => :catalina
-    sha256 "2f75ce87ec73177d32caff6f534f433614196884ebef8932b92a55b615097be8" => :mojave
-    sha256 "9b82b726e6b422bd00f8e6513f99d7e4df86731d4f119ba2abfeba770803002b" => :high_sierra
+    sha256 "92d140b497497ac2edc980534ff710ff50b99e967c2a01fe0c952c51a0bf3aeb" => :big_sur
+    sha256 "2b5460c509171200053dbb6d0eb45b71737695239beff530d63c55265c89fec5" => :catalina
+    sha256 "593dae5994fb2e71c44f0150196d8cb719872b15e6212a8d669b1ed43c4f8f90" => :mojave
+    sha256 "9f140786725e1a24971d5d3a99ff77cb35ec713f6fb6fd871b40633d4a322ea3" => :high_sierra
   end
 
   head do
@@ -28,12 +30,12 @@ class LibtorrentRasterbar < Formula
   depends_on "boost"
   depends_on "boost-python3"
   depends_on "openssl@1.1"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   conflicts_with "libtorrent-rakshasa", because: "they both use the same libname"
 
   def install
-    pyver = Language::Python.major_minor_version(Formula["python@3.8"].bin/"python3").to_s.delete(".")
+    pyver = Language::Python.major_minor_version(Formula["python@3.9"].bin/"python3").to_s.delete(".")
     args = %W[
       --disable-debug
       --disable-dependency-tracking
@@ -44,8 +46,8 @@ class LibtorrentRasterbar < Formula
       --with-boost=#{Formula["boost"].opt_prefix}
       --with-boost-python=boost_python#{pyver}-mt
       PYTHON=python3
-      PYTHON_EXTRA_LIBS=#{`#{Formula["python@3.8"].opt_bin}/python3-config --libs --embed`.chomp}
-      PYTHON_EXTRA_LDFLAGS=#{`#{Formula["python@3.8"].opt_bin}/python3-config --ldflags`.chomp}
+      PYTHON_EXTRA_LIBS=#{`#{Formula["python@3.9"].opt_bin}/python3-config --libs --embed`.chomp}
+      PYTHON_EXTRA_LDFLAGS=#{`#{Formula["python@3.9"].opt_bin}/python3-config --ldflags`.chomp}
     ]
 
     if build.head?

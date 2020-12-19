@@ -1,16 +1,16 @@
 class Onednn < Formula
   desc "Basic building blocks for deep learning applications"
   homepage "https://01.org/oneDNN"
-  url "https://github.com/oneapi-src/oneDNN/archive/v1.6.1.tar.gz"
-  sha256 "6686d01d9493905c9c8bcfabcf5b2cc9ced7de7a41c52bba99e569fd5b63464d"
+  url "https://github.com/oneapi-src/oneDNN/archive/v2.0.tar.gz"
+  sha256 "922b42c3ea7a7122a77c61568dc4512aa8130c264c0489283c989919d1f59a6d"
   license "Apache-2.0"
   head "https://github.com/oneapi-src/onednn.git"
 
   bottle do
     cellar :any
-    sha256 "64f91cb6f54390bd6caa7b911ae752e94b05a8ef786cf2d4305288608874d4f9" => :catalina
-    sha256 "3b0a613d9887a030469bd677b1e580294f4edf117971d1fd042c644f40993a4d" => :mojave
-    sha256 "68c70700e9ea2dc45754d330bc0e2a3f47225c17c1b8137ca5e62ad30822ea84" => :high_sierra
+    sha256 "d17e096d72bd885c7cac190adfc750e482a7e65d44886f73481755792198d5ea" => :big_sur
+    sha256 "b4fa356473727ddf9506f7705739237c397b7c967df761a5b80cebfed256d648" => :catalina
+    sha256 "defca13c472154c8faa951b61476964965824c07baa3ab26419e4d5822a060b0" => :mojave
   end
 
   depends_on "cmake" => :build

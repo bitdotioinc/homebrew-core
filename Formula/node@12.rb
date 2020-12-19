@@ -1,8 +1,9 @@
 class NodeAT12 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v12.18.3/node-v12.18.3.tar.xz"
-  sha256 "71158026579487422fd13cc2553b34cddb76519098aa6030faab52f88c6e0d0e"
+  url "https://nodejs.org/dist/v12.20.0/node-v12.20.0.tar.gz"
+  sha256 "b91065ebe60981faa0e1f0a37d1788154141c710bb0521635a900895a7ce8dd8"
+  license "MIT"
 
   livecheck do
     url "https://nodejs.org/dist/"
@@ -11,20 +12,20 @@ class NodeAT12 < Formula
 
   bottle do
     cellar :any
-    sha256 "8371625cae6cd2efa83e52a49d3c2e389e8d6be8261a0c80a710750e89ddf7d8" => :catalina
-    sha256 "f410b99756e3247145b43f2775d4ad00b99dcdf4366fac74c05daef7c771cb60" => :mojave
-    sha256 "5de456604c237daac3f9d3dd8b03cb13ce8d7c3efacf644093a4a3da4f8f1a53" => :high_sierra
+    sha256 "6dac918cba462900f5cd600439ffcdd709f91bb015523037f22680e8579133ca" => :big_sur
+    sha256 "2ace2ef2e9f1c70372de85c654392c49bf42d92eb6a178e130cf52acf4305ab9" => :catalina
+    sha256 "a7d6d129fadf836ae949dfb44179f3c4da75b962ffa628f2c58b350db88951b8" => :mojave
   end
 
   keg_only :versioned_formula
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "icu4c"
 
   def install
     # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = Formula["python@3.8"].opt_bin/"python3"
+    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
 
     system "python3", "configure.py", "--prefix=#{prefix}", "--with-intl=system-icu"
     system "make", "install"

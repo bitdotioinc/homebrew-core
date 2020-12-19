@@ -3,7 +3,7 @@ class AardvarkShellUtils < Formula
   homepage "http://www.laffeycomputer.com/shellutils.html"
   url "https://web.archive.org/web/20170106105512/downloads.laffeycomputer.com/current_builds/shellutils/aardvark_shell_utils-1.0.tar.gz"
   sha256 "aa2b83d9eea416aa31dd1ce9b04054be1a504e60e46426225543476c0ebc3f67"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
 
   # This regex is multiline since there's a line break between `href=` and the
   # attribute value on the homepage.
@@ -14,6 +14,7 @@ class AardvarkShellUtils < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "9e7fad807aa43cee3917dce5a8f83ad734155167e446cf16145a91766ae7f503" => :big_sur
     sha256 "df44cfc6ab0cf9b275f806ab72b47ab47475e35ca3faabbcbbe2054d65f6aa4e" => :catalina
     sha256 "d67eb7992219f30e6bced8b4a47d4a111ebb81b6b622d33dfb73ce2022b4fb70" => :mojave
     sha256 "aec60722076aab148a97d2f426f7d15b1b214793f8168b15f2b6d4d65d2afc48" => :high_sierra

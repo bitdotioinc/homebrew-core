@@ -3,19 +3,20 @@ class TranslateToolkit < Formula
 
   desc "Toolkit for localization engineers"
   homepage "https://toolkit.translatehouse.org/"
-  url "https://github.com/translate/translate/archive/3.0.0.tar.gz"
-  sha256 "edbd6035ca20f2edffb434fb80378f77494fdf41698f006fc93e0c4ce2eea8f2"
-  license "GPL-2.0"
+  url "https://github.com/translate/translate/archive/3.2.0.tar.gz"
+  sha256 "f55afa52e24f0327f8dfd53ae139d6123b4bfef89630d17517272c96f187b29c"
+  license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/translate/translate.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ea2f48f2d845370599c79250cff84803ebcf726bd31692d1c97cd2596d1e0f22" => :catalina
-    sha256 "247a179be9f3125d7a87bf2c6cbace25cec702b39197c7f021f0eba2730b1dfb" => :mojave
-    sha256 "f24e86898ef8e33d9090c369a4c9fbb235fa18307f8fda529a63b965f005c9a8" => :high_sierra
+    sha256 "2a8e4095b7fdbee98080753726057fad9647f147a78aacf1b3c04796fab5971a" => :big_sur
+    sha256 "aee1cb11f4814f2842ffecc3569586b235d8badb633493eb93e4ef34c2225109" => :catalina
+    sha256 "01c3d700b2ef9b1dd2b01946a314d1cab2910340a810f21462047098eabd7a36" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "argparse" do
     url "https://files.pythonhosted.org/packages/18/dd/e617cfc3f6210ae183374cd9f6a26b20514bbb5a792af97949c5aacddf0f/argparse-1.4.0.tar.gz"
@@ -25,6 +26,11 @@ class TranslateToolkit < Formula
   resource "diff-match-patch" do
     url "https://files.pythonhosted.org/packages/f0/2a/5ba07def0e9107d935aba62cf632afbd0f7c723a98af47ccbcab753d2452/diff-match-patch-20181111.tar.gz"
     sha256 "a809a996d0f09b9bbd59e9bbd0b71eed8c807922512910e05cbd3f9480712ddb"
+  end
+
+  resource "lxml" do
+    url "https://files.pythonhosted.org/packages/db/f7/43fecb94d66959c1e23aa53d6161231dca0e93ec500224cf31b3c4073e37/lxml-4.6.2.tar.gz"
+    sha256 "cd11c7e8d21af997ee8079037fff88f16fda188a9776eb4b81c7e4c9c0a7d7fc"
   end
 
   resource "Python-Levenshtein" do
@@ -43,5 +49,6 @@ class TranslateToolkit < Formula
 
   test do
     system bin/"pretranslate", "-h"
+    system bin/"podebug", "-h"
   end
 end

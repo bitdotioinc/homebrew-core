@@ -1,18 +1,18 @@
 class Vte3 < Formula
   desc "Terminal emulator widget used by GNOME terminal"
   homepage "https://developer.gnome.org/vte/"
-  url "https://download.gnome.org/sources/vte/0.60/vte-0.60.3.tar.xz"
-  sha256 "feb76e1181a357d86112d447a08d127e2081438df76ece83243b18609dd9822a"
-  revision 1
+  url "https://download.gnome.org/sources/vte/0.62/vte-0.62.1.tar.xz"
+  sha256 "c369e87c0c8284e09109d0a9aac821f543558f51c0cb9c7acfff3df64153308d"
+  license "LGPL-2.0-or-later"
 
   livecheck do
     url :stable
   end
 
   bottle do
-    sha256 "783483804a85b6616bea1754e8c9f7695938eb34ce5ea86723b23221e508fcf2" => :catalina
-    sha256 "69ecc587660a67fa8138063a7152af533fa6dd9841a8b84021f78099380f043f" => :mojave
-    sha256 "a06d9e99ed510244171aaee721971bb9b7a2ac33c4dcfa354ec0b68e56b7bd2e" => :high_sierra
+    sha256 "648845b96b5175bc135671b5d6812871973344baaf988634e1fb79e45df22bb8" => :big_sur
+    sha256 "682bd63b12521e701f58b13f72f0a9f3449314670320e491b06d437de309daff" => :catalina
+    sha256 "617d21b21c0ffc0d53dea2ca5dc4ebf796afc9e3f0a46fc0c85ef9a01b2d6e28" => :mojave
   end
 
   depends_on "gobject-introspection" => :build
@@ -22,6 +22,7 @@ class Vte3 < Formula
   depends_on "gettext"
   depends_on "gnutls"
   depends_on "gtk+3"
+  depends_on macos: :mojave
   depends_on "pcre2"
   depends_on "vala"
 

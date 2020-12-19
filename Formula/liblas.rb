@@ -7,13 +7,13 @@ class Liblas < Formula
   revision 3
   head "https://github.com/libLAS/libLAS.git"
 
-  deprecate! date: "2018-01-01", because: :unsupported
-
   bottle do
     sha256 "c63d0d75db5b8e129c13add1de8fe94b2a38d5c15d101b62d6a7f59b796f53a3" => :catalina
     sha256 "3224d154574e4cd07837dd1d1bd3e336964e8bede4cf4bb34dbaf4a63c75ed11" => :mojave
     sha256 "b47d0b9c82040703d212e22a436b7e11aff24632f0649db959e2073e0ae48548" => :high_sierra
   end
+
+  deprecate! date: "2018-01-01", because: :unsupported
 
   depends_on "cmake" => :build
   depends_on "boost"
@@ -29,8 +29,8 @@ class Liblas < Formula
   # Fix compilation against GDAL 2.3
   # Remove in next version
   patch do
-    url "https://github.com/libLAS/libLAS/commit/ec10e274.diff?full_index=1"
-    sha256 "3f5cc283d3e908d991b05b4dcf5cc0440824441ec270396e11738f96a0a23a9f"
+    url "https://github.com/libLAS/libLAS/commit/ec10e274.patch?full_index=1"
+    sha256 "3f8aefa1073aa32de01175cd217773020d93e5fb44a4592d76644a242bb89a3c"
   end
 
   def install

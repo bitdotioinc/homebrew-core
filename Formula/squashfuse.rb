@@ -14,6 +14,8 @@ class Squashfuse < Formula
     sha256 "bf4e6ca88d094fd7d92fbab61dd1c3a4e71b60d7668d23b6044c90e8167833c5" => :el_capitan
   end
 
+  deprecate! date: "2020-11-10", because: "requires FUSE"
+
   depends_on "pkg-config" => :build
   depends_on "lz4"
   depends_on "lzo"
@@ -29,7 +31,7 @@ class Squashfuse < Formula
     system "make", "install"
   end
 
-  # Unfortunately, making/testing a squash mount requires sudo priviledges, so
+  # Unfortunately, making/testing a squash mount requires sudo privileges, so
   # just test that squashfuse execs for now.
   test do
     output = shell_output("#{bin}/squashfuse --version 2>&1", 254)

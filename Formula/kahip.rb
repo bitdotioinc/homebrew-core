@@ -7,6 +7,7 @@ class Kahip < Formula
 
   bottle do
     cellar :any
+    sha256 "5e9b5722965b55d3cfe41c64138da7d508f3677948783d10fa8bdc6cb14fd899" => :big_sur
     sha256 "a05c9bfbd38225e3730e10756f1515d833f09f61eccd7745c55dd8b78690b790" => :catalina
     sha256 "57e35f0a81e0d22f9d8d4438994efcc30295e54865525ba89236f58647f66174" => :mojave
     sha256 "78fda0b177b22dc65d0d9b5116dc842aa023cb027afccd4c2f968f42ac55fada" => :high_sierra
@@ -17,8 +18,9 @@ class Kahip < Formula
   depends_on "open-mpi"
 
   def install
-    ENV["CC"] = Formula["gcc"].opt_bin/"gcc-#{Formula["gcc"].installed_version.major}"
-    ENV["CXX"] = Formula["gcc"].opt_bin/"g++-#{Formula["gcc"].installed_version.major}"
+    gcc_major_ver = Formula["gcc"].any_installed_version.major
+    ENV["CC"] = Formula["gcc"].opt_bin/"gcc-#{gcc_major_ver}"
+    ENV["CXX"] = Formula["gcc"].opt_bin/"g++-#{gcc_major_ver}"
     mkdir "build" do
       system "cmake", *std_cmake_args, ".."
       system "make", "install"

@@ -3,19 +3,20 @@ class Googler < Formula
 
   desc "Google Search and News from the command-line"
   homepage "https://github.com/jarun/googler"
-  url "https://github.com/jarun/googler/archive/v4.2.tar.gz"
-  sha256 "ee0887ec30aea14823bb32117c97f4af8cdba381244b393665d2e273f8b60b43"
+  url "https://github.com/jarun/googler/archive/v4.3.1.tar.gz"
+  sha256 "f756182ed383050cbdaac8ee4f02c904ca26f76a727f3ec58cc8ab6a8cba3f23"
   license "GPL-3.0"
   head "https://github.com/jarun/googler.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0689e822b6428b12c88c4d8a54775562e360a60e298cbea02e4bbfc42f12ffc9" => :catalina
-    sha256 "0689e822b6428b12c88c4d8a54775562e360a60e298cbea02e4bbfc42f12ffc9" => :mojave
-    sha256 "0689e822b6428b12c88c4d8a54775562e360a60e298cbea02e4bbfc42f12ffc9" => :high_sierra
+    sha256 "dff21b1990f172e9d7ea516c86392c11289f778f4638585574a242f6b32e89d3" => :big_sur
+    sha256 "c4fb5962e04ee3941d712fd0c94019c55e9ee06ee022ab48258a728d3175ded4" => :catalina
+    sha256 "353a9c1e807a98e75b12c216f896a4204c032f34485522561c73b918445fb482" => :mojave
+    sha256 "2eacfab54e0ff38c0befb5d72cc6040c291eba6dfebf505f274c44ec7bfaf98b" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   def install
     rewrite_shebang detected_python_shebang, "googler"

@@ -6,24 +6,33 @@ class Vdirsyncer < Formula
   url "https://github.com/pimutils/vdirsyncer.git",
       tag:      "0.16.8",
       revision: "b5dd0929d009b7b07f72903dd6fb82815f45bdd8"
+  revision 2
   head "https://github.com/pimutils/vdirsyncer.git"
 
   livecheck do
-    url "https://github.com/pimutils/vdirsyncer/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "68a313f863d08adfb913b5530606ef32c85c2e9ce20dfac6d42185b0d18e4670" => :catalina
-    sha256 "ef27647042f45a65bf2f8ebb0170cea3b124f98ce4a9200d5a6f82b50a2a7de4" => :mojave
-    sha256 "d9f144fba5c2de241806ade0e5141a2ed13cd17aaa00233e2f2397315f65f47e" => :high_sierra
+    sha256 "f1ede11a17630f2ea0da1ec356015fa454b62d9e5eebf17ad38e89021c6cc739" => :big_sur
+    sha256 "d87dd5b19a013e2099aa915c02caea1bf5ba5bce1ed9fdb1c599900da98f1574" => :catalina
+    sha256 "999dcfe149cd6cb2a072006159ce83e680e2da30431d28b380a0dd3549b59d98" => :mojave
+    sha256 "b48980fb7b1f225d07e847ab50b2a6c6e6bdca56386f902982163d7cfb11f6e7" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
+
+  # from https://github.com/pimutils/vdirsyncer/pull/830
+  # remove in next release
+  patch do
+    url "https://github.com/pimutils/vdirsyncer/commit/7577fa21177442aacc2d86640ef28cebf1c4aaef.patch?full_index=1"
+    sha256 "3fe0b07e6a1f5210a51af4240e54ee2fe32936680f7ae518e40424531b657844"
+  end
 
   def install
-    venv = virtualenv_create(libexec, "python3.8")
+    venv = virtualenv_create(libexec, "python3.9")
     system libexec/"bin/pip", "install", "-v", "--no-binary", ":all:",
                               "--ignore-installed", "requests-oauthlib",
                               buildpath

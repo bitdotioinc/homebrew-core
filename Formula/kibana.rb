@@ -2,29 +2,33 @@ class Kibana < Formula
   desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
   url "https://github.com/elastic/kibana.git",
-      tag:      "v7.8.1",
-      revision: "5db9c677ea993ff3df503df03d03f5657fcea42e"
+      tag:      "v7.10.1",
+      revision: "608c5e5dd32659e8afadd520d0cdc58766ba505b"
   license "Apache-2.0"
   head "https://github.com/elastic/kibana.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a2d25d2bf89cf7adee42ff1cf4977a906db3d9d07b8d23dcbc2c9c660a6a3d0a" => :catalina
-    sha256 "27f62cf43515c96242609d8eea66550d9d8ea79b1de903381262e3673ae609be" => :mojave
-    sha256 "1922f3a6c69e1d3157673884428fe8116e3567a7dac5119e37d8c6a1427f41e3" => :high_sierra
+    sha256 "fee3e848d8b9c2889b7fa89b7a6cdfbfa85b2dbf23712a5b07b58d676f60f73c" => :big_sur
+    sha256 "5d8234a00c1b04278c083dd3deede12eb622c887e3338fc6e5906651dbb216a0" => :catalina
+    sha256 "454a4b3df30516055103c0bbd0783705d26d92659352ec2e3d37a2c0bb6326d2" => :mojave
   end
 
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "yarn" => :build
   depends_on "node@10"
 
   def install
+    inreplace "package.json", /"node": "10\.\d+\.\d+"/, %Q("node": "#{Formula["node@10"].version}")
+
+    # prepare project after checkout
+    system "yarn", "kbn", "bootstrap"
+
+    # build open source only
+    system "node", "scripts/build", "--oss", "--release", "--skip-os-packages", "--skip-archives"
+
     # remove non open source files
     rm_rf "x-pack"
-
-    inreplace "package.json", /"node": "10\.\d+\.\d+"/, %Q("node": "#{Formula["node@10"].version}")
-    system "yarn", "kbn", "bootstrap"
-    system "node", "scripts/build", "--oss", "--release", "--skip-os-packages", "--skip-archives"
 
     prefix.install Dir
       .glob("build/oss/kibana-#{version}-darwin-x86_64/**")

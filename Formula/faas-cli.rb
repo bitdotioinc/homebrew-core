@@ -2,15 +2,20 @@ class FaasCli < Formula
   desc "CLI for templating and/or deploying FaaS functions"
   homepage "https://www.openfaas.com/"
   url "https://github.com/openfaas/faas-cli.git",
-      tag:      "0.12.9",
-      revision: "40555282492b1f7cfdb10d801fcdce251360ec25"
+      tag:      "0.12.21",
+      revision: "598336a0cad38a79d5466e6a3a9aebab4fc61ba9"
   license "MIT"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "74e0979caa804d1e2771cc7bb8ca334f3e45a5e8b2f33abc63b21d7fccd6bab3" => :catalina
-    sha256 "e8ac72ff95820dd19650bf8c2f3257d22e11b3dd10a28721f4a4bf328258a5e9" => :mojave
-    sha256 "7c81a7145f3a9acd9c348abcc5229cea7a8afcb1b6469a189d0e74a5b3650fdd" => :high_sierra
+    sha256 "d315d6e973ff51cdc45f80d80d1d6c97f116209f2846321a6717191ea0618b22" => :big_sur
+    sha256 "f367b80343e7d3287e7b8cdb5d26bc21d6b8cdd1cbd321b1ec19db0e41495b81" => :catalina
+    sha256 "fcf8712bedfd506e1d654b3b29fc4b6b935f627ad8f49c89e2fd5b63026434c4" => :mojave
   end
 
   depends_on "go" => :build
@@ -18,17 +23,12 @@ class FaasCli < Formula
   def install
     ENV["XC_OS"] = "darwin"
     ENV["XC_ARCH"] = "amd64"
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/openfaas/faas-cli").install buildpath.children
-    cd "src/github.com/openfaas/faas-cli" do
-      project = "github.com/openfaas/faas-cli"
-      commit = Utils.safe_popen_read("git", "rev-parse", "HEAD").chomp
-      system "go", "build", "-ldflags",
-             "-s -w -X #{project}/version.GitCommit=#{commit} -X #{project}/version.Version=#{version}", "-a",
-             "-installsuffix", "cgo", "-o", bin/"faas-cli"
-      bin.install_symlink "faas-cli" => "faas"
-      prefix.install_metafiles
-    end
+    project = "github.com/openfaas/faas-cli"
+    commit = Utils.safe_popen_read("git", "rev-parse", "HEAD").chomp
+    system "go", "build", "-ldflags",
+            "-s -w -X #{project}/version.GitCommit=#{commit} -X #{project}/version.Version=#{version}", "-a",
+            "-installsuffix", "cgo", "-o", bin/"faas-cli"
+    bin.install_symlink "faas-cli" => "faas"
   end
 
   test do
@@ -52,7 +52,7 @@ class FaasCli < Formula
     (testpath/"test.yml").write <<~EOS
       provider:
         name: openfaas
-        gateway: http://localhost:#{port}
+        gateway: https://localhost:#{port}
         network: "func_functions"
 
       functions:
@@ -63,15 +63,14 @@ class FaasCli < Formula
     EOS
 
     begin
-      output = shell_output("#{bin}/faas-cli deploy -yaml test.yml 2>&1", 1)
+      output = shell_output("#{bin}/faas-cli deploy --tls-no-verify -yaml test.yml 2>&1", 1)
       assert_match "stat ./template/python/template.yml", output
 
       assert_match "ruby", shell_output("#{bin}/faas-cli template pull 2>&1")
       assert_match "node", shell_output("#{bin}/faas-cli new --list")
 
-      output = shell_output("#{bin}/faas-cli deploy -yaml test.yml")
-      assert_match "Function dummy_function already exists, attempting rolling-update", output
-      assert_match "Deployed. 200 OK", output
+      output = shell_output("#{bin}/faas-cli deploy --tls-no-verify -yaml test.yml", 1)
+      assert_match "Deploying: dummy_function.", output
 
       stable_resource = stable.instance_variable_get(:@resource)
       commit = stable_resource.instance_variable_get(:@specs)[:revision]

@@ -1,7 +1,7 @@
 class Archey < Formula
   desc "Graphical system information display for macOS"
   homepage "https://obihann.github.io/archey-osx/"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
   revision 1
   head "https://github.com/obihann/archey-osx.git"
 
@@ -11,14 +11,9 @@ class Archey < Formula
 
     # Fix double percent sign in battery output
     patch do
-      url "https://github.com/obihann/archey-osx/commit/cd125547d0936f066b64616553269bf647348e53.diff?full_index=1"
-      sha256 "c03b80e4d5aa114b81ac04bfa77c46055fe01764ae877a8a061f3d43c9de8a72"
+      url "https://github.com/obihann/archey-osx/commit/cd125547d0936f066b64616553269bf647348e53.patch?full_index=1"
+      sha256 "a8039ace9b282bcce7b63b2d5ef2a3faf19a9826c0eb92cccbea0ce723907fbf"
     end
-  end
-
-  livecheck do
-    url :head
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle :unneeded

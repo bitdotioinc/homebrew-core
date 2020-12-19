@@ -1,15 +1,15 @@
 class Cheat < Formula
   desc "Create and view interactive cheat sheets for *nix commands"
   homepage "https://github.com/cheat/cheat"
-  url "https://github.com/cheat/cheat/archive/4.0.4.tar.gz"
-  sha256 "4acdb68dc4ae4f0e9fd901cbcf737f571d90e3405fbf1c3a2f1a0dcab414de70"
+  url "https://github.com/cheat/cheat/archive/4.2.0.tar.gz"
+  sha256 "23c3c30fe1ad63916718eef534dcef22c0ae607695f74860180304c5cde3ea49"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "41c06f1b177d35c6f5869bc9b57c330721bdbc991f9ddb3f3496bca7eb091034" => :catalina
-    sha256 "80520fe07b136a8afa4202ceb771c4b47fa3afa7e5b622a126a051ba2b72bc88" => :mojave
-    sha256 "18a65007d5db1959a80d6a9ff9bbc31ff7c99df1c5af4b3a6420e8afd0d239b5" => :high_sierra
+    sha256 "dbfd6636a4b40dd7b94a400c7888f45ddd87427e855b00dc8119dd7200c49b14" => :big_sur
+    sha256 "74c8c4a8fc13f0484628ed56dc6d54507f605d271faf844683119f6f46adfa2a" => :catalina
+    sha256 "540de221f3d25e9aaa697a078c51f36964d219a565701e06ed5492a02b6d876d" => :mojave
   end
 
   depends_on "go" => :build
@@ -21,6 +21,7 @@ class Cheat < Formula
 
     bash_completion.install "scripts/cheat.bash"
     fish_completion.install "scripts/cheat.fish"
+    zsh_completion.install "scripts/cheat.zsh"
   end
 
   test do

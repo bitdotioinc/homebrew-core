@@ -3,22 +3,22 @@ class ClojureLsp < Formula
   homepage "https://github.com/snoe/clojure-lsp"
   # Switch to use git tag/revision as needed by `lein-git-version`
   url "https://github.com/snoe/clojure-lsp.git",
-    tag:      "release-20200827T150720",
-    revision: "8b984cb261e05d96471f5d6056a1c7ad05675bb5"
-  version "20200827T150720"
+      tag:      "release-20201207T142850",
+      revision: "ab32504073688d507b53e47c354733cd6603bc88"
+  version "20201207T142850"
   license "MIT"
   head "https://github.com/snoe/clojure-lsp.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "607bf8cbaedc1238d781832ae3bc9ff2f49de0b1401a7579c166c36458d6560c" => :catalina
-    sha256 "d276374fa9b66b896a6c04985112836bc1397700c403b06c5d4681f373c6d13a" => :mojave
-    sha256 "7393e5af6bf98339e1b41b58da94b5253b05f931ae73b676ce404e036272df06" => :high_sierra
+    sha256 "a647293f345eead229f83e2707fb2c542958c9b4e33fb0bf4e63c7217548d392" => :big_sur
+    sha256 "079f2087995cd399f1c99dddc5f1d6d92e55af2facf67b427fb633a80faba842" => :catalina
+    sha256 "fc1b26dc8f000fc728c26bbedff9f9ab0d6f2071ef17eeb4a0f71c9626184cc7" => :mojave
   end
 
   depends_on "leiningen" => :build
   # The Java Runtime version only recognizes class file versions up to 52.0
-  depends_on java: "1.8"
+  depends_on "openjdk@8"
 
   def install
     system "lein", "uberjar"
@@ -30,17 +30,14 @@ class ClojureLsp < Formula
   test do
     require "Open3"
 
-    begin
-      stdin, stdout, _, wait_thr = Open3.popen3("#{bin}/clojure-lsp")
-      pid = wait_thr.pid
-      stdin.write <<~EOF
-        Content-Length: 58
+    stdin, stdout, _, wait_thr = Open3.popen3("#{bin}/clojure-lsp")
+    pid = wait_thr.pid
+    stdin.write <<~EOF
+      Content-Length: 58
 
-        {"jsonrpc":"2.0","method":"initialize","params":{},"id":1}
-      EOF
-      assert_match "Content-Length", stdout.gets("\n")
-    ensure
-      Process.kill "SIGKILL", pid
-    end
+      {"jsonrpc":"2.0","method":"initialize","params":{},"id":1}
+    EOF
+    assert_match "Content-Length", stdout.gets("\n")
+    Process.kill "SIGKILL", pid
   end
 end

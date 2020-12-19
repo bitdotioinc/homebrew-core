@@ -1,16 +1,17 @@
 class Wgcf < Formula
   desc "Generate WireGuard profile from Cloudflare Warp account"
   homepage "https://github.com/ViRb3/wgcf"
-  url "https://github.com/ViRb3/wgcf/archive/v2.1.2.tar.gz"
-  sha256 "33e45a4720b3217fc413ba890fc111646a6a4c3e19370cf2a1d54450e4dcbdcd"
+  url "https://github.com/ViRb3/wgcf/archive/v2.1.4.tar.gz"
+  sha256 "15250cca4e8f37dc9d6576ea6b0e039632c59d930cac1f1b0da40789122df062"
   license "MIT"
   head "https://github.com/ViRb3/wgcf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5580af3756ad75c1b9d94ba6cd391a7f1fbc25ee6992fd8d101911f04771ba1a" => :catalina
-    sha256 "a206036aff8dbd8afe9196fe0dca8ba510dbf39bbd168034a7be97de914495c7" => :mojave
-    sha256 "9523a32e151867029d17ecbe66813b4961e594613ca397b61b869961b1b1f29a" => :high_sierra
+    sha256 "94872893207ebc688892b960271ee100e1ce5a6dc73dd6195bb2756d3a5aa344" => :big_sur
+    sha256 "c8f35565606c6fe3cc7b79105076e4d8e1106950cfb0ab3fdd184b089e5e94ff" => :catalina
+    sha256 "1635231fe27fd9dfa0a9202dcf266163f131254843de7546e2b910800545a140" => :mojave
+    sha256 "0debd1f07625d225e2683b95a158c2d537a3ab7bae64335b6a3e4dfe745bfbdd" => :high_sierra
   end
 
   depends_on "go" => :build

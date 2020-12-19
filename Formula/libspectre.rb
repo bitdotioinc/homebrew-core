@@ -3,7 +3,8 @@ class Libspectre < Formula
   homepage "https://wiki.freedesktop.org/www/Software/libspectre/"
   url "https://libspectre.freedesktop.org/releases/libspectre-0.2.9.tar.gz"
   sha256 "49ae9c52b5af81b405455c19fe24089d701761da2c45d22164a99576ceedfbed"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "https://libspectre.freedesktop.org/releases/"
@@ -12,9 +13,10 @@ class Libspectre < Formula
 
   bottle do
     cellar :any
-    sha256 "a5ebee9481527fc2e9fb217ac3d017435c77c36beb0d82a1722df463df7bdaaf" => :catalina
-    sha256 "4d18ccc28ca26864e17d4b6d43828550ca821315d547e71358c043c0a8151705" => :mojave
-    sha256 "6d9dbf0542d1bd02f056bcad34ae176e3e991fb5cb1babd0854b402fc15779d2" => :high_sierra
+    sha256 "57c4aea04a762a93d7633ea05e15a7b128deedb03ef87a7d2b3c1c429f01bba9" => :big_sur
+    sha256 "3b6f844c11905a3dbe1c5a4b78c62416fd047c399be7dcb5887d9357a79a7802" => :catalina
+    sha256 "8bbc1229a48f1cedc29c54bd9ef15dca1e9e513e534b648e0ad8300c340e51e9" => :mojave
+    sha256 "53f4b9429b90c0dfe84a759bd21f26e668ea19143424d141bfe83fcc83e76394" => :high_sierra
   end
 
   depends_on "ghostscript"

@@ -1,17 +1,26 @@
 class MariadbAT104 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://downloads.mariadb.com/MariaDB/mariadb-10.4.14/source/mariadb-10.4.14.tar.gz"
-  sha256 "f92fcd59e0122461482f28c67c5ea01c7cf6979494a571db68074396864c86fc"
+  url "https://downloads.mariadb.org/f/mariadb-10.4.17/source/mariadb-10.4.17.tar.gz"
+  sha256 "a7b104e264311cd46524ae546ff0c5107978373e4a01cf7fd8a241454548d16e"
   license "GPL-2.0-only"
 
+  livecheck do
+    url "https://downloads.mariadb.org/"
+    regex(/Download v?(10\.4(?:\.\d+)+) Stable Now/i)
+  end
+
   bottle do
-    sha256 "14e0d9c1e4030cf055a7f7024c2fe7597847540f562a6e12b96aac3ee2d47de8" => :catalina
-    sha256 "9e063debd5075f2b8be0fae7eb5ed0ceeec93cba8fb416cb7d7a62bbd3e33e95" => :mojave
-    sha256 "29535b17add7f6f3e2f18f597b97ca138fa6ef65066ee7afce0f9331d839c061" => :high_sierra
+    rebuild 1
+    sha256 "1d4e1670df6b71b24dbaaaa89fa82e8602efb701a92054868baadede8198b967" => :big_sur
+    sha256 "a0594e52efd31ab478774378c93e1022c76ade855958e2eb30bc58e3f15a7ed4" => :catalina
+    sha256 "3482ba65ea4fb31a02b1f1abdb778f0a2a63afc77b1d378ea99335f675fb98e7" => :mojave
   end
 
   keg_only :versioned_formula
+
+  # See: https://mariadb.com/kb/en/changes-improvements-in-mariadb-104/
+  deprecate! date: "2024-06-01", because: :unsupported
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
@@ -105,6 +114,8 @@ class MariadbAT104 < Formula
   end
 
   def post_install
+    return if ENV["CI"]
+
     # Make sure the var/mysql directory exists
     (var/"mysql").mkpath
     unless File.exist? "#{var}/mysql/mysql/user.frm"
@@ -150,8 +161,15 @@ class MariadbAT104 < Formula
   end
 
   test do
-    system bin/"mysqld", "--version"
-    prune_file = etc/"my.cnf.d/.homebrew_dont_prune_me"
-    assert_predicate prune_file, :exist?, "Failed to find #{prune_file}!"
+    (testpath/"mysql").mkpath
+    port = free_port
+    system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+      "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=/tmp"
+    fork do
+      system "#{bin}/mysqld", "--datadir=#{testpath}/mysql", "--port=#{port}"
+    end
+    sleep 5
+    assert_match "information_schema",
+      shell_output("#{bin}/mysql --port=#{port} --user=''@localhost --execute='show databases;'")
   end
 end

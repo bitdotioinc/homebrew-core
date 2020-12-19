@@ -1,8 +1,8 @@
 class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
-  url "https://github.com/hashicorp/nomad/archive/v0.12.3.tar.gz"
-  sha256 "0c9f8d96cef6a32c63e174c748f16d648c9fc1fbea62e66140937ffac4e8313e"
+  url "https://github.com/hashicorp/nomad/archive/v1.0.1.tar.gz"
+  sha256 "1dca9ebb1636fc8ef005d9c6eed8cf10fbfc3d7c9ff7307606454142d858f419"
   license "MPL-2.0"
   head "https://github.com/hashicorp/nomad.git"
 
@@ -13,21 +13,15 @@ class Nomad < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d5d76c0f53f4c14a949b57c78039f626ff15ee59b6eb8f130b611e2b3ea62e74" => :catalina
-    sha256 "f919e77628dcf597a8cd465cef74c2cf3541c0d90b3e757bd14e720e4e58ca96" => :mojave
-    sha256 "229e936740406abd824f5b1b0e56159d9cf69bc22b6383cea24c3a0cc6ad9a08" => :high_sierra
+    sha256 "202a4fe3e8b218e92f19cea0441761f38c0dc4ac1a73fdba23e7f0a93a5a3e06" => :big_sur
+    sha256 "e7a4b07ccc8b455b08f6519bbfce6ba916645e7520c609f82a1c95d19ddbe973" => :catalina
+    sha256 "28eaabcf3511b20936459e3df0061f66f11fd668c3447702547b2ef36dca6f92" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    src = buildpath/"src/github.com/hashicorp/nomad"
-    src.install buildpath.children
-    src.cd do
-      system "go", "build", "-tags", "ui", "-o", bin/"nomad"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args, "-tags", "ui"
   end
 
   plist_options manual: "nomad agent -dev"

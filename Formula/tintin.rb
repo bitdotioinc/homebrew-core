@@ -1,20 +1,21 @@
 class Tintin < Formula
   desc "MUD client"
   homepage "https://tintin.mudhalla.net/"
-  url "https://github.com/scandum/tintin/releases/download/2.02.03/tintin-2.02.03.tar.gz"
-  sha256 "e44c88b1c97283525062ce15efdddebf5067e84ea37491903bcd8c8824f26f79"
-  license "GPL-3.0"
+  url "https://github.com/scandum/tintin/releases/download/2.02.05/tintin-2.02.05.tar.gz"
+  sha256 "63a70052122d24d69d7bc012395745f1a0412dffd456a8e8aab85704d44bd5a1"
+  license "GPL-3.0-or-later"
 
   livecheck do
-    url "https://github.com/scandum/tintin/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle do
     cellar :any
-    sha256 "5655e2bfaf4fb9932f2b9317745f97b73162bd12d926a8fd9783002449d8ed3a" => :catalina
-    sha256 "b10d78dd09e94adac5f9a4aaeddc756b7ee578e9a77ef9f81f8c4f1941f90c3c" => :mojave
-    sha256 "9f4a88c8da68bde84fc56b34ef86b53e1691d33a59e340c54aa18b50c7c88f46" => :high_sierra
+    sha256 "a69c772325b8928eedd4ff78ec5cb4323f69b4db40fcc359df9c7f17b472d5ca" => :big_sur
+    sha256 "4eefe2f0705d71ad16e7b8a9f1e8fd842491802872e922464596397279733cc4" => :catalina
+    sha256 "7c12735502e074ad90cd25dc7baefa6af0a9f2aa5b3d21107710f49f0f8e06fd" => :mojave
+    sha256 "c2bb4a0a89b2c1706c5491bf6b62ab14e321822b23bc0c29cc33e6cfd7f1ece4" => :high_sierra
   end
 
   depends_on "gnutls"

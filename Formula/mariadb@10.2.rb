@@ -1,8 +1,8 @@
 class MariadbAT102 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://downloads.mariadb.org/f/mariadb-10.2.33/source/mariadb-10.2.33.tar.gz"
-  sha256 "f6b2fa588d296eec38c11d794a48713c237ad5b6eb27c6669673ccbe46906445"
+  url "https://downloads.mariadb.org/f/mariadb-10.2.36/source/mariadb-10.2.36.tar.gz"
+  sha256 "652997e5f11db8c3953aa01cd583513306a2571294020f3022ac2d7bd6f2d2c0"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,12 +11,16 @@ class MariadbAT102 < Formula
   end
 
   bottle do
-    sha256 "3188883efa988994dfa76c8a0bf9a06da65d77008bbf9f07691e06687f144305" => :catalina
-    sha256 "c0ab2f2acb1e7bd6c996633d39b01f29d4f87d34f9dea53f51421ea1c44c755e" => :mojave
-    sha256 "8a1ed1a5abb9052396acc769cac3393a277b23c42f22e18ec169e9cffe52b40d" => :high_sierra
+    rebuild 1
+    sha256 "c2501e6d92de0975f5ad19fbfc62245338c2f29a6fa08eb8069f95ba4dc9e9d6" => :big_sur
+    sha256 "2db8118d48d5a60baf02578bfee76a629a5e018a222494702cf011ddd5a065fb" => :catalina
+    sha256 "bdcc71b7912793ca6ca3833c2c2b06a8053500a735f2bce2dbf4d680863dc17a" => :mojave
   end
 
   keg_only :versioned_formula
+
+  # See: https://mariadb.com/kb/en/changes-improvements-in-mariadb-102/
+  deprecate! date: "2022-05-01", because: :unsupported
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
@@ -106,6 +110,8 @@ class MariadbAT102 < Formula
   end
 
   def post_install
+    return if ENV["CI"]
+
     # Make sure the var/mysql directory exists
     (var/"mysql").mkpath
     unless File.exist? "#{var}/mysql/mysql/user.frm"
@@ -154,6 +160,15 @@ class MariadbAT102 < Formula
   end
 
   test do
-    system bin/"mysqld", "--version"
+    (testpath/"mysql").mkpath
+    port = free_port
+    system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+      "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=/tmp"
+    fork do
+      system "#{bin}/mysqld", "--datadir=#{testpath}/mysql", "--port=#{port}"
+    end
+    sleep 5
+    assert_match "information_schema",
+      shell_output("#{bin}/mysql --port=#{port} --user=''@localhost --execute='show databases;'")
   end
 end

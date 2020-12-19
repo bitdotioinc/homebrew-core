@@ -1,23 +1,32 @@
 class Re2 < Formula
   desc "Alternative to backtracking PCRE-style regular expression engines"
   homepage "https://github.com/google/re2"
-  url "https://github.com/google/re2/archive/2020-08-01.tar.gz"
-  version "20200801"
-  sha256 "6f4c8514249cd65b9e85d3e6f4c35595809a63ad71c5d93083e4d1dcdf9e0cd6"
+  url "https://github.com/google/re2/archive/2020-11-01.tar.gz"
+  version "20201101"
+  sha256 "8903cc66c9d34c72e2bc91722288ebc7e3ec37787ecfef44d204b2d6281954d7"
   license "BSD-3-Clause"
   head "https://github.com/google/re2.git"
 
   bottle do
     cellar :any
-    sha256 "442f27b4c00fd6dff32ecf2a21e5b70c572d056976439c1dc6b3d35790bcce91" => :catalina
-    sha256 "702ebe295054c8e76ae5018c0109fad1e0154ba24a8764e2f87f484681140947" => :mojave
-    sha256 "018ee2711b2c739074221a3248a812b23fbe97be5222b618fc254ce658242fdd" => :high_sierra
+    sha256 "02fed353151f3d3d936af926e1fcd18cd68ca0e51694eb48acccbc5280316ce2" => :big_sur
+    sha256 "3775e06cd4478f7ef90cfe76bbd01d051c8ba2b646fd84601e307a8c0e2ec7de" => :catalina
+    sha256 "621f2bcea8c2f42d3ddb2de7f3df669259b5818763290d7b957c6bd406102a45" => :mojave
+    sha256 "6be4625dab709d29564e85823b24c668c1b7fe061365d443ac4956f4ad3135fc" => :high_sierra
   end
+
+  depends_on "cmake" => :build
 
   def install
     ENV.cxx11
 
-    system "make", "install", "prefix=#{prefix}"
+    # Run this for pkg-config files
+    system "make", "common-install", "prefix=#{prefix}"
+
+    # Run this for the rest of the install
+    system "cmake", ".", "-DBUILD_SHARED_LIBS=ON", "-DRE2_BUILD_TESTING=OFF", *std_cmake_args
+    system "make"
+    system "make", "install"
   end
 
   test do

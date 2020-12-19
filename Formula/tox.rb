@@ -3,8 +3,8 @@ class Tox < Formula
 
   desc "Generic Python virtualenv management and test command-line tool"
   homepage "https://tox.readthedocs.io/"
-  url "https://files.pythonhosted.org/packages/d4/9d/3ffe3d5c4fb3e786c571ed5426d342bebaadaaceb24a9fd49fa0657de375/tox-3.19.0.tar.gz"
-  sha256 "17e61a93afe5c49281fb969ab71f7a3f22d7586d1c56f9a74219910f356fe7d3"
+  url "https://files.pythonhosted.org/packages/fe/66/7206a6c69a5f717fb80cd3a532c0639bc183ad2aa1f23a943ca93b0814bd/tox-3.20.1.tar.gz"
+  sha256 "4321052bfe28f9d85082341ca8e233e3ea901fdd14dab8a5d3fbd810269fbaf6"
   license "MIT"
 
   livecheck do
@@ -13,12 +13,13 @@ class Tox < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8a5bc297a82da0e925f4361cb87fc8c6008ae25d60c82a1ef9723065e3846d09" => :catalina
-    sha256 "603eeee3b943a444ca746ad8186f2b948900b33ad870fb802f23ca076b680eb2" => :mojave
-    sha256 "095eac039fadbd02d9ee26c228b31ede6a5339334844e6c5386502eec15158c2" => :high_sierra
+    sha256 "578f3e8244e095647d72ff2f8e7180aed547dbc35b5949c41df917749e354b00" => :big_sur
+    sha256 "f15a7f8c9e1dbf4bfe49a3a2f2db9ef343261d269fed4cfb65f950acd452e1a0" => :catalina
+    sha256 "0491b010128f6a0b73d3de8d56f8f6107867c7294e57407513c208f36cd5ea1c" => :mojave
+    sha256 "aef803b570ed827f6ee0707c3275503fc22b9d534b329b164a6493479acfed5c" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "appdirs" do
     url "https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz"
@@ -66,8 +67,8 @@ class Tox < Formula
   end
 
   resource "virtualenv" do
-    url "https://files.pythonhosted.org/packages/fb/f8/5a5fd05ee4b85b819bc7c11d287a32f6925a970fe2f867eac1889b8760ed/virtualenv-20.0.30.tar.gz"
-    sha256 "7b54fd606a1b85f83de49ad8d80dbec08e983a2d2f96685045b262ebc7481ee5"
+    url "https://files.pythonhosted.org/packages/85/3e/6c3abf78b2207f3565ebadd0b99d1945f4ff18abdc6879617a4f6d939e41/virtualenv-20.0.33.tar.gz"
+    sha256 "a5e0d253fe138097c6559c906c528647254f437d1019af9d5a477b09bfa7300f"
   end
 
   def install
@@ -88,7 +89,7 @@ class Tox < Formula
 
   test do
     ENV["LC_ALL"] = "en_US.UTF-8"
-    pyver = Language::Python.major_minor_version("python3.8").to_s.delete(".")
+    pyver = Language::Python.major_minor_version("python3.9").to_s.delete(".")
     (testpath/"tox.ini").write <<~EOS
       [tox]
       envlist=py#{pyver}

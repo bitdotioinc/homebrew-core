@@ -1,32 +1,22 @@
 class K6 < Formula
   desc "Modern load testing tool, using Go and JavaScript"
   homepage "https://k6.io"
-  url "https://github.com/loadimpact/k6.git",
-    tag:      "v0.27.1",
-    revision: "4ee1ca9624bdd9fa68a0d534be11ac22328f1821"
-  license "AGPL-3.0"
+  url "https://github.com/loadimpact/k6/archive/v0.29.0.tar.gz"
+  sha256 "1ffb392c6c83e4c688a1043608bf3bc06dea2b328a6ab0334e9ce33bd9e60d4a"
+  license "AGPL-3.0-or-later"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "afa071cb66ffb37e6718ee52be4b58b707b935765f6527415da7dc15c2297658" => :catalina
-    sha256 "78bad35beeaa7d16a8f55aa2f9980b74c07fdec191c7ca52085ff0a2f8aa476c" => :mojave
-    sha256 "8f66f1625d3e95c011ead1d2fdfc3aed6102d9f9a475f9ec093cb50fa40503c4" => :high_sierra
+    sha256 "18408a1b36d5bd61dbf10fc55e83efaa33b358e51fc5d2a91879c9049c5d0f10" => :big_sur
+    sha256 "b7bd5708af3593bb66e252e35d37aad25c8f2b86686ed53f67d438cb0da4adc9" => :catalina
+    sha256 "0eb5aa720d0a1bc5b306e7c7e4d767a346b7073f14e018bc866a5e2540cd9423" => :mojave
+    sha256 "037428689ad82115999e98f4f8967f615339e9c9f3e9211d0935ac63a73fbf20" => :high_sierra
   end
 
-  depends_on "dep" => :build
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-
-    dir = buildpath/"src/github.com/loadimpact/k6"
-    dir.install buildpath.children
-
-    cd dir do
-      system "dep", "ensure", "-vendor-only"
-      system "go", "build", "-o", bin/"k6"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args
   end
 
   test do

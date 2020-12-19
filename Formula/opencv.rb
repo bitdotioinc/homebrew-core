@@ -1,10 +1,10 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/4.4.0.tar.gz"
-  sha256 "bb95acd849e458be7f7024d17968568d1ccd2f0681d47fd60d34ffb4b8c52563"
-  license "BSD-3-Clause"
-  revision 1
+  url "https://github.com/opencv/opencv/archive/4.5.0.tar.gz"
+  sha256 "dde4bf8d6639a5d3fe34d5515eab4a15669ded609a1d622350c7ff20dace1907"
+  license "Apache-2.0"
+  revision 5
 
   livecheck do
     url :stable
@@ -12,9 +12,9 @@ class Opencv < Formula
   end
 
   bottle do
-    sha256 "7e5f2e99bd7b733490015a38fdabce0aa4513cafa05c4efe6d2781dbbdbbb9f3" => :catalina
-    sha256 "6bb48854ad1afe61da1aa7db998bd974a0dd9436484564226977cb2f9ba38cc5" => :mojave
-    sha256 "7fc21acd712505c2a6b666d4c2bf717e067a8d6ca7b4088154c056c6af8a8c6f" => :high_sierra
+    sha256 "d509e0e1bf40f9e0ab63e10eb8fed20012465cd4215c3151279615f362611e65" => :big_sur
+    sha256 "53c0e54e14cd884c586c5f75f009e15eb919bb431d70df759349836e5d2fcc07" => :catalina
+    sha256 "26bba5b3741c786ac4a5bc4411e81cd9b24a41ee00bd5bd9b7a15120ab7c1290" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -31,14 +31,14 @@ class Opencv < Formula
   depends_on "openblas"
   depends_on "openexr"
   depends_on "protobuf"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "tbb"
   depends_on "vtk"
   depends_on "webp"
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/4.4.0.tar.gz"
-    sha256 "a69772f553b32427e09ffbfd0c8d5e5e47f7dab8b3ffc02851ffd7f912b76840"
+    url "https://github.com/opencv/opencv_contrib/archive/4.5.0.tar.gz"
+    sha256 "a65f1f0b98b2c720abbf122c502044d11f427a43212d85d8d2402d7a6339edda"
   end
 
   def install
@@ -85,14 +85,8 @@ class Opencv < Formula
       -DWITH_VTK=ON
       -DBUILD_opencv_python2=OFF
       -DBUILD_opencv_python3=ON
-      -DPYTHON3_EXECUTABLE=#{Formula["python@3.8"].opt_bin}/python3
+      -DPYTHON3_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
     ]
-
-    # The compiler on older Mac OS cannot build some OpenCV files using AVX2
-    # extensions, failing with errors such as
-    # "error: use of undeclared identifier '_mm256_cvtps_ph'"
-    # Work around this by not trying to build AVX2 code.
-    args << "-DCPU_DISPATCH=SSE4_1,SSE4_2,AVX" if MacOS.version <= :yosemite
 
     args << "-DENABLE_AVX=OFF" << "-DENABLE_AVX2=OFF"
     args << "-DENABLE_SSE41=OFF" << "-DENABLE_SSE42=OFF" unless MacOS.version.requires_sse42?
@@ -124,7 +118,7 @@ class Opencv < Formula
                     "-o", "test"
     assert_equal `./test`.strip, version.to_s
 
-    output = shell_output(Formula["python@3.8"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
+    output = shell_output(Formula["python@3.9"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
     assert_equal version.to_s, output.chomp
   end
 end

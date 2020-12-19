@@ -11,12 +11,13 @@ class Nut < Formula
     # Upstream fix for OpenSSL 1.1 compatibility
     # https://github.com/networkupstools/nut/pull/504
     patch do
-      url "https://github.com/networkupstools/nut/commit/612c05ef.diff?full_index=1"
-      sha256 "9d21e425eba72fbefba3c3d74465d239726798f95063c3b90b2e4b9a12414e12"
+      url "https://github.com/networkupstools/nut/commit/612c05ef.patch?full_index=1"
+      sha256 "0f87adda658bc2ce6ae0266dfa7ced8c6e7e0db627baaef8cdbd547416ba989b"
     end
   end
 
   bottle do
+    sha256 "9df4cddf68b3d3aeb84b5762514a070f8685da5f0c02e0bf097c1cf0a33dcf47" => :big_sur
     sha256 "1586ba300fc949859b2bebb55af99bc634362db7633e91a0db30aad28bef9c09" => :catalina
     sha256 "dde3a1e3dc4e86f77d01071c0d669ea600569b41f8e9f11bb16a6b19e39286ca" => :mojave
     sha256 "6fda08463f3e551d255b80e6e467b1f2938c973ab016f81b1585dd73373da562" => :high_sierra

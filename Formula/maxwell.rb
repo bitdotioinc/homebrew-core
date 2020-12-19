@@ -1,18 +1,18 @@
 class Maxwell < Formula
   desc "Reads MySQL binlogs and writes row updates as JSON to Kafka"
   homepage "https://maxwells-daemon.io/"
-  url "https://github.com/zendesk/maxwell/releases/download/v1.27.1/maxwell-1.27.1.tar.gz"
-  sha256 "81aca4fe49bbe720c9b7706058d3793c22f9b3a718691ad384ba622a6bbb0d6b"
+  url "https://github.com/zendesk/maxwell/releases/download/v1.28.2/maxwell-1.28.2.tar.gz"
+  sha256 "59b679b9c43c9a7a45cbe4ad19b9ba45e57c875d10b6e2a1f5d9aed0d34e79ea"
   license "Apache-2.0"
 
   livecheck do
-    url "https://github.com/zendesk/maxwell/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle :unneeded
 
-  depends_on java: "1.8"
+  depends_on "openjdk@8"
 
   def install
     libexec.install Dir["*"]

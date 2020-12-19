@@ -1,9 +1,9 @@
 class EasyrpgPlayer < Formula
   desc "RPG Maker 2000/2003 games interpreter"
   homepage "https://easyrpg.org/"
-  url "https://easyrpg.org/downloads/player/0.6.2.1/easyrpg-player-0.6.2.1.tar.xz"
-  sha256 "681b7df9546f3fee52658d4262e295a8433d6a9bb9f1cd7597196f1015326ba9"
-  license "GPL-3.0"
+  url "https://easyrpg.org/downloads/player/0.6.2.3/easyrpg-player-0.6.2.3.tar.xz"
+  sha256 "6702b78949b26aeb6d1e26dbffa33f6352ca14111774bfd433bc140c146087d0"
+  license "GPL-3.0-or-later"
 
   livecheck do
     url "https://github.com/EasyRPG/Player.git"
@@ -11,9 +11,10 @@ class EasyrpgPlayer < Formula
 
   bottle do
     cellar :any
-    sha256 "02c3ea8286c3a787332708c5a2ef99ea5e776a97976fa0da1d1b77eba2338515" => :catalina
-    sha256 "15cae4c835c47d3296f6e3fe529ebf2375ab427c8530a08893cd57a25231ff31" => :mojave
-    sha256 "19872a3454cb43305c63acc11493d62ca1bcf827118403717d1c9d7a2c217579" => :high_sierra
+    sha256 "481bef5afabcabe0f34eea0586fe8134161bab387c87a32fcc3ca77e69063189" => :big_sur
+    sha256 "e6b485bfe87e67da97b5bc34c828889286bbac4602db5e04efae54392c60a99b" => :catalina
+    sha256 "454cf0e4e8ad0721c52346d26d29b974e568fb0c3b9c12e60d1bc8f88ddc7bc1" => :mojave
+    sha256 "23f7a5cbe93058e968781d35b1a94df1e23ff84942b1afb5ada3e33dfd5b9ca6" => :high_sierra
   end
 
   depends_on "pkg-config" => :build

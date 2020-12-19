@@ -1,15 +1,15 @@
 class Chakra < Formula
-  desc "The core part of the JavaScript engine that powers Microsoft Edge"
+  desc "Core part of the JavaScript engine that powers Microsoft Edge"
   homepage "https://github.com/Microsoft/ChakraCore"
-  url "https://github.com/Microsoft/ChakraCore/archive/v1.11.21.tar.gz"
-  sha256 "b5348d9c07a694a2591368a2d2ad9273787d17dbfb31249458edd94f61fae10d"
+  url "https://github.com/Microsoft/ChakraCore/archive/v1.11.24.tar.gz"
+  sha256 "b99e85f2d0fa24f2b6ccf9a6d2723f3eecfe986a9d2c4d34fa1fd0d015d0595e"
   license "MIT"
 
   bottle do
     cellar :any
-    sha256 "f0a9ca478b67d0c8d73d2cbe8a071fdc09ad069dbea154e2b13308eb26fcb283" => :catalina
-    sha256 "03a49b0bb12238a4ed03953c87a1cf419cfde07b315a2052b2a7e368aec8bb19" => :mojave
-    sha256 "12c8224078b68833e3eb1556c4c69d32b2c38c06e91fa485e0d260e2947bc983" => :high_sierra
+    sha256 "54835c87297a98ea9edb65a60d47b82f6e67b5207d1297e04bf23a41a9eea597" => :big_sur
+    sha256 "594b400cd30d5ee359237573099b6243d0f76d46045878de712b7b15572a222d" => :catalina
+    sha256 "8597fc787f82f99e48303c40bec65cd41c31347be6c8da8478eabb723e3f1a37" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -19,7 +19,7 @@ class Chakra < Formula
     args = [
       "--lto-thin",
       "--icu=#{Formula["icu4c"].opt_include}",
-      "--extra-defines=U_USING_ICU_NAMESPACE=1", # icu4c 61.1 compatability
+      "--extra-defines=U_USING_ICU_NAMESPACE=1", # icu4c 61.1 compatibility
       "-j=#{ENV.make_jobs}",
       "-y",
     ]

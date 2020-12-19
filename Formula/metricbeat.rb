@@ -2,20 +2,20 @@ class Metricbeat < Formula
   desc "Collect metrics from your systems and services"
   homepage "https://www.elastic.co/beats/metricbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.9.0",
-      revision: "b2ee705fc4a59c023136c046803b56bc82a16c8d"
+      tag:      "v7.10.1",
+      revision: "1da173a9e716715a7a54bb3ff4db05b5c24fc8ce"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "487690795f134aaa1f8baed4cfdd78c71a2497d6211589f91566479763a71e22" => :catalina
-    sha256 "3b48a6c9ec26c79cca99bd6a820ac9bcca8c07bf3359ba8616aacf479c783117" => :mojave
-    sha256 "b006da7dcd89ec968f42ee9c270e3a83f360215ba69a5513040e26e681e8709f" => :high_sierra
+    sha256 "5ee31328284dc8b0fca43b61f5e3bc5107ff388cec297feed6b1ec0010f9f237" => :big_sur
+    sha256 "f8d9864af44f989675dc16048d391dd3c43dece1c443c9f628b308d7c7db4405" => :catalina
+    sha256 "f43fd2557acee392f7b3f2e3bc7250962ba78d4649fb05f54b8eceac3f7689c9" => :mojave
   end
 
   depends_on "go" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
 
   def install
     # remove non open source files

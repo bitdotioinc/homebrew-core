@@ -2,17 +2,17 @@ class Whalebrew < Formula
   desc "Homebrew, but with Docker images"
   homepage "https://github.com/whalebrew/whalebrew"
   url "https://github.com/whalebrew/whalebrew.git",
-    tag:      "0.2.3",
-    revision: "7b371f6e0fa414e61761359441268b61c8a741ff"
+      tag:      "0.2.5",
+      revision: "0b2fea55ff992acd69b6840ddad7f08d4ef28574"
   license "Apache-2.0"
   head "https://github.com/whalebrew/whalebrew.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3243317cffe305c9c21a458793f4319b9784e979cf3225663df3e83b53e1736f" => :catalina
-    sha256 "9abfd2e5951f589dde2cc9847b44e77741785a8b9ff5208c958bd8233def74b8" => :mojave
-    sha256 "66e059ff26ef8e1a7d15416bf0b3a946716e03e60cf7f1281e572dcd78b1f4d8" => :high_sierra
-    sha256 "a6357b16b2285d65c523902fa90180f3b6e77b08196cf6edce3f32b38202ff54" => :sierra
+    sha256 "5a5c9c6a3132942741bc69ed57081a38570f783f316a5b922d20ee6c16efa4a2" => :big_sur
+    sha256 "13a6c59ba4c19570fcccef4b187755a4dfcc26038faba5168a3eb33644ade588" => :catalina
+    sha256 "0aeae5e296d00a1b00a53b6a5b9c9aea39731826ea882e3adb51e51bd3fed653" => :mojave
+    sha256 "14b39018ed3d1fa076250354d86e3f9296de24bd5a57144cd265666cbe29a6ee" => :high_sierra
   end
 
   depends_on "go" => :build

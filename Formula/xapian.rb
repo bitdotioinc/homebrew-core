@@ -4,6 +4,7 @@ class Xapian < Formula
   url "https://oligarchy.co.uk/xapian/1.4.17/xapian-core-1.4.17.tar.xz"
   sha256 "b5eb8556dea1b0cad4167a66223522e66d670ec1eba16c7fdc844ed6b652572e"
   license "GPL-2.0"
+  revision 1
   version_scheme 1
 
   livecheck do
@@ -13,13 +14,14 @@ class Xapian < Formula
 
   bottle do
     cellar :any
-    sha256 "4712dbe3959cf4bb599d5c28a63b752de362d8201a68d4c2b73cce4e61d575e0" => :catalina
-    sha256 "fd46c140fdbd39fc34a201f51414239112edacedf85486496eeee9d62b8f29cf" => :mojave
-    sha256 "62231301f3ee14feb596caa691aef3b3ae95068cb7636eb5abbcefeb056571bc" => :high_sierra
+    rebuild 1
+    sha256 "5645bdbfbf7ebb1e0d068bb51cce7a28c1e4102a29da6647b5959d0607100d21" => :big_sur
+    sha256 "f9e6103d9938f2708d0d5d38030c833c5f78d02efe53091616d1fd9e645a69ee" => :catalina
+    sha256 "9ad6e312f0949659d3d96f7ef1edc63cd4e8b2a45e7a94243ffa4cb3abf940f8" => :mojave
   end
 
   depends_on "sphinx-doc" => :build
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   uses_from_macos "zlib"
 
@@ -35,7 +37,7 @@ class Xapian < Formula
   end
 
   def install
-    python = Formula["python@3.8"].opt_bin/"python3"
+    python = Formula["python@3.9"].opt_bin/"python3"
     ENV["PYTHON"] = python
 
     system "./configure", "--disable-dependency-tracking",
@@ -52,6 +54,10 @@ class Xapian < Formula
       ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"lib/python#{xy}/site-packages"
       ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"vendor/lib/python#{xy}/site-packages"
 
+      # Fix build on Big Sur (darwin20)
+      # https://github.com/xapian/xapian/pull/319
+      inreplace "configure", "*-darwin[91]*", "*-darwin[912]*"
+
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
                             "--with-python3"
@@ -62,6 +68,6 @@ class Xapian < Formula
 
   test do
     system bin/"xapian-config", "--libs"
-    system Formula["python@3.8"].opt_bin/"python3", "-c", "import xapian"
+    system Formula["python@3.9"].opt_bin/"python3", "-c", "import xapian"
   end
 end

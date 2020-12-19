@@ -2,10 +2,11 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.9.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.9.tar.xz"
-  sha256 "23733f4a608ad1bebdcecf0138ebc5fd57cf20d6e0915f98a9444c3f747dc57b"
+  url "https://www.php.net/distributions/php-8.0.0.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.0.0.tar.xz"
+  sha256 "b5278b3eef584f0c075d15666da4e952fa3859ee509d6b0cc2ed13df13f65ebb"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/releases/feed.php"
@@ -13,9 +14,9 @@ class Php < Formula
   end
 
   bottle do
-    sha256 "d9fab3b015bed719b2a9ece221a6c813cfcc50b0e5f133e4dbb1a19da25a7d6d" => :catalina
-    sha256 "9e7433b038f67fae0a1508ea01b14747f1b6d69d16b484f11a90dc94938d3e67" => :mojave
-    sha256 "bfa9026aab3df2add7087b803a700eb106096387af0f12128abd5a09a3b4e03f" => :high_sierra
+    sha256 "fb9e9a8db2d02ec3e80882d7f42894dde0c5a3f0d27990a3e365e470ff4ef63c" => :big_sur
+    sha256 "b1453e4e8e9ad95ec36c6e97bd2b3e0773a62d52b84a568ce26f1ccb97bc1bc6" => :catalina
+    sha256 "7bd4b3ef362185ae7e7918b04d5bc40f4ed3fd533b8dbefbebceead4b2b82393" => :mojave
   end
 
   head do
@@ -32,7 +33,7 @@ class Php < Formula
   depends_on "argon2"
   depends_on "aspell"
   depends_on "autoconf"
-  depends_on "curl-openssl"
+  depends_on "curl"
   depends_on "freetds"
   depends_on "gd"
   depends_on "gettext"
@@ -96,7 +97,7 @@ class Php < Formula
     # Prevent system pear config from inhibiting pear install
     (config_path/"pear.conf").delete if (config_path/"pear.conf").exist?
 
-    # Prevent homebrew from harcoding path to sed shim in phpize script
+    # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
 
     # system pkg-config missing
@@ -281,7 +282,7 @@ class Php < Formula
   def caveats
     <<~EOS
       To enable PHP in Apache add the following to httpd.conf and restart Apache:
-          LoadModule php7_module #{opt_lib}/httpd/modules/libphp7.so
+          LoadModule php_module #{opt_lib}/httpd/modules/libphp.so
 
           <FilesMatch \\.php$>
               SetHandler application/x-httpd-php
@@ -359,16 +360,10 @@ class Php < Formula
         DirectoryIndex index.php
       EOS
 
-      php_module = if head?
-        "LoadModule php_module #{lib}/httpd/modules/libphp.so"
-      else
-        "LoadModule php7_module #{lib}/httpd/modules/libphp7.so"
-      end
-
       (testpath/"httpd.conf").write <<~EOS
         #{main_config}
         LoadModule mpm_prefork_module lib/httpd/modules/mod_mpm_prefork.so
-        #{php_module}
+        LoadModule php_module #{lib}/httpd/modules/libphp.so
         <FilesMatch \\.(php|phar)$>
           SetHandler application/x-httpd-php
         </FilesMatch>

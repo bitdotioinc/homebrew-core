@@ -3,18 +3,24 @@ class ReorderPythonImports < Formula
 
   desc "Rewrites source to reorder python imports"
   homepage "https://github.com/asottile/reorder_python_imports"
-  url "https://github.com/asottile/reorder_python_imports/archive/v2.3.5.tar.gz"
-  sha256 "e5c5b77efbd3a61fc2a4ab1ad36c57445dbec4313b8177725ead98ae05f8426e"
+  url "https://files.pythonhosted.org/packages/3b/d4/54272e968b47938addc61d5d836a9ef01fff598b88db6db419e5f8a9f650/reorder_python_imports-2.3.6.tar.gz"
+  sha256 "2ea16d2253536e7f90427b383cd046e46977ca25aae82464883eee882bc7d21b"
   license "MIT"
+  head "https://github.com/asottile/reorder_python_imports.git"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f82f81ae238fb1ea08d2847d85688226f665c247cee99e6928761139bd84f14a" => :catalina
-    sha256 "00b8dfb9fc9de88820c7115a701a86c582fe08651130eab710216e629fa748ab" => :mojave
-    sha256 "e068d759d9b9897c699e515c5a41791fd8029c990bb8bdedd2a38ce2f91122c1" => :high_sierra
+    rebuild 1
+    sha256 "1f504f5fca0798b46939964114068f233e5cc330858c5c35684e9f38e5ca3294" => :big_sur
+    sha256 "b9beb2be9546035065dd15fe87f5dcd7df3bfbcfff6cfdf3941b09925e0884a4" => :catalina
+    sha256 "b5da6963dea056b23d05a8a562968eeb200b25d5fd4162f4dfcb6379784a82e4" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "aspy.refactor-imports" do
     url "https://files.pythonhosted.org/packages/34/6e/37cbfba703b06fca29c38079bef76cc01e8496197701fff8f0dded3b5b38/aspy.refactor_imports-2.1.1.tar.gz"
@@ -22,8 +28,8 @@ class ReorderPythonImports < Formula
   end
 
   resource "cached-property" do
-    url "https://files.pythonhosted.org/packages/57/8e/0698e10350a57d46b3bcfe8eff1d4181642fd1724073336079cb13c5cf7f/cached-property-1.5.1.tar.gz"
-    sha256 "9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"
+    url "https://files.pythonhosted.org/packages/61/2c/d21c1c23c2895c091fa7a91a54b6872098fea913526932d21902088a7c41/cached-property-1.5.2.tar.gz"
+    sha256 "9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"
   end
 
   def install

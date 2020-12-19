@@ -1,49 +1,44 @@
 class Uhd < Formula
   desc "Hardware driver for all USRP devices"
   homepage "https://files.ettus.com/manual/"
-  url "https://github.com/EttusResearch/uhd/archive/v3.15.0.0.tar.gz"
-  sha256 "eed4a77d75faafff56be78985950039f8d9d1eb9fcbd58b8862e481dd49825cd"
-  revision 1
+  url "https://github.com/EttusResearch/uhd/archive/v4.0.0.0.tar.gz"
+  sha256 "4f3513c43edf0178391ed5755266864532716b8b503bcfb9a983ae6256c51b14"
+  license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later", "MIT", "BSD-3-Clause", "Apache-2.0"]
   head "https://github.com/EttusResearch/uhd.git"
 
   livecheck do
-    url "https://github.com/EttusResearch/uhd/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle do
-    sha256 "b0988b31234da20fde7aceb5656316fccc3def16516391e5fcb818bd9d9cb563" => :catalina
-    sha256 "eff5ec072e00e4ed6b7ccdceda1fdd68a672f8cea36a64046c4e4c348b361146" => :mojave
-    sha256 "ded2d939eea70a0ca8e6275552a64fe6a6f9d55cc5b56e6cbed6ceea0394f549" => :high_sierra
+    sha256 "6cc2856cd61dbc5757d003a75efc9f0a6a5bed1c559a9c21f5ac87a65b496126" => :big_sur
+    sha256 "000b6f7fd9126542c480b004ad6c0b7e85279d00ab5c3ff96bb45ba98acdf489" => :catalina
+    sha256 "90f5734f4608e8a2c198bee12f4de067d7e5297d531c625bcfc4dbfcfd0fe7fe" => :mojave
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "boost"
   depends_on "libusb"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/b0/3c/8dcd6883d009f7cae0f3157fb53e9afb05a0d3d33b3db1268ec2e6f4a56b/Mako-1.1.0.tar.gz"
-    sha256 "a36919599a9b7dc5d86a7a8988f23a9a3a3d083070023bab23d64f7f1d1e0a4b"
+    url "https://files.pythonhosted.org/packages/72/89/402d2b4589e120ca76a6aed8fee906a0f5ae204b50e455edd36eda6e778d/Mako-1.1.3.tar.gz"
+    sha256 "8195c8c1400ceb53496064314c6736719c6f25e7479cd24c77be3d9361cddc27"
   end
 
   def install
-    # https://github.com/EttusResearch/uhd/issues/313
-    inreplace "host/lib/transport/nirio/lvbitx/process-lvbitx.py",
-              "autogen_src_path = os.path.relpath(options.output_src_path)",
-              "autogen_src_path = os.path.realpath(options.output_src_path)"
-
-    xy = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
+    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
 
     resource("Mako").stage do
-      system Formula["python@3.8"].opt_bin/"python3",
+      system Formula["python@3.9"].opt_bin/"python3",
              *Language::Python.setup_install_args(libexec/"vendor")
     end
 
     mkdir "host/build" do
-      system "cmake", "..", *std_cmake_args, "-DENABLE_STATIC_LIBS=ON", "-DENABLE_TESTS=OFF"
+      system "cmake", "..", *std_cmake_args, "-DENABLE_TESTS=OFF"
       system "make"
       system "make", "install"
     end

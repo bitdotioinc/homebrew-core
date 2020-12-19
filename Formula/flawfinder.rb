@@ -6,7 +6,7 @@ class Flawfinder < Formula
   url "https://www.dwheeler.com/flawfinder/flawfinder-2.0.11.tar.gz"
   sha256 "9b4929fca5c6703880d95f201e470b7f19262ff63e991b3ac4ea3257f712f5ec"
   license "GPL-2.0"
-  revision 1
+  revision 2
   head "https://github.com/david-a-wheeler/flawfinder.git"
 
   livecheck do
@@ -16,12 +16,13 @@ class Flawfinder < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "834e8b598e411e3722bb5955348293cc9ef833400ee0a45357525c91c13a29c6" => :catalina
-    sha256 "834e8b598e411e3722bb5955348293cc9ef833400ee0a45357525c91c13a29c6" => :mojave
-    sha256 "834e8b598e411e3722bb5955348293cc9ef833400ee0a45357525c91c13a29c6" => :high_sierra
+    sha256 "79d63099bc5b10544dd3a42ea7f2b71247ed13569846917537bd992241051fed" => :big_sur
+    sha256 "c4b2f7f2353d8d032e0e1f352860f69c23c21092dc718f4d4832bc1dbe20a2f1" => :catalina
+    sha256 "ba1a903081761bfb7ba492ac5fc84300da3ffc20819ed240a6854c3441b69eff" => :mojave
+    sha256 "38fc9609b4526463f7d4d3d4dd1377fb979a64208562de1a5d4d6f1ff9237c67" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "flaws" do
     url "https://www.dwheeler.com/flawfinder/test.c"

@@ -1,28 +1,29 @@
 class Tbb < Formula
   desc "Rich and complete approach to parallelism in C++"
-  homepage "https://www.threadingbuildingblocks.org/"
-  url "https://github.com/intel/tbb/archive/v2020.2.tar.gz"
-  version "2020_U2"
-  sha256 "4804320e1e6cbe3a5421997b52199e3c1a3829b2ecb6489641da4b8e32faf500"
+  homepage "https://github.com/oneapi-src/oneTBB"
+  url "https://github.com/intel/tbb/archive/v2020.3.tar.gz"
+  version "2020_U3"
+  sha256 "ebc4f6aa47972daed1f7bf71d100ae5bf6931c2e3144cf299c8cc7d041dca2f3"
   license "Apache-2.0"
+  revision 1
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "d601aa195a3baf397390550894de8d39e6602a082154fa5facdfcbe64e3abffc" => :catalina
-    sha256 "2e1004341c9ea81972212ce180a258bc162528b6eac46e67c8bc03538c3cfe40" => :mojave
-    sha256 "e1efb8aec2b87e2facdb824971718d6fa531caa5043b10e811dc86a6c5e1e797" => :high_sierra
+    sha256 "9a6b1cbf0b9f20d05075d9c7c905f7e06bf91c0dd7f5a0b7d46f0761fdb86097" => :big_sur
+    sha256 "e73f880d133b99c5e30120df768cff884d5d66f93f4e84bfc8937f37f9e0b614" => :catalina
+    sha256 "b026eb8322c7984cdd1f5313ffd866c6d41a556ad8d7ebf1e713786724d83675" => :mojave
+    sha256 "ccf240dbcb30bfb33736130c77b7afbb12a8ca4208cc8244f66943ce6c0307d1" => :high_sierra
   end
 
   depends_on "cmake" => :build
   depends_on "swig" => :build
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   # Remove when upstream fix is released
   # https://github.com/oneapi-src/oneTBB/pull/258
   patch do
-    url "https://github.com/oneapi-src/oneTBB/commit/86f6dcdc17a8f5ef2382faaef860cfa5243984fe.diff?full_index=1"
-    sha256 "94d11e17f32efe6c3ffd1c610811b6d160c619e2a5da7debc5fd8eaca418d9aa"
+    url "https://github.com/oneapi-src/oneTBB/commit/86f6dcdc17a8f5ef2382faaef860cfa5243984fe.patch?full_index=1"
+    sha256 "d62cb666de4010998c339cde6f41c7623a07e9fc69e498f2e149821c0c2c6dd0"
   end
 
   def install
@@ -38,7 +39,7 @@ class Tbb < Formula
 
     cd "python" do
       ENV["TBBROOT"] = prefix
-      system Formula["python@3.8"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
+      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
     end
 
     system "cmake", *std_cmake_args,

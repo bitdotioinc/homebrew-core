@@ -1,18 +1,18 @@
 class Glances < Formula
   desc "Alternative to top/htop"
   homepage "https://nicolargo.github.io/glances/"
-  url "https://github.com/nicolargo/glances/archive/v3.1.4.1.tar.gz"
-  sha256 "0347a0b949451fd0022c0f22e54092fe526120a776af1f2bde1ea7ba61d6b792"
-  license "LGPL-3.0"
+  url "https://github.com/nicolargo/glances/archive/v3.1.5.tar.gz"
+  sha256 "e60ea1274e882f9d64d16c12690bd71dcc70ebe7e93690d773275f92fa126b24"
+  license "LGPL-3.0-or-later"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3bc1dc122d7ed7542795ac6b390dea5e7645528439295d29f8f127148425b5c2" => :catalina
-    sha256 "4f1c3d51bf77bb95586c81bdf5170f5fd2b53d544f06a311d9152c00f4abb038" => :mojave
-    sha256 "27db703a8a6fd3decc1d96ebed0c0d991c41a74e5a25d1c708a843671be072fd" => :high_sierra
+    sha256 "494157271f3830f5b2c82247679b4199510e2f3c3e6d4ab032904dfaa57c63c5" => :big_sur
+    sha256 "fcdbab7bfe00247ace33bd4bf6db88baddc12c0ae090302a0bf100910b088417" => :catalina
+    sha256 "ee6c05bc8d7293076aee0bfcce3eb2bedc2a6f3d8aa70346043033b41a4565e8" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "bernhard" do
     url "https://files.pythonhosted.org/packages/51/d4/b2701097f9062321262c4d4e3488fdf127887502b2619e8fd1ae13955a36/bernhard-0.2.6.tar.gz"
@@ -130,8 +130,8 @@ class Glances < Formula
   end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/c4/b8/3512f0e93e0db23a71d82485ba256071ebef99b227351f0f5540f744af41/psutil-5.7.0.tar.gz"
-    sha256 "685ec16ca14d079455892f25bd124df26ff9137664af445563c1bd36629b5e0e"
+    url "https://files.pythonhosted.org/packages/aa/3e/d18f2c04cf2b528e18515999b0c8e698c136db78f62df34eee89cee205f1/psutil-5.7.2.tar.gz"
+    sha256 "90990af1c3c67195c44c9a889184f84f5b2320dce3ee3acbd054e3ba0b4a7beb"
   end
 
   resource "py-cpuinfo" do

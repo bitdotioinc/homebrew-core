@@ -1,8 +1,8 @@
 class Scipy < Formula
   desc "Software for mathematics, science, and engineering"
   homepage "https://www.scipy.org"
-  url "https://files.pythonhosted.org/packages/53/10/776750d57ade26522478a92a2e14035868624a6a62f4157b0cc5abd4a980/scipy-1.5.2.tar.gz"
-  sha256 "066c513d90eb3fd7567a9e150828d39111ebd88d3e924cdfc9f8ce19ab6f90c9"
+  url "https://files.pythonhosted.org/packages/aa/d5/dd06fe0e274e579e1dff21aa021219c039df40e39709fabe559faed072a5/scipy-1.5.4.tar.gz"
+  sha256 "4a453d5e5689de62e5d38edf40af3f17560bfd63c9c5bd228c18c1f99afa155b"
   license "BSD-3-Clause"
   head "https://github.com/scipy/scipy.git"
 
@@ -12,9 +12,10 @@ class Scipy < Formula
 
   bottle do
     cellar :any
-    sha256 "0d42cbfdf53a94f5f437f20a4d8789d0092ebd45da4cc399f822f78578b5cfcd" => :catalina
-    sha256 "32666539824b3b8d23b5357eb8f19b1139c3d4bc16359b805271a3a1ea4f1e36" => :mojave
-    sha256 "5890c48fe6a148b3813c3a9a86062cef66ad73fda87381235b092d73f576a3c6" => :high_sierra
+    sha256 "e6ac47d444999cbfdf8c68f4016af207e093fcfa8f60da704e6e1ca1bf8963d2" => :big_sur
+    sha256 "459a424a9433cefd235ae700f3016a070df09fadff99246ac72be3427a2259d1" => :catalina
+    sha256 "a5955e92c790150cac7c173c73eaa70447762b7afb67c658889ceb2ddcef30ae" => :mojave
+    sha256 "b660e024594d7d6c0c7717888b50e4656a74fb04359cbeeb87903ce9d77aae2f" => :high_sierra
   end
 
   depends_on "swig" => :build
@@ -22,14 +23,14 @@ class Scipy < Formula
   depends_on "numpy"
   depends_on "openblas"
   depends_on "pybind11"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   cxxstdlib_check :skip
 
   def install
     openblas = Formula["openblas"].opt_prefix
     ENV["ATLAS"] = "None" # avoid linking against Accelerate.framework
-    ENV["BLAS"] = ENV["LAPACK"] = "#{openblas}/lib/libopenblas.dylib"
+    ENV["BLAS"] = ENV["LAPACK"] = "#{openblas}/lib/#{shared_library("libopenblas")}"
 
     config = <<~EOS
       [DEFAULT]
@@ -43,11 +44,11 @@ class Scipy < Formula
 
     Pathname("site.cfg").write config
 
-    version = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
+    version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV["PYTHONPATH"] = Formula["numpy"].opt_lib/"python#{version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", lib/"python#{version}/site-packages"
-    system Formula["python@3.8"].opt_bin/"python3", "setup.py", "build", "--fcompiler=gnu95"
-    system Formula["python@3.8"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
+    system Formula["python@3.9"].opt_bin/"python3", "setup.py", "build", "--fcompiler=gnu95"
+    system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
   end
 
   # cleanup leftover .pyc files from previous installs which can cause problems
@@ -57,6 +58,6 @@ class Scipy < Formula
   end
 
   test do
-    system Formula["python@3.8"].opt_bin/"python3", "-c", "import scipy"
+    system Formula["python@3.9"].opt_bin/"python3", "-c", "import scipy"
   end
 end

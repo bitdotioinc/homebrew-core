@@ -1,16 +1,17 @@
 class Stella < Formula
   desc "Atari 2600 VCS emulator"
   homepage "https://stella-emu.github.io/"
-  url "https://github.com/stella-emu/stella/releases/download/6.2.1/stella-6.2.1-src.tar.xz"
-  sha256 "47b991af880b1699614c081d602c197942cfbdcbf52e3d738617923d5df23dc7"
-  license "GPL-2.0"
+  url "https://github.com/stella-emu/stella/releases/download/6.4/stella-6.4-src.tar.xz"
+  sha256 "0346900e9ba4b6d532b72d956adc5078502a9bd6bbc1648bb3dd68f5ffd4859b"
+  license "GPL-2.0-or-later"
   head "https://github.com/stella-emu/stella.git"
 
   bottle do
     cellar :any
-    sha256 "905c36cc2c68968ffcedb83867474bd757f9b6188a9d49f7fd94d22f0e479b0d" => :catalina
-    sha256 "482b97a5ebe760bb2793c95d0c51c3ac356417eb1c8479c4539086cc9ad203e9" => :mojave
-    sha256 "ff69cdd3d5a5def9e99557b0d327e16da16b3b37298f769ec66bed2c0ff18003" => :high_sierra
+    sha256 "2ff00068a630dd83b02c5ed609b557795c1b856dbedf6463cad37cd8552e3ce1" => :big_sur
+    sha256 "dd75332a71568ade603f9042f93da74bdf0eedb35461571392ca8e4b17ccb8e0" => :catalina
+    sha256 "358818331b7859ab184cecd46b3efd3de5d81156c436798840a1976a3ad346de" => :mojave
+    sha256 "18ad422ce92e764abad0cbe16fb126017be40b9d5159a37818698512290e810c" => :high_sierra
   end
 
   depends_on xcode: :build

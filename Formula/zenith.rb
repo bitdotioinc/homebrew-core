@@ -1,16 +1,18 @@
 class Zenith < Formula
   desc "In terminal graphical metrics for your *nix system"
   homepage "https://github.com/bvaisvil/zenith/"
-  url "https://github.com/bvaisvil/zenith/archive/0.10.0.tar.gz"
-  sha256 "a232951928b813447fa89562c97fdbb87ac57f97c7633e1e20d7ebc8fa126505"
+  url "https://github.com/bvaisvil/zenith/archive/0.11.0.tar.gz"
+  sha256 "be216df5d4e9bc0271971a17e8e090d3abe513f501c69e69174899a30c857254"
   license "MIT"
   head "https://github.com/bvaisvil/zenith.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6bbe3db614e24831a888b82ebd52ab7f51f00320ee1d0372d8f19c042d8b0505" => :catalina
-    sha256 "764dc52d56fa24ff051e66f29a60f11be8e2e229592448662192f604e91f9d5e" => :mojave
-    sha256 "5850d5fe7b4ffebb904ea367a3f8d8361b48361e3e0dc9635304baddfebbe0db" => :high_sierra
+    rebuild 1
+    sha256 "b6863e0f25d2b1590bba5016f563fa101f8f76f716220d7b2c07c2c2bbc47df2" => :big_sur
+    sha256 "a6c9804ff96250b57852555414d3f37e793c379178ffd9b0b00bb4b79ac37c4a" => :catalina
+    sha256 "33aeda2cfe6a2e2ce8089e5991b0b41feb201ddaaf250e62796a7e3bd85692ac" => :mojave
+    sha256 "34669ca8a79071a5ab3d78ccd80a261984f60711126bd6d35ead14890279fde7" => :high_sierra
   end
 
   depends_on "rust" => :build
@@ -21,16 +23,15 @@ class Zenith < Formula
 
   test do
     require "pty"
+    require "io/console"
 
-    begin
-      (testpath/"zenith").mkdir
-      cmd = "#{bin}/zenith --db zenith"
-      output, input, pid = PTY.spawn "stty rows 80 cols 43 && #{cmd}"
-      sleep 1
-      input.write "q"
-      assert_match /PID\s+USER\s+P\s+N\s+↓CPU%\s+MEM%/, output.read
-    ensure
-      Process.kill("TERM", pid)
-    end
+    (testpath/"zenith").mkdir
+    r, w, pid = PTY.spawn "#{bin}/zenith --db zenith"
+    r.winsize = [80, 43]
+    sleep 1
+    w.write "q"
+    assert_match /PID\s+USER\s+P\s+N\s+↓CPU%\s+MEM%/, r.read
+  ensure
+    Process.kill("TERM", pid)
   end
 end

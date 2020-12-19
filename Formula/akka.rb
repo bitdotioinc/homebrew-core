@@ -6,15 +6,10 @@ class Akka < Formula
   license "Apache-2.0"
   revision 1
 
-  livecheck do
-    url "https://github.com/akka/akka/releases/latest"
-    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
-  end
-
   bottle :unneeded
 
   # https://github.com/akka/akka/issues/25046
-  deprecate! because: "is recommended to use Akka with a build tool"
+  deprecate! date: "2020-07-09", because: "is recommended to use Akka with a build tool"
 
   depends_on "openjdk"
 

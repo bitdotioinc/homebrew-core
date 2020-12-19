@@ -1,24 +1,25 @@
 class Libpqxx < Formula
   desc "C++ connector for PostgreSQL"
-  homepage "https://pqxx.org/development/libpqxx/"
-  url "https://github.com/jtv/libpqxx/archive/7.1.2.tar.gz"
-  sha256 "3af7b4cfd572c67275ad24fea31bcf9d9f365ec16a1b7e90d4bde930936707f3"
+  homepage "http://pqxx.org/development/libpqxx/"
+  url "https://github.com/jtv/libpqxx/archive/7.2.1.tar.gz"
+  sha256 "3fd8318d2e421483495bf1a8ea1365fce4105934e9600ca87be0dff470d8c8dc"
   license "BSD-3-Clause"
 
   bottle do
     cellar :any
-    sha256 "4600e04403f227ce18b789e236dc78faf8fd9ba230c99ba71e1e011bf33d21d8" => :catalina
-    sha256 "7f99040c5cb0cb12dec832043fc3789b30e323ee3759cea291b8783caa48e43a" => :mojave
-    sha256 "4016b954fb4052fd8988cfbd569c32ae8700f1c5b3da60eaf576672545f18df2" => :high_sierra
+    sha256 "b2299910a772caf6479360f95f59876681c66d5a40349f7ce012250dd987ff2d" => :big_sur
+    sha256 "85db8ec663721f48161cd6fd33fdeb87476c9086f1db3618c2b3d1a146c5a295" => :catalina
+    sha256 "6c1337228d446aba1f625567a141a985e4191e3eb5053238b78d4183a3233752" => :mojave
+    sha256 "b4cd9d66cb35a7d69b4377c5c6f5c2b72ce7da44e4c9f6eea25fe731c3cf1e4a" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
   depends_on "xmlto" => :build
   depends_on "libpq"
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.8"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
     ENV["PG_CONFIG"] = Formula["libpq"].opt_bin/"pg_config"
 
     system "./configure", "--prefix=#{prefix}", "--enable-shared"
@@ -35,7 +36,7 @@ class Libpqxx < Formula
     EOS
     system ENV.cxx, "-std=c++17", "test.cpp", "-L#{lib}", "-lpqxx",
            "-I#{include}", "-o", "test"
-    # Running ./test will fail because there is no runnning postgresql server
+    # Running ./test will fail because there is no running postgresql server
     # system "./test"
   end
 end

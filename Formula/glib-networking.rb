@@ -1,18 +1,19 @@
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://gitlab.gnome.org/GNOME/glib-networking"
-  url "https://download.gnome.org/sources/glib-networking/2.64/glib-networking-2.64.3.tar.xz"
-  sha256 "937a06b124052813bfc0b0b86bff42016ff01067582e1aca65bb6dbe0845a168"
-  license "LGPL-2.1"
+  url "https://download.gnome.org/sources/glib-networking/2.66/glib-networking-2.66.0.tar.xz"
+  sha256 "c5d7be2437fdd196eebfb70c4517b96d3ba7ec13bd496318b8f02dea383e0099"
+  license "LGPL-2.1-or-later"
 
   livecheck do
     url :stable
   end
 
   bottle do
-    sha256 "52991dae042721d0bc9af98a7a777435b76fd6ef3a66ce8bf89928fd549537ee" => :catalina
-    sha256 "1c26ff7e2f3dfc8b5fec714aef7c35a3c1a8b89228b8e62c8311a2e942ceec22" => :mojave
-    sha256 "1a5a55a81cc7c844af35a53ad39ad6babb56de8f901ad300959e978a0542ce1c" => :high_sierra
+    sha256 "903584edc9d9e84945330f226909f445cd701fbc346649b4248556b44632a0df" => :big_sur
+    sha256 "e2ad1f907ee4b6697715ae89f8a245ee3e8c595e593370de575c56d201e23656" => :catalina
+    sha256 "0d2e04f7e844cca91d4be25058731c10607377887e2f0325d1694ebb4d5caf48" => :mojave
+    sha256 "dcaf3c0d0a77658721b7fee6522a4719a529f48fbb0f572d66f752e6cf1b5dec" => :high_sierra
   end
 
   depends_on "meson" => :build

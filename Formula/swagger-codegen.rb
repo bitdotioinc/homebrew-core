@@ -1,25 +1,25 @@
 class SwaggerCodegen < Formula
   desc "Generate clients, server stubs, and docs from an OpenAPI spec"
   homepage "https://swagger.io/swagger-codegen/"
-  url "https://github.com/swagger-api/swagger-codegen/archive/v3.0.20.tar.gz"
-  sha256 "82de5438e233631026b945d2f25bd0a30c36d496daf42b696de27aa40dcd5dc1"
+  url "https://github.com/swagger-api/swagger-codegen/archive/v3.0.22.tar.gz"
+  sha256 "fbdd96ea4577fcc5dfb53402a893a1033e35f336d4db43f078cdd05cf3a7e108"
   license "Apache-2.0"
   head "https://github.com/swagger-api/swagger-codegen.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6edc8aa014a0a91569b7895abd7c7196ae99b6b10ca1e27d0a327ef825f6d171" => :catalina
-    sha256 "265c496f1891d12cfc8071f000c0f07bdce03bde78df8c83c57050332ce8e509" => :mojave
-    sha256 "39d90b9fe87e3b6dcb7275e3b73ae8255a8a12e752ea35bc3a040ff0e7621516" => :high_sierra
+    sha256 "7fdfc6c478debdce4beb5068b8f7f0c7d0c7f7388a518cd17d2fa0c99ad436e1" => :big_sur
+    sha256 "3b4850b0c7b9451ddc7882f154e13e2c1d7a5850742b973c49ebf14681d75b83" => :catalina
+    sha256 "3d25a89ffd299a2a638aeea874eb08309810af05c2174287c9316369656765a4" => :mojave
+    sha256 "4a9b0b330da4d82235eef0859642991dcfebd802d3b569c5cbfb27d4821ead5f" => :high_sierra
   end
 
   depends_on "maven" => :build
-  depends_on java: "1.8"
+  depends_on "openjdk"
 
   def install
     # Need to set JAVA_HOME manually since maven overrides 1.8 with 1.7+
-    cmd = Language::Java.java_home_cmd("1.8")
-    ENV["JAVA_HOME"] = Utils.safe_popen_read(cmd).chomp
+    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
 
     system "mvn", "clean", "package"
     libexec.install "modules/swagger-codegen-cli/target/swagger-codegen-cli.jar"

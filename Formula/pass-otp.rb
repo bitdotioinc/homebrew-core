@@ -1,5 +1,5 @@
 class PassOtp < Formula
-  desc "The Pass extension for managing one-time-password (OTP) tokens"
+  desc "Pass extension for managing one-time-password tokens"
   homepage "https://github.com/tadfisher/pass-otp#readme"
   url "https://github.com/tadfisher/pass-otp/releases/download/v1.2.0/pass-otp-1.2.0.tar.gz"
   sha256 "5720a649267a240a4f7ba5a6445193481070049c1d08ba38b00d20fc551c3a67"
@@ -8,6 +8,7 @@ class PassOtp < Formula
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "5bd301d324d702618b91ad03ffae899e087ab225450c0a24eb40f4cec0b5cbe1" => :big_sur
     sha256 "515eb09606a7e6d384d81a2cb045189b0f1dbda605f4743cd06f9bdb665ff0db" => :catalina
     sha256 "4fd5893adc28693cf5b532d0ad1d469d58842e355d676cb3371c4832ed1e7a0c" => :mojave
     sha256 "4fd5893adc28693cf5b532d0ad1d469d58842e355d676cb3371c4832ed1e7a0c" => :high_sierra

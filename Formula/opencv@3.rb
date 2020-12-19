@@ -1,15 +1,16 @@
 class OpencvAT3 < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/3.4.10.tar.gz"
-  sha256 "1ed6f5b02a7baf14daca04817566e7c98ec668cec381e0edf534fa49f10f58a2"
+  url "https://github.com/opencv/opencv/archive/3.4.12.tar.gz"
+  sha256 "c8919dfb5ead6be67534bf794cb0925534311f1cd5c6680f8164ad1813c88d13"
   license "BSD-3-Clause"
-  revision 4
+  revision 3
 
   bottle do
-    sha256 "890dcb6beccc060f02a7d5f594e604ac29cb10b7c5a471dd5cc2f8cdea026d5d" => :catalina
-    sha256 "36ed82e801b3e60ddf08592d28f03add4acbab5b26630a3856ebbafc137eaeb8" => :mojave
-    sha256 "3f48062f043a2208fde3360abb0cbb373674b2768218cc49aed55637fad2b5dc" => :high_sierra
+    sha256 "640ea516919445ee6d370678986093de9b7f3b27b756d76a0904687f94cec8c5" => :big_sur
+    sha256 "00b159415bc4ec16ed27f06f88fe5cb1db66f8a870d6564a7782d1ec56a6e672" => :catalina
+    sha256 "ffe594a6c6dfef0cc14dd61b21e3160e230b779abc45007d1e41a0ff4fe33861" => :mojave
+    sha256 "5be7afd889d93bc4c326d39701a8edd864d847a01528d0222868896efd2d1101" => :high_sierra
   end
 
   keg_only :versioned_formula
@@ -26,12 +27,12 @@ class OpencvAT3 < Formula
   depends_on "libtiff"
   depends_on "numpy"
   depends_on "openexr"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "tbb"
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/3.4.10.tar.gz"
-    sha256 "45be02486feaa5c66efc497c463a9b9d6671aa4a125ca8ea2467b8c81201971c"
+    url "https://github.com/opencv/opencv_contrib/archive/3.4.12.tar.gz"
+    sha256 "b207024589674dd2efc7c25740ef192ee4f3e0783e773e2d49a198c37e3e7570"
   end
 
   def install
@@ -71,7 +72,7 @@ class OpencvAT3 < Formula
       -DWITH_VTK=OFF
       -DBUILD_opencv_python2=OFF
       -DBUILD_opencv_python3=ON
-      -DPYTHON3_EXECUTABLE=#{Formula["python@3.8"].opt_bin}/python3
+      -DPYTHON3_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
     ]
 
     args << "-DENABLE_AVX=OFF" << "-DENABLE_AVX2=OFF"
@@ -103,9 +104,9 @@ class OpencvAT3 < Formula
     system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-o", "test"
     assert_equal `./test`.strip, version.to_s
 
-    py3_version = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
+    py3_version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV["PYTHONPATH"] = lib/"python#{py3_version}/site-packages"
-    output = shell_output(Formula["python@3.8"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
+    output = shell_output(Formula["python@3.9"].opt_bin/"python3 -c 'import cv2; print(cv2.__version__)'")
     assert_equal version.to_s, output.chomp
   end
 end

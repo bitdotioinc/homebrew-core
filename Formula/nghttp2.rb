@@ -1,14 +1,15 @@
 class Nghttp2 < Formula
   desc "HTTP/2 C Library"
   homepage "https://nghttp2.org/"
-  url "https://github.com/nghttp2/nghttp2/releases/download/v1.41.0/nghttp2-1.41.0.tar.xz"
-  sha256 "abc25b8dc601f5b3fefe084ce50fcbdc63e3385621bee0cbfa7b57f9ec3e67c2"
+  url "https://github.com/nghttp2/nghttp2/releases/download/v1.42.0/nghttp2-1.42.0.tar.xz"
+  sha256 "c5a7f09020f31247d0d1609078a75efadeccb7e5b86fc2e4389189b1b431fe63"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 "d81b96cf82189cd4049ff7fe400a4e5b05eed38029d34e8325b751e7b9f3d730" => :catalina
-    sha256 "718a1b33f18b2b72b92110d2fb3f83e9ab6e4831f9bc2bdf7636757129104552" => :mojave
-    sha256 "f56e7c923879fd77d7c9737395c7c5df1ab3e9ffa03baa900385b53a91469803" => :high_sierra
+    sha256 "3d0437a63bcc51ec17d456847bcc0a624be2e00755ecc96b8445bc15020ff413" => :big_sur
+    sha256 "ddc63177feae52a5d07ec0f5793a8dcb5a344f0bdd4f4ba0633dacfd8249b0be" => :catalina
+    sha256 "e7a509ec209f20e204f82009b2dec7667e6a28958d018d8f1ee0fefbe4b73999" => :mojave
   end
 
   head do
@@ -19,36 +20,33 @@ class Nghttp2 < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "cunit" => :build
   depends_on "pkg-config" => :build
-  depends_on "sphinx-doc" => :build
   depends_on "c-ares"
-  depends_on "jansson"
   depends_on "jemalloc"
   depends_on "libev"
-  depends_on "libevent"
   depends_on "openssl@1.1"
 
+  uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
   def install
-    ENV.cxx11
+    # fix for clang not following C++14 behaviour
+    # https://github.com/macports/macports-ports/commit/54d83cca9fc0f2ed6d3f873282b6dd3198635891
+    inreplace "src/shrpx_client_handler.cc", "return dconn;", "return std::move(dconn);"
 
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
       --enable-app
+      --disable-examples
+      --disable-hpack-tools
       --disable-python-bindings
-      --with-xml-prefix=/usr
+      --without-systemd
     ]
-
-    # requires thread-local storage features only available in 10.11+
-    args << "--disable-threads" if MacOS.version < :el_capitan
 
     system "autoreconf", "-ivf" if build.head?
     system "./configure", *args
     system "make"
-    system "make", "check"
     system "make", "install"
   end
 

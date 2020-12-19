@@ -8,6 +8,7 @@ class Libdrawtext < Formula
 
   bottle do
     cellar :any
+    sha256 "30bb9dd29ed877e48308f66be15ef43b2816e9a38b346a2e04b280ab64e677c9" => :big_sur
     sha256 "e6aea4db0e3298e04dfbb215bcedcc4302d76965f82b4dfc921636dbc24ff939" => :catalina
     sha256 "0c63e8d53c61bcda8452501c584b2f06919054f4e447fa9ce8c929b0bee50d24" => :mojave
     sha256 "a4169631c0ac82995409931836ea16664618d37650337e994bfea7121a386791" => :high_sierra
@@ -17,8 +18,8 @@ class Libdrawtext < Formula
   depends_on "freetype"
 
   patch do
-    url "https://github.com/jtsiomb/libdrawtext/commit/543cfc67beb76e2c25df0a329b5d38eff9d36c71.diff?full_index=1"
-    sha256 "a2d7ad77e7f1a4590ca85754de2f9961c921c34723f6c86cdd23395cc3566be0"
+    url "https://github.com/jtsiomb/libdrawtext/commit/543cfc67beb76e2c25df0a329b5d38eff9d36c71.patch?full_index=1"
+    sha256 "dd6a78d2c982215b91fcb6fba9d00311b09a8eea26564f7710daabc744c3be09"
   end
 
   def install

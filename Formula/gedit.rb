@@ -1,19 +1,18 @@
 class Gedit < Formula
-  desc "The GNOME text editor"
+  desc "GNOME text editor"
   homepage "https://wiki.gnome.org/Apps/Gedit"
-  url "https://download.gnome.org/sources/gedit/3.36/gedit-3.36.2.tar.xz"
-  sha256 "6887554643c5b1b3862ac364d97b7b50224bff95e6758aeaa08f4a482b554197"
-  license "GPL-2.0"
-  revision 1
+  url "https://download.gnome.org/sources/gedit/3.38/gedit-3.38.1.tar.xz"
+  sha256 "0053853d2cd59cad8a1662f5b4fdcfab47b4c0940063bacd6790a9948642844d"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url :stable
   end
 
   bottle do
-    sha256 "938865fa21884073086f325085bc9d46be2a606728f075d94ff7f6993b15a6e0" => :catalina
-    sha256 "a0ada6ab87a9a50d30dcfeb515e4db89779046a3cb3d8ece7d32b8b91eaf00bb" => :mojave
-    sha256 "d54a458e64a592c90c550598ad6f064e069fe7e230b9a810699cb2f9dcc9755e" => :high_sierra
+    sha256 "841bf24ceaaace6e6f844bbdf328b5a482682856e70243cd9e9acc041a53c502" => :big_sur
+    sha256 "c1960a0d6062d4dd90839c331654bce9af5ad47fd46aff8612bdb565db6ff63c" => :catalina
+    sha256 "ce6bf4a9ee9e03ea5634b50f26f50a0a7cd032e0f613434fde66de49989b7c01" => :mojave
   end
 
   depends_on "itstool" => :build
@@ -58,10 +57,10 @@ class Gedit < Formula
     system bin/"gedit", "--version"
     # API test
     (testpath/"test.c").write <<~EOS
-      #include <gedit/gedit-utils.h>
+      #include <gedit/gedit-debug.h>
 
       int main(int argc, char *argv[]) {
-        gchar *text = gedit_utils_make_valid_utf8("test text");
+        gedit_debug_init();
         return 0;
       }
     EOS
@@ -97,7 +96,7 @@ class Gedit < Formula
       -I#{gtksourceview4.opt_include}/gtksourceview-4
       -I#{gtkx3.opt_include}/gtk-3.0
       -I#{harfbuzz.opt_include}/harfbuzz
-      -I#{include}/gedit-3.36
+      -I#{include}/gedit-3.38
       -I#{libepoxy.opt_include}
       -I#{libffi.opt_lib}/libffi-3.0.13/include
       -I#{libpeas.opt_include}/libpeas-1.0
@@ -122,7 +121,7 @@ class Gedit < Formula
       -lcairo-gobject
       -lgdk-3
       -lgdk_pixbuf-2.0
-      -lgedit-3.36
+      -lgedit-3.38
       -lgio-2.0
       -lgirepository-1.0
       -lglib-2.0

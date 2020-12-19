@@ -1,20 +1,20 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v12.4/postgresql-12.4.tar.bz2"
-  sha256 "bee93fbe2c32f59419cb162bcc0145c58da9a8644ee154a30b9a5ce47de606cc"
+  url "https://ftp.postgresql.org/pub/source/v13.1/postgresql-13.1.tar.bz2"
+  sha256 "12345c83b89aa29808568977f5200d6da00f88a035517f925293355432ffe61f"
   license "PostgreSQL"
   head "https://github.com/postgres/postgres.git"
 
   livecheck do
     url "https://www.postgresql.org/docs/current/static/release.html"
-    regex(/Release v?(\d+(?:\.\d+)+)/i)
+    regex(/Release v?(\d+(?:\.\d+)*)/i)
   end
 
   bottle do
-    sha256 "cf7e64a4a702db6667582d6a8d83107b67d1457a623fbe04426d9702023612fa" => :catalina
-    sha256 "199d0fa0c97e376933c8cca82e44503b36f610f7edb2170e6a1e7e7491c82017" => :mojave
-    sha256 "c210ec1143b73616108891c3cefaa31754c5bd5fda0222e2e3266035488a1353" => :high_sierra
+    sha256 "e4d523c7171f265b340df22a88ff78e6fba4aed46afcf3f4e5bd4ac4b94e8a16" => :big_sur
+    sha256 "13939e578f0a48c78966c2527dc48391b19650b51f7489767b5237e3bab16793" => :catalina
+    sha256 "1826c98f6d117bd040fbb307c1c95dfa2dee6ff8647ec8010e1b79386aa59eb0" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -80,10 +80,20 @@ class Postgresql < Formula
     return if ENV["CI"]
 
     (var/"log").mkpath
-    (var/"postgres").mkpath
-    unless File.exist? "#{var}/postgres/PG_VERSION"
-      system "#{bin}/initdb", "--locale=C", "-E", "UTF-8", "#{var}/postgres"
-    end
+    postgresql_datadir.mkpath
+    system "#{bin}/initdb", "--locale=C", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
+  end
+
+  def postgresql_datadir
+    var/"postgres"
+  end
+
+  def postgresql_log_path
+    var/"log/postgres.log"
+  end
+
+  def pg_version_exists?
+    (postgresql_datadir/"PG_VERSION").exist?
   end
 
   def caveats
@@ -92,7 +102,7 @@ class Postgresql < Formula
         brew postgresql-upgrade-database
 
       This formula has created a default database cluster with:
-        initdb --locale=C -E UTF-8 #{var}/postgres
+        initdb --locale=C -E UTF-8 #{postgresql_datadir}
       For more details, read:
         https://www.postgresql.org/docs/#{version.major}/app-initdb.html
     EOS
@@ -114,16 +124,16 @@ class Postgresql < Formula
         <array>
           <string>#{opt_bin}/postgres</string>
           <string>-D</string>
-          <string>#{var}/postgres</string>
+          <string>#{postgresql_datadir}</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>
         <key>StandardOutPath</key>
-        <string>#{var}/log/postgres.log</string>
+        <string>#{postgresql_log_path}</string>
         <key>StandardErrorPath</key>
-        <string>#{var}/log/postgres.log</string>
+        <string>#{postgresql_log_path}</string>
       </dict>
       </plist>
     EOS

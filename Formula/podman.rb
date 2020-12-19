@@ -1,15 +1,15 @@
 class Podman < Formula
   desc "Tool for managing OCI containers and pods"
   homepage "https://podman.io/"
-  url "https://github.com/containers/podman/archive/v2.0.5.tar.gz"
-  sha256 "cd7618429f02db8e7dbca29c6f8a7623a91a01804ef768dc5ec8c7660679b0c5"
+  url "https://github.com/containers/podman/archive/v2.2.1.tar.gz"
+  sha256 "bd86b181251e2308cb52f18410fb52d89df7f130cecf0298bbf9a848fe7daf60"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "647147b88c45819b1cf5ce05d398ed0b189dd62ce7f11d21c5ac9e6eec8b2b1e" => :catalina
-    sha256 "bbfe435b888c28d2c1ca47cdc625b1179c25275bfcdf252cb4175791f3de59f5" => :mojave
-    sha256 "332ccb7dfb25d245b6f86c68cab73b33b97631d9d738b0b2310d6e1351bfd880" => :high_sierra
+    sha256 "9f1b52e8e1fbb23a43ed7e961cb5e119d38aaa6abec767d1c795ffcbb5a08d8f" => :big_sur
+    sha256 "c495895437ba8d9fbc999a74d3d8e465f7980fc78b846b383c396e96a220e5d7" => :catalina
+    sha256 "a608e53d52bfa2448c1ca8a48aa2702107d60bcd9bc351f4387c9c3922f3ca3f" => :mojave
   end
 
   depends_on "go" => :build
@@ -19,7 +19,6 @@ class Podman < Formula
     system "make", "podman-remote-darwin"
     bin.install "bin/podman-remote-darwin" => "podman"
 
-    inreplace "docs/remote-docs.sh", "sed -i", "sed -i \"\""
     system "make", "install-podman-remote-darwin-docs"
     man1.install Dir["docs/build/remote/darwin/*.1"]
 
@@ -29,6 +28,6 @@ class Podman < Formula
 
   test do
     assert_match "podman version #{version}", shell_output("#{bin}/podman -v")
-    assert_match "Error: Get \"http://d/v1.0.0/libpod../../../_ping\"", shell_output("#{bin}/podman 2>&1", 125)
+    assert_match "Error: Get", shell_output("#{bin}/podman info 2>&1", 125)
   end
 end

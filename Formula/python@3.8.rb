@@ -1,9 +1,10 @@
 class PythonAT38 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tar.xz"
-  sha256 "e3003ed57db17e617acb382b0cade29a248c6026b1bd8aad1f976e9af66a83b0"
+  url "https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tar.xz"
+  sha256 "a9e0b79d27aa056eb9cce8d63a427b5f9bab1465dee3f942dcfdb25a82f4ab8a"
   license "Python-2.0"
+  revision 2
 
   livecheck do
     url "https://www.python.org/ftp/python/"
@@ -11,9 +12,9 @@ class PythonAT38 < Formula
   end
 
   bottle do
-    sha256 "3f0592dfdf6bf38c25870b57ba3e71b5b47e6c5a5ddb76aaafcbffe67eff8354" => :catalina
-    sha256 "c663ffeac543b83aeae1ca13700fcb039edd57b3f0579b78fed1c2c4836ae54f" => :mojave
-    sha256 "089e6eb9f410d2b8c975734df1633b847e6738f193a999f2d1f6cce82aa260b6" => :high_sierra
+    sha256 "fc87104dc4081ce3886d40c7c6e5d045eaf3e3a15642c6b60843d10d28e4ee22" => :big_sur
+    sha256 "ae8b1551229ad30c414a4a5e79db45f636a52267e0cafb39c124e6732f2aa4a7" => :catalina
+    sha256 "43276acf1db1c7aaa0a4268328c1773f94efd5824863b31291752151c7922b68" => :mojave
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -26,6 +27,8 @@ class PythonAT38 < Formula
     EOS
     satisfy { MacOS::CLT.installed? }
   end
+
+  keg_only :versioned_formula
 
   depends_on "pkg-config" => :build
   depends_on "gdbm"
@@ -44,33 +47,19 @@ class PythonAT38 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6",
              "bin/easy_install-3.7", "bin/easy_install-3.8"
 
-  link_overwrite "bin/2to3"
-  link_overwrite "bin/idle3"
-  link_overwrite "bin/pip3"
-  link_overwrite "bin/pydoc3"
-  link_overwrite "bin/python3"
-  link_overwrite "bin/python3-config"
-  link_overwrite "bin/wheel3"
-  link_overwrite "share/man/man1/python3.1"
-  link_overwrite "lib/pkgconfig/python3.pc"
-  link_overwrite "Frameworks/Python.framework/Headers"
-  link_overwrite "Frameworks/Python.framework/Python"
-  link_overwrite "Frameworks/Python.framework/Resources"
-  link_overwrite "Frameworks/Python.framework/Versions/Current"
-
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/2f/8e/38259f4a44944a92068d5ff77230511a4c685604b47a81318f9e5cf2cc24/setuptools-49.2.0.zip"
-    sha256 "afe9e81fee0270d3f60d52608549cc8ec4c46dada8c95640c1a00160f577acf2"
+    url "https://files.pythonhosted.org/packages/a7/e0/30642b9c2df516506d40b563b0cbd080c49c6b3f11a70b4c7a670f13a78b/setuptools-50.3.2.zip"
+    sha256 "ed0519d27a243843b05d82a5e9d01b0b083d9934eaa3d02779a23da18077bd3c"
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/08/25/f204a6138dade2f6757b4ae99bc3994aac28a5602c97ddb2a35e0e22fbc4/pip-20.1.1.tar.gz"
-    sha256 "27f8dc29387dd83249e06e681ce087e6061826582198a425085e0bf4c1cf3a55"
+    url "https://files.pythonhosted.org/packages/0b/f5/be8e741434a4bf4ce5dbc235aa28ed0666178ea8986ddc10d035023744e6/pip-20.2.4.tar.gz"
+    sha256 "85c99a857ea0fb0aedf23833d9be5c40cf253fe24443f0829c7b472e23c364a1"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/75/28/521c6dc7fef23a68368efefdcd682f5b3d1d58c2b90b06dc1d0b805b51ae/wheel-0.34.2.tar.gz"
-    sha256 "8788e9155fe14f54164c1b9eb0a319d98ef02c160725587ad60f14ddc57b6f96"
+    url "https://files.pythonhosted.org/packages/83/72/611c121b6bd15479cb62f1a425b2e3372e121b324228df28e64cc28b01c2/wheel-0.35.1.tar.gz"
+    sha256 "99a22d87add3f634ff917310a3d87e499f19e663413a52eb9232c447aa646c9f"
   end
 
   # Remove this block when upstream adds arm64 compatibility
@@ -249,11 +238,6 @@ class PythonAT38 < Formula
       (libexec/"bin").install_symlink (bin/versioned_name).realpath => unversioned_name
     end
 
-    # post_install happens after link
-    %W[pip3 pip#{xy} easy_install-#{xy} wheel3].each do |e|
-      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
-    end
-
     # Help distutils find brewed stuff when building extensions
     include_dirs = [HOMEBREW_PREFIX/"include", Formula["openssl@1.1"].opt_include,
                     Formula["sqlite"].opt_include]
@@ -302,9 +286,9 @@ class PythonAT38 < Formula
           # site_packages; prefer the shorter paths
           long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/#{xy}/lib/python#{xy}/site-packages')
           sys.path = [long_prefix.sub('#{HOMEBREW_PREFIX/"lib/python#{xy}/site-packages"}', p) for p in sys.path]
-          # Set the sys.executable to use the opt_prefix, unless explicitly set
-          # with PYTHONEXECUTABLE:
-          if 'PYTHONEXECUTABLE' not in os.environ:
+          # Set the sys.executable to use the opt_prefix. Only do this if PYTHONEXECUTABLE is not
+          # explicitly set and we are not in a virtualenv:
+          if 'PYTHONEXECUTABLE' not in os.environ and sys.prefix == sys.base_prefix:
               sys.executable = '#{opt_bin}/python#{xy}'
     EOS
   end
@@ -317,14 +301,14 @@ class PythonAT38 < Formula
     end
     <<~EOS
       Python has been installed as
-        #{HOMEBREW_PREFIX}/bin/python3
+        #{opt_bin}/python3
 
       Unversioned symlinks `python`, `python-config`, `pip` etc. pointing to
       `python3`, `python3-config`, `pip3` etc., respectively, have been installed into
         #{opt_libexec}/bin
 
       You can install Python packages with
-        pip3 install <package>
+        #{opt_bin}/pip3 install <package>
       They will install into the site-package directory
         #{HOMEBREW_PREFIX/"lib/python#{xy}/site-packages"}
 

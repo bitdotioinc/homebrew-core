@@ -4,16 +4,16 @@ class Copilot < Formula
   desc "CLI tool for Amazon ECS and AWS Fargate"
   homepage "https://github.com/aws/copilot-cli/wiki"
   url "https://github.com/aws/copilot-cli.git",
-    tag:      "v0.3.0",
-    revision: "27ecf7cc57ded2469a52b35f19afd4454e950eca"
+      tag:      "v1.0.0",
+      revision: "238fd708679d4534b2f4c58cc3b7a85e6e1a768d"
   license "Apache-2.0"
   head "https://github.com/aws/copilot-cli.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "36cc612d7c413f7bdae601571a41f6b13fe0599398f1efb2943ea2a6de398ee9" => :catalina
-    sha256 "5484a0088f79a59e612341ef3a60a7f24eb49b728cfe10bd8060e5e4b51e96c8" => :mojave
-    sha256 "f715ed75de1161a5bcd2e50fe2fb52486cc6aa6ebdbf036a2e38c6acee18e0b0" => :high_sierra
+    sha256 "00d35d5ada87fda4b7c2cdef4da58e9a026e1a3e942dc30b575cbd8d3a8260e6" => :big_sur
+    sha256 "fc8ad0a5cbb32d5c68fa2e2e20e0fd57aa7d93b0a866329e36b7887947d845aa" => :catalina
+    sha256 "c90fa63256de5549f88b3f0fe88b3c3def47866bf5999a71b0fc5e9f7eeee690" => :mojave
   end
 
   depends_on "go" => :build

@@ -1,29 +1,38 @@
 class Libgr < Formula
   desc "GR framework: a graphics library for visualisation applications"
   homepage "https://gr-framework.org/"
-  url "https://github.com/sciapp/gr/archive/v0.51.2.tar.gz"
-  sha256 "e6a3d0ed911f6e59cc2293b5694ee18a0620849e666143870a9eda71c02bb833"
+  url "https://github.com/sciapp/gr/archive/v0.53.0.tar.gz"
+  sha256 "a348602c3e2d928b5c293a19ed91e126bf56e23720d4f0e12aa92767da767276"
   license "MIT"
+  revision 2
 
   bottle do
-    sha256 "ac5472cbb7e312c22bc5048b472cd763c271866ad3e4c369bdb9b822e3b1dd92" => :catalina
-    sha256 "941e72407cdbc7e193cfa6eaeb9bf6e0a497fed2b853df2d5537042776bba298" => :mojave
-    sha256 "923de166a7fbf4bf8d15a85eac94f795cd6a5563c3a3d0acaf157823d65539f1" => :high_sierra
+    sha256 "1ae1c4c80659db2c9505449acc52f0f6328054caa287af5bcc9e755771d8c382" => :big_sur
+    sha256 "504017bdc9b08bfc637c26f2c4f9ad6a2a6f02c96ecb00f76768e9a039ddb77b" => :catalina
+    sha256 "1ba1b40c849d496da5d24d924a9211a25bacd7a4cd5eafb0e9a2be970a694686" => :mojave
   end
 
-  depends_on xcode: :build
+  depends_on "cmake" => :build
   depends_on "cairo"
   depends_on "glfw"
   depends_on "libtiff"
+  depends_on "qhull"
   depends_on "qt"
   depends_on "zeromq"
 
+  # Use .dylib extension on macOS
+  # https://github.com/sciapp/gr/pull/128
+  patch do
+    url "https://github.com/sciapp/gr/commit/81f6f66b9766eb876e64dff43a6b1a802536ccac.patch?full_index=1"
+    sha256 "15dd98e65172a7354dc27d4858c6e06ccafa040d451171bf5e770596668478d4"
+  end
+
   def install
-    # TODO: Remove this when released archive includes
-    # the fix of https://github.com/sciapp/gr/pull/101 .
-    ENV.deparallelize
-    system "make", "GRDIR=#{prefix}"
-    system "make", "GRDIR=#{prefix}", "install"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make"
+      system "make", "install"
+    end
   end
 
   test do

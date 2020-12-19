@@ -1,9 +1,9 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "https://www.imagemagick.org/"
-  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-7.0.10-28.tar.xz"
-  mirror "https://www.imagemagick.org/download/releases/ImageMagick-7.0.10-28.tar.xz"
-  sha256 "6a6b32f04fa508f198eb0e3677d95729121796cbe156add05d3eb8070c7569b0"
+  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-7.0.10-48.tar.xz"
+  mirror "https://www.imagemagick.org/download/releases/ImageMagick-7.0.10-48.tar.xz"
+  sha256 "0989f47383eca1c598603c2169b3ac9fa1a2a945e5325b9266592b457db48a08"
   license "ImageMagick"
   head "https://github.com/ImageMagick/ImageMagick.git"
 
@@ -13,9 +13,9 @@ class Imagemagick < Formula
   end
 
   bottle do
-    sha256 "3e0d544ec925c0e5c75ab6457b9dc11bc42bff58f2c62e12be7019de002abb67" => :catalina
-    sha256 "00ba5b5569fa5d2d0b31cfe54967be45d75887c3479b04519cc776fd27bb1741" => :mojave
-    sha256 "68e4425022c6bc1813d830c7b042c8b17aaf8e62d896fc42d2caa7264064cbc1" => :high_sierra
+    sha256 "0673d6ca6fb4549fc80cdd029485be8999551dfdd946cf482f3add5a670ce85f" => :big_sur
+    sha256 "ee3806af68d86a9f29625f2efea3d59f45c02f85ae33872e97b063e9d71f604f" => :catalina
+    sha256 "d2fa1cc2195a89644fa91f247e6a2673ea47e1036402437757ff5a540d2a2055" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -37,6 +37,10 @@ class Imagemagick < Formula
   uses_from_macos "bzip2"
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "libx11"
+  end
 
   skip_clean :la
 
@@ -63,13 +67,16 @@ class Imagemagick < Formula
       --with-lqr
       --without-fftw
       --without-pango
-      --without-x
       --without-wmf
       --enable-openmp
       ac_cv_prog_c_openmp=-Xpreprocessor\ -fopenmp
       ac_cv_prog_cxx_openmp=-Xpreprocessor\ -fopenmp
       LDFLAGS=-lomp\ -lz
     ]
+
+    on_macos do
+      args << "--without-x"
+    end
 
     # versioned stuff in main tree is pointless for us
     inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_VERSION}", "${PACKAGE_NAME}"

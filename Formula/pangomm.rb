@@ -1,9 +1,9 @@
 class Pangomm < Formula
   desc "C++ interface to Pango"
   homepage "https://www.pango.org/"
-  url "https://download.gnome.org/sources/pangomm/2.42/pangomm-2.42.1.tar.xz"
-  sha256 "14bf04939930870d5cfa96860ed953ad2ce07c3fd8713add4a1bfe585589f40f"
-  license "LGPL-2.1"
+  url "https://download.gnome.org/sources/pangomm/2.42/pangomm-2.42.2.tar.xz"
+  sha256 "1b24c92624ae1275ccb57758175d35f7c39ad3342d8c0b4ba60f0d9849d2d08a"
+  license "LGPL-2.1-only"
 
   livecheck do
     url :stable
@@ -11,20 +11,26 @@ class Pangomm < Formula
 
   bottle do
     cellar :any
-    sha256 "52e1c201a3967f61e5b3867c172f98cc44f169e60b03af47e00e487a67a53690" => :catalina
-    sha256 "45d67e560dffb346b957011717b33873b53fca560da86648d4f90a40a8b6df98" => :mojave
-    sha256 "a2097268ad9f93093aa809ba243edbe515b00e6e378c1c6b4dac01b32c24fb20" => :high_sierra
+    sha256 "2d556eee79fa072f1f74ee61d20496fca446a4ff047c319e1ed6c8ea2f31ceb0" => :big_sur
+    sha256 "4dde9769c575a6a199b9cf2300600e10bebf1ec8869deb42195bebc103e7b2aa" => :catalina
+    sha256 "99d31943b659f40b4c7adf0d8cabcb2e68030ef8124e28556a5bae2ba87a6822" => :mojave
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "cairomm"
+  depends_on "cairomm@1.14"
   depends_on "glibmm"
   depends_on "pango"
 
   def install
     ENV.cxx11
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install"
+
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja"
+      system "ninja", "install"
+    end
   end
   test do
     (testpath/"test.cpp").write <<~EOS
@@ -36,7 +42,7 @@ class Pangomm < Formula
       }
     EOS
     cairo = Formula["cairo"]
-    cairomm = Formula["cairomm"]
+    cairomm = Formula["cairomm@1.14"]
     fontconfig = Formula["fontconfig"]
     freetype = Formula["freetype"]
     gettext = Formula["gettext"]
@@ -79,12 +85,14 @@ class Pangomm < Formula
       -lglib-2.0
       -lglibmm-2.4
       -lgobject-2.0
-      -lintl
       -lpango-1.0
       -lpangocairo-1.0
       -lpangomm-1.4
       -lsigc-2.0
     ]
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end

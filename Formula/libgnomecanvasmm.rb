@@ -3,7 +3,8 @@ class Libgnomecanvasmm < Formula
   homepage "https://launchpad.net/libgnomecanvasmm"
   url "https://download.gnome.org/sources/libgnomecanvasmm/2.26/libgnomecanvasmm-2.26.0.tar.bz2"
   sha256 "996577f97f459a574919e15ba7fee6af8cda38a87a98289e9a4f54752d83e918"
-  revision 6
+  license "LGPL-2.1-or-later"
+  revision 8
 
   livecheck do
     url :stable
@@ -11,10 +12,9 @@ class Libgnomecanvasmm < Formula
 
   bottle do
     cellar :any
-    sha256 "ea6c93668fcd91aecd935009e2925b0327b26caa979e2b2bdcb03e6caf013b40" => :catalina
-    sha256 "cbb72a9f16194a63a21980edb7eb4c770a72ca4774a82c1e25b3ac2beecc99f5" => :mojave
-    sha256 "cf11cecd2caa375fe050597099fd572725ef154b33d9e9756f129d8b2085fa62" => :high_sierra
-    sha256 "91af30097a9c61e83ff6ce5f1bf6a689a15614d807c498717d9c74bba82361ea" => :sierra
+    sha256 "03e7fbc5f98dec59febc28204f44c1c234fe262c22880a67ff16233b52a02151" => :big_sur
+    sha256 "f508bba657813902a852511f2e3a0ec6ad120974295222b8d17a77af32f26a7c" => :catalina
+    sha256 "181fb0d2d21fabcfc5be071a087e50cb873cdaa4b8f0fef2334f68454e6e6a61" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -39,7 +39,7 @@ class Libgnomecanvasmm < Formula
     atk = Formula["atk"]
     atkmm = Formula["atkmm"]
     cairo = Formula["cairo"]
-    cairomm = Formula["cairomm"]
+    cairomm = Formula["cairomm@1.14"]
     fontconfig = Formula["fontconfig"]
     freetype = Formula["freetype"]
     gdk_pixbuf = Formula["gdk-pixbuf"]
@@ -59,6 +59,7 @@ class Libgnomecanvasmm < Formula
     flags = %W[
       -I#{atk.opt_include}/atk-1.0
       -I#{atkmm.opt_include}/atkmm-1.6
+      -I#{atkmm.opt_lib}/atkmm-1.6/include
       -I#{cairo.opt_include}/cairo
       -I#{cairomm.opt_include}/cairomm-1.0
       -I#{cairomm.opt_lib}/cairomm-1.0/include

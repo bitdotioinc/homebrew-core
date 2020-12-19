@@ -4,7 +4,8 @@ class X265 < Formula
   url "https://bitbucket.org/multicoreware/x265_git/get/3.4.tar.gz"
   sha256 "7f2771799bea0f53b5ab47603d5bea46ea2a221e047a7ff398115e9976fd5f86"
   license "GPL-2.0-only"
-  head "https://bitbucket.org/multicoreware/x265_git"
+  revision 1
+  head "https://bitbucket.org/multicoreware/x265_git.git"
 
   livecheck do
     url :stable
@@ -12,20 +13,16 @@ class X265 < Formula
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "a24f202256e98285ed39c80277b2aa5d9eba2b5f37ee7f05993b269b3033684e" => :catalina
-    sha256 "5a0033bb9c6b2cf12f5836a1ad3f887f61df55eceecedc2d3414665282e576f2" => :mojave
-    sha256 "fc09819e3bba1189d57b7708ad0fcccc359b160ea380574796d7eb4a71e139ac" => :high_sierra
+    sha256 "344c91fa79c4f864bae988b7055f1192f76d6f95cd3bc069554b2a5a6b0c8b54" => :big_sur
+    sha256 "0e268d680b103353ff708f4514b54f40d5a8793951a1caea1355addcda80450c" => :catalina
+    sha256 "1965fd30f49619318709945600dfaeecc368f5620d26dfd2f425f91f155f255d" => :mojave
+    sha256 "af40896873573482ba467c79b7205b0330651c58b3064a09195acb8986d43c9f" => :high_sierra
   end
 
   depends_on "cmake" => :build
-  depends_on "nasm" => :build
+  depends_on "nasm" => :build if Hardware::CPU.intel?
 
   def install
-    # Work around Xcode 11 clang bug
-    # https://bitbucket.org/multicoreware/x265/issues/514/wrong-code-generated-on-macos-1015
-    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
-
     # Build based off the script at ./build/linux/multilib.sh
     args = std_cmake_args + %w[
       -DLINKED_10BIT=ON
@@ -40,7 +37,7 @@ class X265 < Formula
     (buildpath/"8bit").mkpath
 
     mkdir "10bit" do
-      system "cmake", buildpath/"source", *high_bit_depth_args
+      system "cmake", buildpath/"source", "-DENABLE_HDR10_PLUS=ON", *high_bit_depth_args
       system "make"
       mv "libx265.a", buildpath/"8bit/libx265_main10.a"
     end

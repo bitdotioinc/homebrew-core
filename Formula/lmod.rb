@@ -1,15 +1,15 @@
 class Lmod < Formula
   desc "Lua-based environment modules system to modify PATH variable"
   homepage "https://lmod.readthedocs.io"
-  url "https://github.com/TACC/Lmod/archive/8.4.2.tar.gz"
-  sha256 "1de96766b1bdf17b1b04afb4256882398a4d2b90d18e26557b6e2b1ada655fea"
+  url "https://github.com/TACC/Lmod/archive/8.4.19.tar.gz"
+  sha256 "143e8ef39825855580aa2dfe357bd0b8aebba3d4240eb083b2f6b5802b83bbf1"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "46822536361068fa561323e77170375fafad0272bb17ea293ec33691e2227886" => :catalina
-    sha256 "f7bba5db09621268c135794f0e77d59c5be083045fae4103d0561f9bc2a73478" => :mojave
-    sha256 "4abaab460fa5bffc259eecb2e3dbb9d6f20195b65607be272ed5c481d62305ba" => :high_sierra
+    sha256 "e2ecade5609633ac64f2a2e4b289117e553a0932fb33a802f477fad54d65e5fd" => :big_sur
+    sha256 "6575ec6f8f4cc09661f50d5f67e010a27139e1c8e9fb8f59d0379302e8f92632" => :catalina
+    sha256 "5f52331bf954e46f01444fdfb2a2da415e9011981627b569be803bbcb2590adc" => :mojave
   end
 
   depends_on "luarocks" => :build
@@ -27,11 +27,12 @@ class Lmod < Formula
   end
 
   def install
+    luaversion = Formula["lua"].version.major_minor
     luapath = libexec/"vendor"
     ENV["LUA_PATH"] = "?.lua;" \
-                      "#{luapath}/share/lua/5.3/?.lua;" \
-                      "#{luapath}/share/lua/5.3/?/init.lua"
-    ENV["LUA_CPATH"] = "#{luapath}/lib/lua/5.3/?.so"
+                      "#{luapath}/share/lua/#{luaversion}/?.lua;" \
+                      "#{luapath}/share/lua/#{luaversion}/?/init.lua"
+    ENV["LUA_CPATH"] = "#{luapath}/lib/lua/#{luaversion}/?.so"
 
     resources.each do |r|
       r.stage do
@@ -56,7 +57,17 @@ class Lmod < Formula
   end
 
   test do
-    system "#{prefix}/init/sh"
+    sh_init = "#{prefix}/init/sh"
+
+    (testpath/"lmodtest.sh").write <<~EOS
+      #!/bin/sh
+      source #{sh_init}
+      module list
+    EOS
+
+    assert_match "No modules loaded", shell_output("sh #{testpath}/lmodtest.sh 2>&1")
+
+    system sh_init
     output = shell_output("#{prefix}/libexec/spider #{prefix}/modulefiles/Core/")
     assert_match "lmod", output
     assert_match "settarg", output

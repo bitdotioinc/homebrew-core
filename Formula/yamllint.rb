@@ -3,28 +3,35 @@ class Yamllint < Formula
 
   desc "Linter for YAML files"
   homepage "https://github.com/adrienverge/yamllint"
-  url "https://github.com/adrienverge/yamllint/archive/v1.24.2.tar.gz"
-  sha256 "bc2335eb34ae77aeb550273bdc26800e50146bdbd5c07d8ae88aed72c4dac4df"
-  license "GPL-3.0"
+  url "https://files.pythonhosted.org/packages/75/33/c8014b6678936daf30e15291bfb9d608fff1d8adafa024a6565d225e6f4c/yamllint-1.25.0.tar.gz"
+  sha256 "b1549cbe5b47b6ba67bdeea31720f5c51431a4d0c076c1557952d841f7223519"
+  license "GPL-3.0-or-later"
+  revision 1
+  head "https://github.com/adrienverge/yamllint.git"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "c900ce7a81a4a5aa4c6403dda10cf194cb33bbcb6d41c628c9077bcea5361880" => :catalina
-    sha256 "38cb3e431c8f9ceddb4a500c2f230b8503c06b91a0a556c97766b27dca8e915a" => :mojave
-    sha256 "8a1022efa145f1e3c7082aa4ad557ddea139d31dda6155a0fa24b23a6dab5b4b" => :high_sierra
+    rebuild 1
+    sha256 "dde0f5bcad64eded92a84bbef16ad7116c2a5f18c0fde762fb3dec81bc6f464c" => :big_sur
+    sha256 "2525ef21d01d8df5cfff5b7832c918b964ca01664c705e13362778f995c9f58a" => :catalina
+    sha256 "f8c7778a79db826e14b4abd8bbd30570dc7b626673e1f15d576d5875d3d3e119" => :mojave
   end
 
   depends_on "libyaml"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
+
+  resource "pathspec" do
+    url "https://files.pythonhosted.org/packages/b7/64/e097eea8dcd2b2f7df6e4425fc98e7494e37b1a6e149603c31d327080a05/pathspec-0.8.1.tar.gz"
+    sha256 "86379d6b86d75816baba717e64b1a3a3469deb93bb76d613c9ce79edc5cb68fd"
+  end
 
   resource "PyYAML" do
     url "https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz"
     sha256 "b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"
-  end
-
-  resource "pathspec" do
-    url "https://files.pythonhosted.org/packages/93/9c/4bb0a33b0ec07d2076f0b3d7c6aae4dad0a99f9a7a14f7f7ff6f4ed7fa38/pathspec-0.8.0.tar.gz"
-    sha256 "da45173eb3a6f2a5a487efba21f050af2b41948be6ab52b6a1e3ff22bb8b7061"
   end
 
   def install

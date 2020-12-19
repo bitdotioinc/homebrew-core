@@ -1,16 +1,16 @@
 class Zim < Formula
   desc "Graphical text editor used to maintain a collection of wiki pages"
   homepage "https://zim-wiki.org/"
-  url "https://github.com/jaap-karssenberg/zim-desktop-wiki/archive/0.73.2.tar.gz"
-  sha256 "f002e63d7c131e317225c2912d5cc2065da90448f7ebd330ad4931a57fa45eda"
+  url "https://github.com/jaap-karssenberg/zim-desktop-wiki/archive/0.73.4.tar.gz"
+  sha256 "74c5fdb68630e41910e1a01f49cd0b73d7bac7572357676b87984a865928ee05"
   license "GPL-2.0"
   head "https://github.com/jaap-karssenberg/zim-desktop-wiki.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bf934b65101cd8587b6e4767b27133a342c62cd0cb240cdf3b54ce73f0420088" => :catalina
-    sha256 "bf934b65101cd8587b6e4767b27133a342c62cd0cb240cdf3b54ce73f0420088" => :mojave
-    sha256 "bf934b65101cd8587b6e4767b27133a342c62cd0cb240cdf3b54ce73f0420088" => :high_sierra
+    sha256 "0c91e2aa37f2729036860bcfd240c44ceaaf9441a1d6f9b5f5049a5bd55071cc" => :big_sur
+    sha256 "f9e5c6e1dcdc0c740d3814078ead9a66ce2c2e4a13936b340b148fc849c500e4" => :catalina
+    sha256 "bc624e93da48425929bd0eee61d991ff80c1298ec620bfbf9229bd79170087ae" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -19,7 +19,7 @@ class Zim < Formula
   depends_on "gtk+3"
   depends_on "gtksourceview3"
   depends_on "pygobject3"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "pyxdg" do
     url "https://files.pythonhosted.org/packages/47/6e/311d5f22e2b76381719b5d0c6e9dc39cd33999adae67db71d7279a6d70f4/pyxdg-0.26.tar.gz"
@@ -27,14 +27,14 @@ class Zim < Formula
   end
 
   def install
-    python_version = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
+    python_version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{python_version}/site-packages"
     resource("pyxdg").stage do
-      system Formula["python@3.8"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
+      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
     end
     ENV["XDG_DATA_DIRS"] = libexec/"share"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{python_version}/site-packages"
-    system Formula["python@3.8"].opt_bin/"python3", "./setup.py", "install", "--prefix=#{libexec}"
+    system Formula["python@3.9"].opt_bin/"python3", "./setup.py", "install", "--prefix=#{libexec}"
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files libexec/"bin",
       PYTHONPATH:    ENV["PYTHONPATH"],

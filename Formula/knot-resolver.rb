@@ -1,8 +1,9 @@
 class KnotResolver < Formula
   desc "Minimalistic, caching, DNSSEC-validating DNS resolver"
   homepage "https://www.knot-resolver.cz"
-  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.1.2.tar.xz"
-  sha256 "caa4f941caf39080184554fb1310f383eba4b30d9c4c2215670d6b0a2de8f836"
+  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.2.1.tar.xz"
+  sha256 "aa37b744c400f437acba7a54aebcbdbe722ece743d342cbc39f2dd8087f05826"
+  license all_of: ["CC0-1.0", "GPL-3.0-or-later", "LGPL-2.1-or-later", "MIT"]
   head "https://gitlab.labs.nic.cz/knot/knot-resolver.git"
 
   livecheck do
@@ -11,9 +12,9 @@ class KnotResolver < Formula
   end
 
   bottle do
-    sha256 "341d13941123e359dc5f1cb6147e6058296691c95ea2cfe4a2a436d1125ae9e1" => :catalina
-    sha256 "7a861d87a84b2e8572bb9b76fbd3768b516821dc046c1a34f1d27caa4b511748" => :mojave
-    sha256 "5050ebacd49658cde25168edc4e40575dfb1934b554eac5b1e28c29dfc520cea" => :high_sierra
+    sha256 "f4a73132e03dfdff1f370ccaabff44f14bccf46d4f4b7f7f91f653bf98d28252" => :big_sur
+    sha256 "47a56833e4c305195e188b8eb616ee232cb6738a7929c18df556ec5962a8171f" => :catalina
+    sha256 "af1a5075c8b0bc38054b0466d4475e7b4f2839fe386dc419d1be33ec448c328e" => :mojave
   end
 
   depends_on "meson" => :build
@@ -33,11 +34,8 @@ class KnotResolver < Formula
     end
   end
 
-  # DNSSEC root anchor published by IANA (https://www.iana.org/dnssec/files)
-  def root_keys
-    <<~EOS
-      . IN DS 20326 8 2 e06d44b80b8f1d39a95c0b0d7c65d08458e880409bbc683457104237c7f8ec8d
-    EOS
+  def post_install
+    (var/"knot-resolver").mkpath
   end
 
   plist_options startup: true
@@ -51,29 +49,29 @@ class KnotResolver < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>WorkingDirectory</key>
-        <string>#{var}/kresd</string>
+        <string>#{var}/knot-resolver</string>
         <key>RunAtLoad</key>
         <true/>
         <key>ProgramArguments</key>
         <array>
           <string>#{sbin}/kresd</string>
           <string>-c</string>
-          <string>#{etc}/kresd/config</string>
-          <string>-f</string>
-          <string>1</string>
+          <string>#{etc}/knot-resolver/kresd.conf</string>
+          <string>-n</string>
         </array>
         <key>StandardInPath</key>
         <string>/dev/null</string>
         <key>StandardOutPath</key>
         <string>/dev/null</string>
         <key>StandardErrorPath</key>
-        <string>#{var}/log/kresd.log</string>
+        <string>#{var}/log/knot-resolver.log</string>
       </dict>
       </plist>
     EOS
   end
 
   test do
+    assert_path_exist var/"knot-resolver"
     system sbin/"kresd", "--version"
   end
 end

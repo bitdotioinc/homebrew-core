@@ -1,8 +1,8 @@
 class Mikutter < Formula
   desc "Extensible Twitter client"
   homepage "https://mikutter.hachune.net/"
-  url "https://mikutter.hachune.net/bin/mikutter-4.1.0.tar.gz"
-  sha256 "25d007ae4b53828ceb48e0cf1a0e19d7fd4b1364d5be240004506148d29b1810"
+  url "https://mikutter.hachune.net/bin/mikutter-4.1.1.tar.gz"
+  sha256 "4cce3a4770a0d9a2691d21e3379fe616797e583a47273d69d1ec44f48b98836d"
   license "MIT"
   head "git://mikutter.hachune.net/mikutter.git", branch: "develop"
 
@@ -13,18 +13,22 @@ class Mikutter < Formula
 
   bottle do
     cellar :any
-    sha256 "6197997bd388cfc49af54bae06123d82e6208c01ae2fb1ac7386fa4771d4bf14" => :catalina
-    sha256 "73a71338fcecf984168f42385e40817c58baa7df0ccec5d3ae500f3a95f757d7" => :mojave
-    sha256 "c5d3127e03affdf0b5a19b0480c0b9cd4f96b56052d4938cdddcbb8ab6ba00cf" => :high_sierra
+    sha256 "8ecbab30bff549fb458e17eaba056ba3ff1d4f0647bb35bf7fab4a8c850ac0a7" => :big_sur
+    sha256 "78bdaee50e892b26f88fa078435a7363971d22d5059b7b03ad4d98ba3e336b9a" => :catalina
+    sha256 "5e9faa3e6f38d9e77fd2eb4ffa8e342e2338e1bc41a954a6f3f6f5dc3fbd4c30" => :mojave
+    sha256 "8c9a8c31deae892a3d4a02e265aef0693aed749fb86a91788009fd586df2e68e" => :high_sierra
   end
 
   depends_on "gobject-introspection"
   depends_on "gtk+"
   depends_on "libidn"
   depends_on "ruby"
-  depends_on "terminal-notifier"
 
   uses_from_macos "xz"
+
+  on_macos do
+    depends_on "terminal-notifier"
+  end
 
   resource "addressable" do
     url "https://rubygems.org/downloads/addressable-2.7.0.gem"
@@ -222,7 +226,7 @@ class Mikutter < Formula
     (lib/"mikutter").install "plugin"
     libexec.install Dir["*"]
 
-    ruby_series = Formula["ruby"].installed_version.major_minor
+    ruby_series = Formula["ruby"].any_installed_version.major_minor
     env = {
       DISABLE_BUNDLER_SETUP: "1",
       GEM_HOME:              HOMEBREW_PREFIX/"lib/mikutter/vendor/ruby/#{ruby_series}.0",

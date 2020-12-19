@@ -13,6 +13,7 @@ class Ekg2 < Formula
   end
 
   bottle do
+    sha256 "2f095607ab5e5bdbf0ca515983aeff44e4a2480d97fb460d19c63babd875bd05" => :big_sur
     sha256 "e17ea1385008892e80e0d5e0d44e510f6ac30e5d86423b55c61465eccd348d36" => :catalina
     sha256 "78778e95338d2a0a61f7d4773716d927534d24e4d5867a04038401427b07c855" => :mojave
     sha256 "f946e56a032b9526280745e6e57f8bc42a18d12fa9ced783f5515eb600bcdf0b" => :high_sierra
@@ -32,8 +33,8 @@ class Ekg2 < Formula
 
   # Upstream commit, fix build against OpenSSL 1.1
   patch do
-    url "https://github.com/ekg2/ekg2/commit/f05815.diff?full_index=1"
-    sha256 "5a27388497fd4537833807a0ba064af17fa13d7dd55abec6b185f499d148de1a"
+    url "https://github.com/ekg2/ekg2/commit/f05815.patch?full_index=1"
+    sha256 "207639edc5e6576c8a67301c63f0b28814d9885f0d4fca5d9d9fc465f4427cd7"
   end
 
   def install

@@ -2,15 +2,15 @@ class ChartTesting < Formula
   desc "Testing and linting Helm charts"
   homepage "https://github.com/helm/chart-testing"
   url "https://github.com/helm/chart-testing.git",
-      tag:      "v3.0.0",
-      revision: "50db473a1e68c605b18d82f019d83ea401542213"
+      tag:      "v3.3.1",
+      revision: "71d0e1e82c5c8b66ce4d9704426dc13b7075829d"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "df4d2c0adac9176896955b1d82b5b8351a4f4f9b1763c9809262dace250c0a66" => :catalina
-    sha256 "3f63d2b0db943e7ead94fb917c4ad99e8b97a445f8ded3676ec812a0895a9e9c" => :mojave
-    sha256 "d6438baad2e1ab132d22a42480254870532854eff59f57aa54c900c03e3bd33a" => :high_sierra
+    sha256 "eafbb9e075ec41b2ea96b341173a286be38928eac51dc8b24796c45ace00a6a1" => :big_sur
+    sha256 "fedd5373948e1ddd30e95f903a29d7173f069660ec4b0bed91f7ce8bf9d3ef40" => :catalina
+    sha256 "ef933f0c425753b905cee3d9a66be61e58c1bf4e31fca67b2ade2daed2a1642a" => :mojave
   end
 
   depends_on "go" => :build
@@ -20,9 +20,9 @@ class ChartTesting < Formula
   def install
     commit = Utils.safe_popen_read("git", "rev-parse", "HEAD").chomp
     ldflags = %W[
-      -X github.com/helm/chart-testing/v3/ct/cmd.Version=#{version}
-      -X github.com/helm/chart-testing/v3/ct/cmd.GitCommit=#{commit}
-      -X github.com/helm/chart-testing/v3/ct/cmd.BuildDate=#{Date.today}
+      -X github.com/helm/chart-testing/v#{version.major}/ct/cmd.Version=#{version}
+      -X github.com/helm/chart-testing/v#{version.major}/ct/cmd.GitCommit=#{commit}
+      -X github.com/helm/chart-testing/v#{version.major}/ct/cmd.BuildDate=#{Date.today}
     ].join(" ")
     system "go", "build", *std_go_args, "-ldflags", ldflags, "-o", bin/"ct", "./ct/main.go"
     etc.install "etc" => "ct"
@@ -30,6 +30,7 @@ class ChartTesting < Formula
 
   test do
     assert_match "Lint and test", shell_output("#{bin}/ct --help")
+    assert_match /Version:\s+#{version}/, shell_output("#{bin}/ct version")
 
     # Lint an empty Helm chart that we create with `helm create`
     system "helm", "create", "testchart"

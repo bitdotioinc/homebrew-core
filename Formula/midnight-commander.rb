@@ -2,15 +2,17 @@ class MidnightCommander < Formula
   desc "Terminal-based visual file manager"
   homepage "https://www.midnight-commander.org/"
   url "https://www.midnight-commander.org/downloads/mc-4.8.25.tar.xz"
+  mirror "https://ftp.osuosl.org/pub/midnightcommander/mc-4.8.25.tar.xz"
   sha256 "ffc19617f20ebb23330acd3998b7fd559a042d172fa55746d53d246697b2548a"
   license "GPL-3.0"
 
   livecheck do
-    url "http://ftp.midnight-commander.org"
+    url "https://ftp.osuosl.org/pub/midnightcommander/"
     regex(/href=.*?mc[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
+    sha256 "1cf10d6382ee603a2b15735029d31b7bea7bb65f29a50dbbc1c61a828d3cf433" => :big_sur
     sha256 "2c36f252c47b8ecff2fa4afb4191a963af7c3d30a8aeb267a40f967873a01643" => :catalina
     sha256 "224d6aa6577e51952833ee65888bb99eacb89508dc9ac2f82a0e679b4635d7e3" => :mojave
     sha256 "79c2208b2097941cf3a792f47ad1f280ddbc3add7bd631084484163b7ba14ae9" => :high_sierra

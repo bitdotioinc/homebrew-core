@@ -1,9 +1,9 @@
 class Glibmm < Formula
   desc "C++ interface to glib"
   homepage "https://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/glibmm/2.64/glibmm-2.64.2.tar.xz"
-  sha256 "a75282e58d556d9b2bb44262b6f5fb76c824ac46a25a06f527108bec86b8d4ec"
-  license "LGPL-2.1"
+  url "https://download.gnome.org/sources/glibmm/2.64/glibmm-2.64.5.tar.xz"
+  sha256 "508fc86e2c9141198aa16c225b16fd6b911917c0d3817602652844d0973ea386"
+  license "LGPL-2.1-or-later"
 
   livecheck do
     url :stable
@@ -11,11 +11,13 @@ class Glibmm < Formula
 
   bottle do
     cellar :any
-    sha256 "8b39f15570f8ec9281554ec8db93e4011ad2e13a1248047c18c7f8570a548d53" => :catalina
-    sha256 "316a5f0f84491a62cf1c48a12cd4f8d9b7f7de9aa8092f72256f5114aa8730d3" => :mojave
-    sha256 "7d224a2283e08715a1f7f286fcdc3e1c5cc277101bb3e2cc4bce488ec776cc02" => :high_sierra
+    sha256 "2b59ddf120e572ee7600511d68ad28d88d1c4c8bdbb4433f4130c1d6ad36535f" => :big_sur
+    sha256 "538ea9ae420f05283f041810043dfcce832c55b1cd122b61be53a2e5113cfb93" => :catalina
+    sha256 "cff366a7acaed3ac8804fc94431b4b6c840d47a82da0e0d1eb2133caaa1fb96c" => :mojave
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libsigc++@2"
@@ -23,8 +25,11 @@ class Glibmm < Formula
   def install
     ENV.cxx11
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja"
+      system "ninja", "install"
+    end
   end
 
   test do

@@ -1,16 +1,17 @@
 class Mockolo < Formula
   desc "Efficient Mock Generator for Swift"
   homepage "https://github.com/uber/mockolo"
-  url "https://github.com/uber/mockolo/archive/1.2.5.tar.gz"
-  sha256 "19ce43eab69b67b7b7d3d2f084c311bf2e04a5809965535dba48861e301257b7"
+  url "https://github.com/uber/mockolo/archive/1.2.9.tar.gz"
+  sha256 "97054b88ff0609cc4bf1f2bf9bbdb9195a13f8b3abae114b7f757dd2a0731825"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bdd3e1e7f25173c2d7c8a3c924a29c6528d804a3a6eaa54a4a50d8de50ce0b86" => :catalina
+    sha256 "fec3a87ea85004d173619ec4ca617fe8c55c887d8b0c2ad7d721af720375dc97" => :big_sur
+    sha256 "837170e02d29e1e146242118d2a71f5e3b94c613e5e38e10f347d5ce122c6208" => :catalina
   end
 
-  depends_on xcode: ["11.4", :build]
+  depends_on xcode: ["12.0", :build]
 
   def install
     system "swift", "build", "-c", "release", "--disable-sandbox"
@@ -36,10 +37,10 @@ class Mockolo < Formula
           self.num = num
       }
 
-      public var numSetCallCount = 0
+      public private(set) var numSetCallCount = 0
       public var num: Int = 0 { didSet { numSetCallCount += 1 } }
 
-      public var barCallCount = 0
+      public private(set) var barCallCount = 0
       public var barHandler: ((Float) -> (String))?
       public func bar(arg: Float) -> String {
           barCallCount += 1

@@ -1,35 +1,23 @@
 class Ccache < Formula
   desc "Object-file caching compiler wrapper"
   homepage "https://ccache.dev/"
-  url "https://github.com/ccache/ccache/releases/download/v3.7.11/ccache-3.7.11.tar.xz"
-  sha256 "8d450208099a4d202bd7df87caaec81baee20ce9dd62da91e9ea7b95a9072f68"
+  url "https://github.com/ccache/ccache/releases/download/v4.1/ccache-4.1.tar.xz"
+  sha256 "5fdc804056632d722a1182e15386696f0ea6c59cb4ab4d65a54f0b269ae86f99"
   license "GPL-3.0-or-later"
-  revision 1
+  head "https://github.com/ccache/ccache.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "b3c6b44666b44ca28b34cbe65fe40951f1524d91853f99769e97ad8922271a4e" => :catalina
-    sha256 "f0a8adf66838338f8a621c5189bc3faf37f1dc9b04727e0513453c436f78a37b" => :mojave
-    sha256 "583f629fdb4446086fb7ed9529f494922b45c2ae435a8e57a1daa2754b3cb5f9" => :high_sierra
+    cellar :any
+    sha256 "ba8c28a2cc2a76753263e785ea4055bb0859cf1b966015755fb025335d7c21fa" => :big_sur
+    sha256 "234a4d2ba07206b539a347adff99f283da2bf219775e30da5567140cbd7c4fdf" => :catalina
+    sha256 "bd87ccc67069931f9a4b1833c6ac97f9168425fc4b5680d152f18b64cd87e825" => :mojave
   end
 
-  head do
-    url "https://github.com/ccache/ccache.git"
-
-    depends_on "asciidoc" => :build
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  uses_from_macos "zlib"
+  depends_on "cmake" => :build
+  depends_on "zstd"
 
   def install
-    ENV["XML_CATALOG_FILES"] = etc/"xml/catalog" if build.head?
-
-    system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make"
+    system "cmake", ".", *std_cmake_args
     system "make", "install"
 
     libexec.mkpath

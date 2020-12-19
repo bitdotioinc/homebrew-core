@@ -1,8 +1,8 @@
 class Itk < Formula
   desc "Insight Toolkit is a toolkit for performing registration and segmentation"
   homepage "https://itk.org"
-  url "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.1.0/InsightToolkit-5.1.0.tar.gz"
-  sha256 "121020a1611508cec8123eb5226215598cec07be627d843a2e6b6da891e61d13"
+  url "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.1.2/InsightToolkit-5.1.2.tar.gz"
+  sha256 "f1e5a78e11125348f68f655c6b89b617c3a8b2c09f710081f621054811a70c98"
   license "Apache-2.0"
   head "https://github.com/InsightSoftwareConsortium/ITK.git"
 
@@ -12,9 +12,9 @@ class Itk < Formula
   end
 
   bottle do
-    sha256 "a164746cce8e23e169a967bae3c8b455f63674ee3e74f677d7e1214253db3975" => :catalina
-    sha256 "e633ca1823a1f35e0d2e025a4f2ce7e1cad26342d934e9a41a29396e0808f374" => :mojave
-    sha256 "d7e3580065e5c49d5af1a403bbb7a3a0532471494c87e15f50ca295c74a30123" => :high_sierra
+    sha256 "d471032839867a33b3199917b679a47fe31f32923c8362008df8ab661dffeec2" => :big_sur
+    sha256 "9ef1d85a062b42910f7d8e4cd6f09dad9c8d8eb85fd3ac7f31e253e17ee6d80d" => :catalina
+    sha256 "e72bc2bd7cc17c6671aa05bc8c545cc263501c38758fef7521094ed2acb3c57b" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -24,7 +24,12 @@ class Itk < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
-  depends_on "vtk"
+  depends_on "vtk@8.2" # needed for gdcm
+
+  on_linux do
+    depends_on "alsa-lib"
+    depends_on "unixodbc"
+  end
 
   def install
     args = std_cmake_args + %W[
@@ -47,7 +52,6 @@ class Itk < Formula
       -DITK_USE_SYSTEM_TIFF=ON
       -DITK_USE_SYSTEM_GDCM=ON
       -DITK_LEGACY_REMOVE=ON
-      -DModule_ITKLevelSetsv4Visualization=ON
       -DModule_ITKReview=ON
       -DModule_ITKVtkGlue=ON
       -DITK_USE_GPU=ON

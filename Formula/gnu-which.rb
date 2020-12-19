@@ -14,6 +14,7 @@ class GnuWhich < Formula
   bottle do
     cellar :any_skip_relocation
     rebuild 3
+    sha256 "eeb493d3cc6252da45b29cf1d2a1d6daca630a6cd467ae690c3979673ea9a589" => :big_sur
     sha256 "f9e6512591096a9f53067ea4a0b5b9f8516515b49fd5bdabfc6e31c1c0c876f2" => :catalina
     sha256 "170008e80a4cc5f1e45b3445f9fb6f099d7700aa6dd825602f6d32316c27735b" => :mojave
     sha256 "66446416b0dc367076ab38cfc9775d8c201fc571b1a2cd2fc0197daa6b83882a" => :high_sierra
@@ -24,14 +25,18 @@ class GnuWhich < Formula
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
-      --program-prefix=g
     ]
 
+    on_macos do
+      args << "--program-prefix=g"
+    end
     system "./configure", *args
     system "make", "install"
 
-    (libexec/"gnubin").install_symlink bin/"gwhich" => "which"
-    (libexec/"gnuman/man1").install_symlink man1/"gwhich.1" => "which.1"
+    on_macos do
+      (libexec/"gnubin").install_symlink bin/"gwhich" => "which"
+      (libexec/"gnuman/man1").install_symlink man1/"gwhich.1" => "which.1"
+    end
 
     libexec.install_symlink "gnuman" => "man"
   end
@@ -47,7 +52,12 @@ class GnuWhich < Formula
   end
 
   test do
-    system "#{bin}/gwhich", "gcc"
-    system "#{opt_libexec}/gnubin/which", "gcc"
+    on_macos do
+      system "#{bin}/gwhich", "gcc"
+      system "#{opt_libexec}/gnubin/which", "gcc"
+    end
+    on_linux do
+      system "#{bin}/which", "gcc"
+    end
   end
 end

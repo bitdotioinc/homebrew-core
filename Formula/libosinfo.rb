@@ -1,5 +1,5 @@
 class Libosinfo < Formula
-  desc "The Operating System information database"
+  desc "Operating System information database"
   homepage "https://libosinfo.org/"
   url "https://releases.pagure.org/libosinfo/libosinfo-1.8.0.tar.xz"
   sha256 "49ff32be0d209f6c99480e28b94340ac3dd0158322ae4303adfbdfe973a108a5"
@@ -12,6 +12,7 @@ class Libosinfo < Formula
   end
 
   bottle do
+    sha256 "485f4ed04f60420b754b32014321e797d05a52f56c066ef8e0d5bd084e03b101" => :big_sur
     sha256 "6a779d888f548649d3482452583ced807c9aceca45bb0989122b22822ec82316" => :catalina
     sha256 "60e18106b7dca908a79e1edf59cd090ecb3a11d611d84330806aa0941fedb035" => :mojave
     sha256 "eabb00c969fe4686063a44b6d58170bc566972278d8b27468ac56341e7d083d3" => :high_sierra

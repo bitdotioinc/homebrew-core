@@ -6,6 +6,11 @@ class Appledoc < Formula
   license "Apache-2.0"
   head "https://github.com/tomaz/appledoc.git"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
     rebuild 1
     sha256 "35ced2445cb6f9744a2b8ef09d1f5d504aefe4995a8463639bf4fa8b5271e5f8" => :catalina

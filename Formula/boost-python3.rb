@@ -1,29 +1,24 @@
 class BoostPython3 < Formula
   desc "C++ library for C++/Python3 interoperability"
   homepage "https://www.boost.org/"
-  url "https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.tar.bz2"
-  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_73_0.tar.bz2"
-  sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+  url "https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.bz2"
+  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_74_0.tar.bz2"
+  sha256 "83bfc1507731a0906e387fc28b7ef5417d591429e51e788417fe9ff025e116b1"
   license "BSL-1.0"
+  revision 1
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha256 "36a3b2ffacb47649b51e0b3031b8f67bf7dcd87e61dfd6d594610cb3e21a1acc" => :catalina
-    sha256 "deda39650cec775da3e8a4915aec600cfd55b367f212be975bdcc70952f2e805" => :mojave
-    sha256 "237b8dcaaa8fcdc72ef8a57e6e38675a82579b736f819707f28bbf5f644ceffa" => :high_sierra
+    sha256 "74beefe4e488c5bf746232f7135d3b9f23cbffed08e686f04aba818179bfe8d1" => :big_sur
+    sha256 "e0bcf523b8e07d375db02bd4fd465d69fa12c1ce056df83bce2f2124230ee881" => :catalina
+    sha256 "7c79a5b4b2043f24aaf5eae7ad25b45b45334d213b489c0ae62be84acc57f61c" => :mojave
+    sha256 "f9152b8264ac74ccfdc90ba3353e58889c9922b1a5743a87a3f7fedc0557cb41" => :high_sierra
   end
 
   depends_on "numpy" => :build
   depends_on "boost"
-  depends_on "python@3.8"
-
-  # Fix build on Xcode 11.4
-  patch do
-    url "https://github.com/boostorg/build/commit/b3a59d265929a213f02a451bb63cea75d668a4d9.patch?full_index=1"
-    sha256 "04a4df38ed9c5a4346fbb50ae4ccc948a1440328beac03cb3586c8e2e241be08"
-    directory "tools/build"
-  end
+  depends_on "python@3.9"
 
   def install
     # "layout" should be synchronized with boost
@@ -47,8 +42,8 @@ class BoostPython3 < Formula
     # user-config.jam below.
     inreplace "bootstrap.sh", "using python", "#using python"
 
-    pyver = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
-    py_prefix = Formula["python@3.8"].opt_frameworks/"Python.framework/Versions/#{pyver}"
+    pyver = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
+    py_prefix = Formula["python@3.9"].opt_frameworks/"Python.framework/Versions/#{pyver}"
 
     # Force boost to compile with the desired compiler
     (buildpath/"user-config.jam").write <<~EOS
@@ -88,9 +83,9 @@ class BoostPython3 < Formula
       }
     EOS
 
-    pyincludes = shell_output("#{Formula["python@3.8"].opt_bin}/python3-config --includes").chomp.split(" ")
-    pylib = shell_output("#{Formula["python@3.8"].opt_bin}/python3-config --ldflags --embed").chomp.split(" ")
-    pyver = Language::Python.major_minor_version(Formula["python@3.8"].opt_bin/"python3").to_s.delete(".")
+    pyincludes = shell_output("#{Formula["python@3.9"].opt_bin}/python3-config --includes").chomp.split
+    pylib = shell_output("#{Formula["python@3.9"].opt_bin}/python3-config --ldflags --embed").chomp.split
+    pyver = Language::Python.major_minor_version(Formula["python@3.9"].opt_bin/"python3").to_s.delete(".")
 
     system ENV.cxx, "-shared", "hello.cpp", "-L#{lib}", "-lboost_python#{pyver}", "-o",
            "hello.so", *pyincludes, *pylib
@@ -99,6 +94,6 @@ class BoostPython3 < Formula
       import hello
       print(hello.greet())
     EOS
-    assert_match "Hello, world!", pipe_output(Formula["python@3.8"].opt_bin/"python3", output, 0)
+    assert_match "Hello, world!", pipe_output(Formula["python@3.9"].opt_bin/"python3", output, 0)
   end
 end

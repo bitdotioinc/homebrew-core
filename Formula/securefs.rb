@@ -2,8 +2,8 @@ class Securefs < Formula
   desc "Filesystem with transparent authenticated encryption"
   homepage "https://github.com/netheril96/securefs"
   url "https://github.com/netheril96/securefs.git",
-    tag:      "0.11.1",
-    revision: "dfeebf8406871d020848edde668234715356158c"
+      tag:      "0.11.1",
+      revision: "dfeebf8406871d020848edde668234715356158c"
   license "MIT"
   head "https://github.com/netheril96/securefs.git"
 
@@ -13,6 +13,8 @@ class Securefs < Formula
     sha256 "9bee23af87518f68df56b862ad0ef88f842ebe65f8feff02e90bf5ab8e91522e" => :mojave
     sha256 "632496d8e9ed9fe91d18e9a2c9fef49c920dc091e10108246f8ab2056f75ea38" => :high_sierra
   end
+
+  deprecate! date: "2020-11-10", because: "requires FUSE"
 
   depends_on "cmake" => :build
   depends_on :osxfuse

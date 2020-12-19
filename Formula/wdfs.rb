@@ -13,6 +13,8 @@ class Wdfs < Formula
     sha256 "7aab5f9c3d807f73dfe9df437a15806b74bc5a76cd3cd13e961ea781c7fa32fb" => :sierra
   end
 
+  deprecate! date: "2020-11-10", because: "requires FUSE"
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "neon"

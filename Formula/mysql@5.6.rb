@@ -1,19 +1,20 @@
 class MysqlAT56 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.6/en/"
-  url "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.47.tar.gz"
-  sha256 "0919096705784c62af831bb607e99345083edd76967c8c65966728742a9127fe"
-  license "GPL-2.0"
+  url "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.50.tar.gz"
+  sha256 "efc48d8160a66b50fc498bb42ea730c3b6f30f036b709a7070d356edd645923e"
+  license "GPL-2.0-only"
 
   livecheck do
-    url "https://dev.mysql.com/downloads/mysql/5.6.html"
-    regex(/href=.*?mysql[._-]v?(\d+.\d+.\d+)-/i)
+    url "https://dev.mysql.com/downloads/mysql/5.6.html?tpl=files&os=src&version=5.6"
+    regex(/href=.*?mysql[._-]v?(5\.6(?:\.\d+)*)\.t/i)
   end
 
   bottle do
-    sha256 "3ae76dae15820186fc74aef54f6365a55e19abc7c6d7826db5a1c774b9d9c759" => :catalina
-    sha256 "85d0cd1ae169ee42eb5fbc95a6a337c17d79d042e041ffb7f01c8313874989c7" => :mojave
-    sha256 "bf8272f7d912896a94f21ba7802e78ca49b70b20fc9c01f610d0f9b449469fae" => :high_sierra
+    rebuild 2
+    sha256 "4682d77e9e07fbada76340fe5101163373ecca62619beced780c053516228019" => :big_sur
+    sha256 "3d25ca89293a7e4e4ac702f4494815c343a610fda7c23334ef55ecf98345b05b" => :catalina
+    sha256 "8c2dcd492f329bfe298725920ed9db5c73858b7af6df393bf358ab133a9deac1" => :mojave
   end
 
   keg_only :versioned_formula
@@ -45,6 +46,7 @@ class MysqlAT56 < Formula
       -DMYSQL_DATADIR=#{datadir}
       -DSYSCONFDIR=#{etc}
       -DWITH_EDITLINE=system
+      -DWITH_NUMA=OFF
       -DWITH_SSL=yes
       -DWITH_UNIT_TESTS=OFF
       -DWITH_EMBEDDED_SERVER=ON
@@ -57,6 +59,9 @@ class MysqlAT56 < Formula
     system "cmake", ".", *std_cmake_args, *args
     system "make"
     system "make", "install"
+
+    # Avoid references to the Homebrew shims directory
+    inreplace bin/"mysqlbug", HOMEBREW_SHIMS_PATH/"mac/super/", ""
 
     (prefix/"mysql-test").cd do
       system "./mysql-test-run.pl", "status", "--vardir=#{Dir.mktmpdir}"
@@ -92,6 +97,8 @@ class MysqlAT56 < Formula
   end
 
   def post_install
+    return if ENV["CI"]
+
     # Make sure the datadir exists
     datadir.mkpath
     unless (datadir/"mysql/general_log.CSM").exist?

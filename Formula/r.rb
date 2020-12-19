@@ -1,9 +1,9 @@
 class R < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.0.2.tar.gz"
-  sha256 "d3bceab364da0876625e4097808b42512395fdf41292f4915ab1fd257c1bbe75"
-  license "GPL-2.0"
+  url "https://cran.r-project.org/src/base/R-4/R-4.0.3.tar.gz"
+  sha256 "09983a8a78d5fb6bc45d27b1c55f9ba5265f78fa54a55c13ae691f87c5bb9e0d"
+  license "GPL-2.0-or-later"
   revision 1
 
   livecheck do
@@ -12,9 +12,9 @@ class R < Formula
   end
 
   bottle do
-    sha256 "4d2073c7d93e1117cc35fcc375f6eb112f16c311cc4400d703a805d57f0de71a" => :catalina
-    sha256 "e337fd3411cd1dffc9be88c1e116d87acac55021b3a5c70af0feba1b1a2c7259" => :mojave
-    sha256 "9040c02a85ac2c37007f066cb3c388c41ea5f4e9e7cfde864f249999b0ce4026" => :high_sierra
+    sha256 "01bf5a586b3699a50b5e7ec6b7eebab213ef47dfa94754db497d0f41ac5a6110" => :big_sur
+    sha256 "c600906bfe86b80c5c14129148692364a6a5c2d4c1417e7c9f8a4eff5f508ec2" => :catalina
+    sha256 "22731d36544e6eb86b88e89638225133c8975377c3c4cdd1cc06e61e72f846b9" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -22,9 +22,9 @@ class R < Formula
   depends_on "gettext"
   depends_on "jpeg"
   depends_on "libpng"
-  depends_on "openblas"
   depends_on "pcre2"
   depends_on "readline"
+  depends_on "tcl-tk"
   depends_on "xz"
 
   # needed to preserve executable permissions on files without shebangs
@@ -41,18 +41,18 @@ class R < Formula
       "--prefix=#{prefix}",
       "--enable-memory-profiling",
       "--without-cairo",
-      "--without-tcltk",
       "--without-x",
+      "--with-tcl-config=#{Formula["tcl-tk"].opt_lib}/tclConfig.sh",
+      "--with-tk-config=#{Formula["tcl-tk"].opt_lib}/tkConfig.sh",
       "--with-aqua",
       "--with-lapack",
       "--enable-R-shlib",
       "SED=/usr/bin/sed", # don't remember Homebrew's sed shim
       "--disable-java",
-      "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
     ]
 
     # Help CRAN packages find gettext and readline
-    ["gettext", "readline"].each do |f|
+    ["gettext", "readline", "xz"].each do |f|
       ENV.append "CPPFLAGS", "-I#{Formula[f].opt_include}"
       ENV.append "LDFLAGS", "-L#{Formula[f].opt_lib}"
     end
@@ -98,6 +98,8 @@ class R < Formula
   test do
     assert_equal "[1] 2", shell_output("#{bin}/Rscript -e 'print(1+1)'").chomp
     assert_equal ".dylib", shell_output("#{bin}/R CMD config DYLIB_EXT").chomp
+    assert_equal "[1] \"aqua\"",
+                 shell_output("#{bin}/Rscript -e 'library(tcltk)' -e 'tclvalue(.Tcl(\"tk windowingsystem\"))'").chomp
 
     system bin/"Rscript", "-e", "install.packages('gss', '.', 'https://cloud.r-project.org')"
     assert_predicate testpath/"gss/libs/gss.so", :exist?,
