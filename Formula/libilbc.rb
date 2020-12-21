@@ -1,27 +1,24 @@
 class Libilbc < Formula
   desc "Packaged version of iLBC codec from the WebRTC project"
   homepage "https://github.com/TimothyGu/libilbc"
-  url "https://github.com/TimothyGu/libilbc/releases/download/v2.0.2/libilbc-2.0.2.tar.gz"
-  sha256 "84d5c99087a35bda3463bcb993245b4f8c28c04fe037215a5ec56570f68ce519"
+  url "https://github.com/TimothyGu/libilbc/releases/download/v3.0.3/libilbc-3.0.3.tar.gz"
+  sha256 "47c57deb26a36da11cbf7d51e76894c7b909ab007664f736319267bde57c73d0"
   license "BSD-3-Clause"
 
   bottle do
     cellar :any
-    sha256 "2fead9d7113ffad5aaa75fd4cdf875071865947c69aed68fbe542b1603d9c364" => :big_sur
-    sha256 "3a8caa126466fcf7cde71363a4423e709b249f0a7318a22e5bd545d3d5382ea3" => :catalina
-    sha256 "cbb71770ab1bc1647e719d9b084d710c8c5c4e37a0b1a70e53650b3fb24cda62" => :mojave
-    sha256 "63df659558f7961f6e04c347dad5ef6508578e86e0c13b15d39fb267dcc440db" => :high_sierra
-    sha256 "421757bd970d1ba1d0c1fe2eff208cc0b44f8a75bbf9a09344ba504ad377750f" => :sierra
-    sha256 "fff34390e949e037bb4b16937b62ab4993f55d2fb805656116ceab6a7c9b6e83" => :el_capitan
-    sha256 "7f16b3e0f254f35be8b6275339dc813a6443f65d1c27e1748e08835a49733f6f" => :yosemite
-    sha256 "7aa8495e4050ea38152ec218452d6fac97387ad385a6d63806238e838664471b" => :mavericks
+    sha256 "7cf3a9708a5e405ae07b1e30862fe2636813e3d4675f5410907def2f5eeb5de1" => :big_sur
+    sha256 "922b31da0782f99be36442b29a12b894f582153db289e19d33c39377d1a53a16" => :catalina
+    sha256 "709aca6a8540a022a9a8f52973f9796eee258c395321d3e311a38b67f960884c" => :mojave
   end
 
+  depends_on "cmake" => :build
+
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    system "make", "install"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args, "-DBUILD_SHARED_LIBS=ON"
+      system "make", "install"
+    end
   end
 
   test do

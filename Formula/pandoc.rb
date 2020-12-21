@@ -1,9 +1,9 @@
 class Pandoc < Formula
   desc "Swiss-army knife of markup format conversion"
   homepage "https://pandoc.org/"
-  url "https://hackage.haskell.org/package/pandoc-2.11.2/pandoc-2.11.2.tar.gz"
-  sha256 "cb0af254176870ca72f89170ae42fa9cf97b8c5ef4ea9bffca7f3d2e5bdde282"
-  license "GPL-2.0"
+  url "https://hackage.haskell.org/package/pandoc-2.11.3.1/pandoc-2.11.3.1.tar.gz"
+  sha256 "e957f94eb9514dbefd806b642e679a735c880e757bc12ba7f50d521b6d0e08e2"
+  license "GPL-2.0-or-later"
   head "https://github.com/jgm/pandoc.git"
 
   livecheck do
@@ -12,9 +12,9 @@ class Pandoc < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c0c2dfcfb22df26903844595a9d3983222b3b977d958b24b31b513c5a21acccb" => :big_sur
-    sha256 "1f3e1a1274efd7f89c1a6881b9ccb14c19cda7bd4c2b2d31ab2ea9169a806643" => :catalina
-    sha256 "ad8a0e23ceafd4e661699dfb47ac42bc63d2c019f6bbb3e9214b84def01671c3" => :mojave
+    sha256 "32c22a3f7419bd316d13646c6a08a03063c5426809e55f6def0d6c119afbc31e" => :big_sur
+    sha256 "1b72df54161967a99a125abfed2d2e1d3e398698cf687b7112e9a3477e68c5eb" => :catalina
+    sha256 "c491b83ad4687043c7f525c2db08c6fddd38261697d7463d9dae6cc42fa4647b" => :mojave
   end
 
   depends_on "cabal-install" => :build

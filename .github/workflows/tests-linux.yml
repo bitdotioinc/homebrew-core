@@ -9,17 +9,20 @@ on:
       - "Formula/ladspa-sdk.rb"
       - "Formula/libbsd.rb"
       - "Formula/libcap.rb"
+      - "Formula/libcap-ng.rb"
       - "Formula/libdrm.rb"
       - "Formula/libfuse.rb"
       - "Formula/libmnl.rb"
       - "Formula/libnetfilter-queue.rb"
       - "Formula/libnfnetlink.rb"
+      - "Formula/libnsl.rb"
       - "Formula/libpciaccess.rb"
       - "Formula/libseccomp.rb"
       - "Formula/libtirpc.rb"
       - "Formula/linux-headers.rb"
       - "Formula/strace.rb"
       - "Formula/wayland.rb"
+      - "Formula/wayland-protocols.rb"
 jobs:
   check_labels_linux:
     runs-on: ubuntu-latest

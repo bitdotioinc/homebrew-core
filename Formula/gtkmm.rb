@@ -4,7 +4,7 @@ class Gtkmm < Formula
   url "https://download.gnome.org/sources/gtkmm/2.24/gtkmm-2.24.5.tar.xz"
   sha256 "0680a53b7bf90b4e4bf444d1d89e6df41c777e0bacc96e9c09fc4dd2f5fe6b72"
   license "LGPL-2.1-or-later"
-  revision 5
+  revision 7
 
   livecheck do
     url :stable
@@ -13,18 +13,18 @@ class Gtkmm < Formula
 
   bottle do
     cellar :any
-    sha256 "c9e5728a06139ff573e5629975dc9e43d96223533fac5eb3e994c8b0da1ac258" => :big_sur
-    sha256 "2abecc62affcdfd0d4f9f3609a10e239f518af89526c3083a81acc29a256da0f" => :catalina
-    sha256 "ed81ab47fb417cde880d799998dcbeb6fc1c8ac52554a4470f9275a4751cc4e9" => :mojave
+    sha256 "dd431cc6f06e5756f09c2370f78867dc531804551a1b25c67abb5c18b5510fa6" => :big_sur
+    sha256 "45cf02a214ef2b5d67a5c8eab95557973539203891617188ba7071943aa4cba2" => :catalina
+    sha256 "64f506804f243615dcda445208698183e7389f7fb5c3f79a045b4a7018e11a44" => :mojave
   end
 
   depends_on "pkg-config" => :build
-  depends_on "atkmm"
+  depends_on "atkmm@2.28"
   depends_on "cairomm@1.14"
-  depends_on "glibmm"
+  depends_on "glibmm@2.64"
   depends_on "gtk+"
   depends_on "libsigc++@2"
-  depends_on "pangomm"
+  depends_on "pangomm@2.42"
 
   def install
     ENV.cxx11
@@ -42,7 +42,7 @@ class Gtkmm < Formula
       }
     EOS
     atk = Formula["atk"]
-    atkmm = Formula["atkmm"]
+    atkmm = Formula["atkmm@2.28"]
     cairo = Formula["cairo"]
     cairomm = Formula["cairomm@1.14"]
     fontconfig = Formula["fontconfig"]
@@ -50,13 +50,13 @@ class Gtkmm < Formula
     gdk_pixbuf = Formula["gdk-pixbuf"]
     gettext = Formula["gettext"]
     glib = Formula["glib"]
-    glibmm = Formula["glibmm"]
+    glibmm = Formula["glibmm@2.64"]
     gtkx = Formula["gtk+"]
     harfbuzz = Formula["harfbuzz"]
     libpng = Formula["libpng"]
     libsigcxx = Formula["libsigc++@2"]
     pango = Formula["pango"]
-    pangomm = Formula["pangomm"]
+    pangomm = Formula["pangomm@2.42"]
     pixman = Formula["pixman"]
     flags = %W[
       -I#{atk.opt_include}/atk-1.0
