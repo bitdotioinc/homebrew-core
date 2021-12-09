@@ -1,26 +1,24 @@
 class PostgresqlAT96 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v9.6.22/postgresql-9.6.22.tar.bz2"
-  sha256 "3d32cd101025a0556813397c69feff3df3d63736adb8adeaf365c522f39f2930"
+  url "https://ftp.postgresql.org/pub/source/v9.6.24/postgresql-9.6.24.tar.bz2"
+  sha256 "aeb7a196be3ebed1a7476ef565f39722187c108dd47da7489be9c4fcae982ace"
   license "PostgreSQL"
-
-  livecheck do
-    url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(9\.6(?:\.\d+)*)/?["' >]}i)
-  end
+  revision 1
 
   bottle do
-    sha256 arm64_big_sur: "408a339dc0058f6fb69a894f6faad84241403c698047d77f81d05871d569edff"
-    sha256 big_sur:       "66d141ccf728c3a4c529b227a3a3ece0b767c85b9ef04b5a6d787107a9addc20"
-    sha256 catalina:      "2b8fab60518c228f3dae4830f2ae662a2b5e4b7e968ba50f7ff0288eadb1cbcf"
-    sha256 mojave:        "73a3586e8bc638b8513df4226090fe843c5d4d93bce35120214772ef28c8f3a2"
+    sha256 arm64_monterey: "b4c178cade19e673d8cea62c21d42003372f43f36393c717217918386e9f8ecb"
+    sha256 arm64_big_sur:  "507120e4532ed17e7dff798da131c16c03bdf64ebe5405f98b711a696d8d39d9"
+    sha256 monterey:       "9670dcffcbd8712c13c45a7d61911ea106c135612bcddd7b9d352f6e6b9b4110"
+    sha256 big_sur:        "731d0d1e9d8388b1d7e5621f2bca54a54f7da7a627732623edad3b3479656f1d"
+    sha256 catalina:       "3cdae2f8e5bb4545b68d0cde26550c1022dcde4cd7c6878b6de495c69e3de81a"
+    sha256 x86_64_linux:   "9deb8b68fe3b29be253addd09acdf017df9d89adfcb6df7136cfbb39343ada0e"
   end
 
   keg_only :versioned_formula
 
   # https://www.postgresql.org/support/versioning/
-  deprecate! date: "2021-11-11", because: :unsupported
+  disable! date: "2021-11-11", because: :unsupported
 
   depends_on "openssl@1.1"
   depends_on "readline"
@@ -50,17 +48,21 @@ class PostgresqlAT96 < Formula
       --sysconfdir=#{prefix}/etc
       --docdir=#{doc}
       --enable-thread-safety
-      --with-bonjour
       --with-gssapi
       --with-ldap
-      --with-openssl
-      --with-pam
       --with-libxml
       --with-libxslt
+      --with-openssl
+      --with-pam
       --with-perl
-      --with-tcl
       --with-uuid=e2fs
     ]
+    if OS.mac?
+      args += %w[
+        --with-bonjour
+        --with-tcl
+      ]
+    end
 
     # PostgreSQL by default uses xcodebuild internally to determine this,
     # which does not work on CLT-only installs.
@@ -79,12 +81,21 @@ class PostgresqlAT96 < Formula
     # Attempting to fix that by adding a dependency on `open-sp` doesn't
     # work and the build errors out on generating the documentation, so
     # for now let's simply omit it so we can package Postgresql for Mojave.
-    if DevelopmentTools.clang_build_version >= 1000
+    if OS.mac?
+      if DevelopmentTools.clang_build_version >= 1000
+        system "make", "all"
+        system "make", "-C", "contrib", "install", "all", *dirs
+        system "make", "install", "all", *dirs
+      else
+        system "make", "install-world", *dirs
+      end
+    else
       system "make", "all"
       system "make", "-C", "contrib", "install", "all", *dirs
       system "make", "install", "all", *dirs
-    else
-      system "make", "install-world", *dirs
+      inreplace lib/"pgxs/src/Makefile.global",
+                "LD = #{HOMEBREW_PREFIX}/Homebrew/Library/Homebrew/shims/linux/super/ld",
+                "LD = #{HOMEBREW_PREFIX}/bin/ld"
     end
   end
 
@@ -124,33 +135,12 @@ class PostgresqlAT96 < Formula
     EOS
   end
 
-  plist_options manual: "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgresql@9.6 start"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/postgres</string>
-          <string>-D</string>
-          <string>#{postgresql_datadir}</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{HOMEBREW_PREFIX}</string>
-        <key>StandardErrorPath</key>
-        <string>#{postgresql_log_path}</string>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"postgres", "-D", var/"postgresql@9.6"]
+    keep_alive true
+    log_path var/"log/postgresql@9.6.log"
+    error_log_path var/"log/postgresql@9.6.log"
+    working_dir HOMEBREW_PREFIX
   end
 
   test do

@@ -1,29 +1,30 @@
-class PostgresqlAT12 < Formula
+class PostgresqlAT13 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v12.9/postgresql-12.9.tar.bz2"
-  sha256 "89fda2de33ed04a98548e43f3ee5f15b882be17505d631fe0dd1a540a2b56dce"
+  url "https://ftp.postgresql.org/pub/source/v13.5/postgresql-13.5.tar.bz2"
+  sha256 "9b81067a55edbaabc418aacef457dd8477642827499560b00615a6ea6c13f6b3"
   license "PostgreSQL"
   revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(12(?:\.\d+)+)/?["' >]}i)
+    regex(%r{href=["']?v?(13(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 arm64_monterey: "0551d24f41d48069220ac4c14d45181ec4b0452b8530b6ae930556a4aa1d9582"
-    sha256 arm64_big_sur:  "ff58c19a08f2e1c5eb85a795e82773d3afe8bec0d5bbed386849c48b8c03441d"
-    sha256 monterey:       "829c7cad52d936f0354eefdd4faf45a2490a7b8f3420fbfb83f7fad781ff6d4a"
-    sha256 big_sur:        "e6c64282624fcdcc95d9ad69292db5815accec40954ec57eaa19ceeeac178cd9"
-    sha256 catalina:       "e9cd7a80195d9bec8abf309364b85ebcaa780b173ff191de33641c4587d286c3"
-    sha256 x86_64_linux:   "2e12688f0def0c77bbbc2a20773233cae923405ee292bd80e77c024ceaea6b47"
+    rebuild 1
+    sha256 arm64_monterey: "a84101063f387e69e80296c938f34407a5502eb29281a5684da0ea6de37457eb"
+    sha256 arm64_big_sur:  "d553cc91c53081225420b7f02047e8ee8155679dfa86529d9a2f3fe13be92713"
+    sha256 monterey:       "09d77cc3b777078242e4430d4c23e88ec6a8e4953c7b4bdee397e6a1f7588f78"
+    sha256 big_sur:        "9df9951d736b0d2b66cd82c2b53129059b8608691c62ff9962054e8f6f18e915"
+    sha256 catalina:       "30466d4ea80f1ededb1bd64e788d64dcf0f2e6666bf69a26386115e33f9a1a7d"
+    sha256 x86_64_linux:   "cc971147a6aafb1f181171eebd82a2eb16428a986042f7425e855716303e5abe"
   end
 
   keg_only :versioned_formula
 
   # https://www.postgresql.org/support/versioning/
-  deprecate! date: "2024-11-14", because: :unsupported
+  deprecate! date: "2024-11-13", because: :unsupported
 
   depends_on "pkg-config" => :build
   depends_on "icu4c"
@@ -46,6 +47,7 @@ class PostgresqlAT12 < Formula
   end
 
   def install
+    ENV.delete "PKG_CONFIG_LIBDIR" if MacOS.version == :catalina
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@1.1"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@1.1"].opt_include} -I#{Formula["readline"].opt_include}"
 
@@ -147,7 +149,7 @@ class PostgresqlAT12 < Formula
     # to see if we need to print a warning re: data dir
     if old_postgresql_datadir_version == pg_formula_version
       caveats += if postgresql_formula_present?
-        # Both PostgreSQL and PostgreSQL@12 are installed
+        # Both PostgreSQL and PostgreSQL@13 are installed
         <<~EOS
           Previous versions of this formula used the same data directory as
           the regular PostgreSQL formula. This causes a conflict if you
@@ -159,7 +161,7 @@ class PostgresqlAT12 < Formula
 
         EOS
       else
-        # Only PostgreSQL@12 is installed, not PostgreSQL
+        # Only PostgreSQL@13 is installed, not PostgreSQL
         <<~EOS
           Previous versions of #{name} used the same data directory as
           the postgresql formula. This will cause a conflict if you
@@ -185,10 +187,10 @@ class PostgresqlAT12 < Formula
   end
 
   service do
-    run [opt_bin/"postgres", "-D", var/"postgresql@12"]
+    run [opt_bin/"postgres", "-D", var/"postgresql@13"]
     keep_alive true
-    log_path var/"log/postgresql@12.log"
-    error_log_path var/"log/postgresql@12.log"
+    log_path var/"log/postgresql@13.log"
+    error_log_path var/"log/postgresql@13.log"
     working_dir HOMEBREW_PREFIX
   end
 

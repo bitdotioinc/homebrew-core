@@ -1,10 +1,11 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v13.3/postgresql-13.3.tar.bz2"
-  sha256 "3cd9454fa8c7a6255b6743b767700925ead1b9ab0d7a0f9dcb1151010f8eb4a1"
+  url "https://ftp.postgresql.org/pub/source/v14.1/postgresql-14.1.tar.bz2"
+  sha256 "4d3c101ea7ae38982f06bdc73758b53727fb6402ecd9382006fa5ecc7c2ca41f"
   license "PostgreSQL"
-  head "https://github.com/postgres/postgres.git"
+  revision 1
+  head "https://github.com/postgres/postgres.git", branch: "master"
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
@@ -12,10 +13,12 @@ class Postgresql < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "7c0e1b76d60b428facd521c729323221712d7f6d9954e21da389aeeb2c62348e"
-    sha256 big_sur:       "eaf28965ead970ecfb327b121ec6a07f0a4e39865797a1a0383605a17e5911e3"
-    sha256 catalina:      "74e946503c73cd0efc55ad4b373efbd8f4fb8a9e26a670b878c6db25794aea4a"
-    sha256 mojave:        "36c7bde4788571e5b66ffe05b6174b62c69781d61c53c3ebcd9d278e8f148197"
+    sha256 arm64_monterey: "6e6f3099ad1e64fbdc9dff2152c33a2f01743d2010330bcb34cefe13052fa228"
+    sha256 arm64_big_sur:  "d75aee6c8beaabf4add33f0f77f150b13523ffc21f6b72fd2a3c1ea0b7095362"
+    sha256 monterey:       "027c8b48406c3d732241426e0f5d2caf9f48cb4d2d38610b8f5d46f0adf7a89f"
+    sha256 big_sur:        "b207e5d55b0696b3b1dd649b4496d8213c933304b2b85e1913270f0834167b7f"
+    sha256 catalina:       "7708c5cd803ce6bc1481527ecff0ad387d7489e71a3da47140768995bed3e145"
+    sha256 x86_64_linux:   "37477f8fd9f0fed2956558ad9f7169123200e6761a65936e8732a3a88d95c3ca"
   end
 
   depends_on "pkg-config" => :build
@@ -61,7 +64,7 @@ class Postgresql < Formula
       --with-perl
       --with-uuid=e2fs
     ]
-    on_macos do
+    if OS.mac?
       args += %w[
         --with-bonjour
         --with-tcl
@@ -82,7 +85,7 @@ class Postgresql < Formula
                                     "includedir_server=#{include}/postgresql/server",
                                     "includedir_internal=#{include}/postgresql/internal"
 
-    on_linux do
+    if OS.linux?
       inreplace lib/"postgresql/pgxs/src/Makefile.global",
                 "LD = #{HOMEBREW_PREFIX}/Homebrew/Library/Homebrew/shims/linux/super/ld",
                 "LD = #{HOMEBREW_PREFIX}/bin/ld"
@@ -123,35 +126,12 @@ class Postgresql < Formula
     EOS
   end
 
-  plist_options manual: "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres start"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/postgres</string>
-          <string>-D</string>
-          <string>#{postgresql_datadir}</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{HOMEBREW_PREFIX}</string>
-        <key>StandardOutPath</key>
-        <string>#{postgresql_log_path}</string>
-        <key>StandardErrorPath</key>
-        <string>#{postgresql_log_path}</string>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"postgres", "-D", var/"postgres"]
+    keep_alive true
+    log_path var/"log/postgres.log"
+    error_log_path var/"log/postgres.log"
+    working_dir HOMEBREW_PREFIX
   end
 
   test do
