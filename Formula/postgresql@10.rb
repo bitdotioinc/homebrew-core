@@ -1,9 +1,10 @@
 class PostgresqlAT10 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v10.17/postgresql-10.17.tar.bz2"
-  sha256 "5af28071606c9cd82212c19ba584657a9d240e1c4c2da28fc1f3998a2754b26c"
+  url "https://ftp.postgresql.org/pub/source/v10.19/postgresql-10.19.tar.bz2"
+  sha256 "6eb830b428b60e84ae87e20436bce679c4d9d0202be7aec0e41b0c67d9134239"
   license "PostgreSQL"
+  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
@@ -11,10 +12,11 @@ class PostgresqlAT10 < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "343a80500834823cd0f70a8b11f82164eb79632601331426866ca9b08ecb7902"
-    sha256 big_sur:       "bbf8b3fd564802418e5ca8e76ee537276e6c33b65bdfa7de67220b6038cec2d6"
-    sha256 catalina:      "71564a949308c86d7a539def6d45c19ef3d9b30e01f939e5f2dd657e4c974428"
-    sha256 mojave:        "d667f75cca4fb9c5fa9d319bf8a2e4efbdba70711cf8bde5fda5fa0404f28340"
+    sha256 arm64_monterey: "d03b4afd640f4c3b00f9f00ab4713271f73dfef8264a8c9d0b0914b7f1bccd2e"
+    sha256 arm64_big_sur:  "a412b46666e8faece8064ba341a8798b4d9930885639b10a9a7c9bb20a548942"
+    sha256 monterey:       "995e4ac807dfc85963522ba63f10f9ab4d760d23744bb4c9d6ebb660e52c99c5"
+    sha256 big_sur:        "d7cbefbbcf76cb78b19d208ae131ec30cd67644410ca1838ff2f5e5226722fdc"
+    sha256 catalina:       "635a8c72855cab2239e763b2523fab9c40f5982cc616630f72b4b00486ddfcfa"
   end
 
   keg_only :versioned_formula
@@ -37,14 +39,6 @@ class PostgresqlAT10 < Formula
     depends_on "util-linux"
   end
 
-  # Patch for `error: conflicting types for 'DefineCollation'`
-  # when built against icu4c 68.2. Adapted from
-  # https://svnweb.freebsd.org/ports/head/databases/postgresql10-server/files/patch-icu68?revision=553940&view=co
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/a28787a7f9b4a33cf5036379236e5a57a36282bc/postgresql%4010/icu4c68-2.patch"
-    sha256 "8d625f31f176c256a9b8b5763e751091472d9f8a57e12bb7324c990777cf674c"
-  end
-
   def install
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@1.1"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@1.1"].opt_include} -I#{Formula["readline"].opt_include}"
@@ -57,7 +51,6 @@ class PostgresqlAT10 < Formula
       --sysconfdir=#{etc}
       --docdir=#{doc}
       --enable-thread-safety
-      --with-bonjour
       --with-gssapi
       --with-icu
       --with-ldap
@@ -66,9 +59,14 @@ class PostgresqlAT10 < Formula
       --with-openssl
       --with-pam
       --with-perl
-      --with-tcl
       --with-uuid=e2fs
     ]
+    if OS.mac?
+      args += %w[
+        --with-bonjour
+        --with-tcl
+      ]
+    end
 
     # PostgreSQL by default uses xcodebuild internally to determine this,
     # which does not work on CLT-only installs.
@@ -88,12 +86,21 @@ class PostgresqlAT10 < Formula
     # Attempting to fix that by adding a dependency on `open-sp` doesn't
     # work and the build errors out on generating the documentation, so
     # for now let's simply omit it so we can package Postgresql for Mojave.
-    if DevelopmentTools.clang_build_version >= 1000
+    if OS.mac?
+      if DevelopmentTools.clang_build_version >= 1000
+        system "make", "all"
+        system "make", "-C", "contrib", "install", "all", *dirs
+        system "make", "install", "all", *dirs
+      else
+        system "make", "install-world", *dirs
+      end
+    else
       system "make", "all"
       system "make", "-C", "contrib", "install", "all", *dirs
       system "make", "install", "all", *dirs
-    else
-      system "make", "install-world", *dirs
+      inreplace lib/"pgxs/src/Makefile.global",
+                "LD = #{HOMEBREW_PREFIX}/Homebrew/Library/Homebrew/shims/linux/super/ld",
+                "LD = #{HOMEBREW_PREFIX}/bin/ld"
     end
   end
 
@@ -128,35 +135,12 @@ class PostgresqlAT10 < Formula
     EOS
   end
 
-  plist_options manual: "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgresql@10 start"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/postgres</string>
-          <string>-D</string>
-          <string>#{postgresql_datadir}</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{HOMEBREW_PREFIX}</string>
-        <key>StandardOutPath</key>
-        <string>#{postgresql_log_path}</string>
-        <key>StandardErrorPath</key>
-        <string>#{postgresql_log_path}</string>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"postgres", "-D", var/"postgresql@10"]
+    keep_alive true
+    log_path var/"log/postgresql@10.log"
+    error_log_path var/"log/postgresql@10.log"
+    working_dir HOMEBREW_PREFIX
   end
 
   test do
