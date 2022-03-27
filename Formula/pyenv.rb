@@ -1,24 +1,24 @@
 class Pyenv < Formula
   desc "Python version management"
   homepage "https://github.com/pyenv/pyenv"
-  url "https://github.com/pyenv/pyenv/archive/v2.2.0.tar.gz"
-  sha256 "ef62a5d0a0d582b38497ae8d24a2a417d4a21c42811123c08082541a7092825d"
+  url "https://github.com/pyenv/pyenv/archive/refs/tags/v2.2.5.tar.gz"
+  sha256 "9eb4f7083c28d56d1bd05bfaf66f31df36e83d099200c4a81f2e5983c024bb42"
   license "MIT"
   version_scheme 1
   head "https://github.com/pyenv/pyenv.git", branch: "master"
 
   livecheck do
     url :stable
-    strategy :github_latest
+    regex(/^v?(\d+(?:\.\d+)+(-\d+)?)$/i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "1d326dcae6327e1a62a8026e80665a0d995eec0d26c27f417ef34a9b75a2e2a7"
-    sha256 cellar: :any,                 arm64_big_sur:  "38f17626731a50f95ce1ad71495de2d260706a1420a19f2f29e7c935525c8c01"
-    sha256 cellar: :any,                 monterey:       "b02075ca6820755aee0956795c7decbfac56562ba66fec06bea193116cef5de6"
-    sha256 cellar: :any,                 big_sur:        "880bf4a355cc3da07562b82bac1bf7d0f4bcde6c613f5ea691f50d4e013b1bf8"
-    sha256 cellar: :any,                 catalina:       "5f7f283d3029f6293a52fc5449cf6aae8be5976f605318c9afa300be3e7d88f8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fb8949a118e2b8012383fe822148778944d24fe7eab36655fad6e1f1d506e2ad"
+    sha256 cellar: :any,                 arm64_monterey: "0f9923949527127db9664765905dac420a54394543e5a1235b0099302a6277d0"
+    sha256 cellar: :any,                 arm64_big_sur:  "69f968b143a6f2b7de7ba28c27ba56ecc69f4d84e7fa19bd574ba74a22f2829d"
+    sha256 cellar: :any,                 monterey:       "b30cfd4badab10b271f800997097737ca9524409d91a6c646af033864c4ea5fe"
+    sha256 cellar: :any,                 big_sur:        "4bf68b8f00645a2aa581e1b817e0f7891f2fc5c24319b1a21d9f5f062eba6cfd"
+    sha256 cellar: :any,                 catalina:       "19c57ca23fc43187e171410c1123ebd4997079ef772966e19141957dabfd2375"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "790c4fca00b17626e0658785d8db4edda1c24302d452213d832ead38fc5f6430"
   end
 
   depends_on "autoconf"
